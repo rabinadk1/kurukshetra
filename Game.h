@@ -22,7 +22,6 @@ private:
     sf::Sprite mSprite;
     sf::Texture mTexture;
     bool mIsMovingUp, mIsMovingDown, mIsMovingLeft, mIsMovingRight;
-    remainTime R;
     sf::Font font;
     sf::Text time;
 };
