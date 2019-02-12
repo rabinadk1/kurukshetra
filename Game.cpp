@@ -3,6 +3,7 @@
 //
 
 #include "Game.h"
+#include "Controller/remainTime.h"
 #include <iostream>
 Game::Game()
     : mWindow(sf::VideoMode(640, 480), "SFML Application"),
@@ -16,9 +17,18 @@ Game::Game()
             std::cerr<<"Couldn't load texture from the file";
             exit(1);
         }
+        if(!font.loadFromFile("../DejaVuSans.ttf"))
+        {
+            std::cerr<<"Couldn't load fonts from the file";
+            exit(1);
+        }
         mTexture.setSmooth(true);
         mSprite.setTexture(mTexture);
         mSprite.setPosition(100.f, 100.f);
+        time.setFont(font);
+        time.setPosition(100.f,100.f);
+        time.setCharacterSize(24);
+    time.setFillColor(sf::Color::Red);
     }
 
 void Game::run() {
@@ -64,6 +74,7 @@ void Game::update() {
 void Game::render() {
     mWindow.clear();
     mWindow.draw(mSprite);
+    mWindow.draw(time);
     mWindow.display();
 }
 

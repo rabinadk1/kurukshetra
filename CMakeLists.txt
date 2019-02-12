@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD 98)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Weffc++ -pedantic-errors")
 
-add_executable(kurukshetra main.cpp Game.cpp)
+add_executable(kurukshetra main.cpp Game.cpp Controller/remainTime.cpp Controller/remainTime.h)
 #add_executable(SFMLTest main.cpp Animation.cpp)
 #add_executable(Thread thread.cpp)
 
