@@ -5,30 +5,27 @@
 #include "Game.h"
 #include "Controller/remainTime.h"
 #include <iostream>
+
 Game::Game()
     : mWindow(sf::VideoMode(640, 480), "SFML Application"),
     mIsMovingUp(false),
     mIsMovingDown(false),
     mIsMovingLeft(false),
-    mIsMovingRight(false)
+    mIsMovingRight(false),
+    mIsParabolic(false),
+    clear(false),
+    time(1.f)
     {
         mWindow.setVerticalSyncEnabled(true);
         if (not mTexture.loadFromFile("../Eagle.gif")) {
-            std::cerr<<"Couldn't load texture from the file";
-            exit(1);
-        }
-        if(!font.loadFromFile("../DejaVuSans.ttf"))
-        {
-            std::cerr<<"Couldn't load fonts from the file";
+            std::cerr << "Couldn't load texture from the file";
             exit(1);
         }
         mTexture.setSmooth(true);
         mSprite.setTexture(mTexture);
         mSprite.setPosition(100.f, 100.f);
-        time.setFont(font);
-        time.setPosition(100.f,100.f);
-        time.setCharacterSize(24);
-    time.setFillColor(sf::Color::Red);
+        speed.x = 1.f;
+        speed.y = 0.f;
     }
 
 void Game::run() {
@@ -60,6 +57,19 @@ void Game::processEvents() {
 
 void Game::update() {
     sf::Vector2f movement(0.f, 0.f);
+    if (clear) {
+        mSprite.setPosition(0.f, 0.f);
+        return;
+    }
+    if (mIsParabolic) {
+        speed.y = speed.y*time +  0.5f * 0.01f * time * time;
+        time *= 1.7;
+        movement += speed;
+        mSprite.move(movement);
+        return;
+    }
+    time = 1;
+    speed.y = 0;
     if (mIsMovingUp)
         movement.y -= 1.f;
     if (mIsMovingDown)
@@ -74,11 +84,10 @@ void Game::update() {
 void Game::render() {
     mWindow.clear();
     mWindow.draw(mSprite);
-    mWindow.draw(time);
     mWindow.display();
 }
 
-void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed) {
+void Game::handlePlayerInput(sf::Keyboard::Key& key, bool isPressed) {
     switch (key)
     {
         case sf::Keyboard::W:
@@ -92,6 +101,12 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed) {
             break;
         case sf::Keyboard::D:
             mIsMovingRight = isPressed;
+            break;
+        case sf::Keyboard::F:
+            mIsParabolic = isPressed;
+            break;
+        case sf::Keyboard::LShift:
+            clear = isPressed;
             break;
     }
 }

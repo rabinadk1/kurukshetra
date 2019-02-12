@@ -16,12 +16,12 @@ private:
     void processEvents();
     void update();
     void render();
-    void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
+    void handlePlayerInput(sf::Keyboard::Key& key, bool isPressed);
 private:
     sf::RenderWindow mWindow;
     sf::Sprite mSprite;
     sf::Texture mTexture;
-    bool mIsMovingUp, mIsMovingDown, mIsMovingLeft, mIsMovingRight;
-    sf::Font font;
-    sf::Text time;
+    bool mIsMovingUp, mIsMovingDown, mIsMovingLeft, mIsMovingRight, mIsParabolic, clear;
+    sf::Vector2f speed;
+    float time;
 };
