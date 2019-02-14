@@ -7,6 +7,8 @@
 
 #include <SFML/Graphics.hpp>
 #include "Animation.h"
+#include "Collider.h"
+
 class Player {
 public:
     Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed);
@@ -14,7 +16,8 @@ public:
 
     void Update(float deltaTime);
     void Draw(sf::RenderWindow& window);
-
+    Collider GetCollider() { return Collider(body); }
+    void SetPosition(sf::Vector2f position);
 
 private:
     sf::RectangleShape body;

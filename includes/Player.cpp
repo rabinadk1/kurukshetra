@@ -24,6 +24,11 @@ void Player::Update(float deltaTime) {
         movement.x -= speed * deltaTime;
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         movement.x += speed * deltaTime;
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+        movement.y += speed * deltaTime;
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+        movement.y -= speed * deltaTime;
 
     if(movement.x == 0)
     {
@@ -48,4 +53,8 @@ void Player::Draw(sf::RenderWindow &window) {
 
 Player::~Player() {
 
+}
+
+void Player::SetPosition(sf::Vector2f position) {
+    body.setPosition(position);
 }

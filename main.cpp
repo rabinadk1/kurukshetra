@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "includes/Player.h"
+#include "includes/Platform.h"
 
 int main()
 {
@@ -46,13 +47,7 @@ int main()
     sky.setTexture(&skyTexture);
     sky.setFillColor(sf::Color(102, 0, 0));
 
-
-    sf::RectangleShape ground;
-    ground.setPosition(sf::Vector2f(0, 520));
-    ground.setSize(sf::Vector2f(1920, 80));
-    ground.setFillColor(sf::Color(255, 255, 255, 255)); //128 is half transparency
-    ground.setTexture(&groundTexture);
-    ground.setFillColor(sf::Color(255, 174, 0, 128));
+    Platform ground(&groundTexture, sf::Vector2f(1920, 80), sf::Vector2f(0, 520));
 
     sf::RectangleShape grass;
     grass.setPosition(sf::Vector2f(1200, 420));
@@ -78,13 +73,12 @@ int main()
         }
 
         player.Update(deltaTime);
-
-
+        
         window.clear();
 
         window.draw(sky);
         window.draw(grass);
-        window.draw(ground);
+        ground.Draw(window);
         player.Draw(window);
         window.display();
 

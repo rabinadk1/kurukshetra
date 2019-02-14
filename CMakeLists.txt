@@ -5,5 +5,5 @@ set(CMAKE_CXX_STANDARD 98)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic-errors -Weffc++")
 
-add_executable(kurukshetra main.cpp includes/Animation.cpp includes/Animation.h includes/Player.cpp includes/Player.h)
+add_executable(kurukshetra main.cpp includes/Animation.cpp includes/Animation.h includes/Player.cpp includes/Player.h includes/Collider.cpp includes/Collider.h includes/Platform.cpp includes/Platform.h)
 target_link_libraries(kurukshetra sfml-graphics sfml-window sfml-audio sfml-system)
