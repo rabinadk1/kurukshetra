@@ -73,7 +73,7 @@ int main()
         }
 
         player.Update(deltaTime);
-        
+
         window.clear();
 
         window.draw(sky);
