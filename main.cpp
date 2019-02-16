@@ -11,15 +11,21 @@ int main()
 
     sf::Texture skyTexture;
     sf::Texture groundTexture;
+    sf::Texture rockTexture;
     sf::Texture playerTexture;
     sf::Texture grassTexture;
 
-    if(!skyTexture.loadFromFile("../Media/Textures/redSky.jpg", sf::IntRect(100, 100, 300, 300)))
+    if(!skyTexture.loadFromFile("../Media/Textures/sereneBackground.png"))
     {
         std::cout << "Load Failed" << std::endl;
         system("pause");
     }
     if(!grassTexture.loadFromFile("../Media/Textures/grass.png"))
+    {
+        std::cout << "Load Failed" << std::endl;
+        system("pause");
+    }
+    if(!rockTexture.loadFromFile("../Media/Textures/rockPlatform.png"))
     {
         std::cout << "Load Failed" << std::endl;
         system("pause");
@@ -45,7 +51,7 @@ int main()
     sky.setPosition(sf::Vector2f(0, 0));
     sky.setSize(sf::Vector2f(1920, 600));
     sky.setTexture(&skyTexture);
-    sky.setFillColor(sf::Color(102, 0, 0));
+//    sky.setFillColor(sf::Color(102, 0, 0));
 
     Platform ground(&groundTexture, sf::Vector2f(1920, 80), sf::Vector2f(0, 520));
 
@@ -53,6 +59,11 @@ int main()
     grass.setPosition(sf::Vector2f(1200, 420));
     grass.setSize(sf::Vector2f(100, 100));
     grass.setTexture(&grassTexture);
+
+    sf::RectangleShape rock;
+    rock.setPosition(sf::Vector2f(300, 420));
+    rock.setSize(sf::Vector2f(300, 50));
+    rock.setTexture(&rockTexture);
 
     Animation animation(&playerTexture, sf::Vector2u(3,9), 0.3f);
 
@@ -78,7 +89,8 @@ int main()
 
         window.draw(sky);
         window.draw(grass);
-        ground.Draw(window);
+        window.draw(rock);
+//        ground.Draw(window);
         player.Draw(window);
         window.display();
 
