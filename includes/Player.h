@@ -14,7 +14,7 @@ public:
     Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed);
     ~Player();
 
-    void Update(float deltaTime);
+    void Update(float deltaTime, sf::View& gameView);
     void Draw(sf::RenderWindow& window);
     Collider GetCollider() { return Collider(body); }
     void SetPosition(sf::Vector2f position);

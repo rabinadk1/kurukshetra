@@ -3,6 +3,7 @@
 //
 
 #include "Player.h"
+#include <iostream>
 
 
 Player::Player(sf::Texture *texture, sf::Vector2u imageCount, float switchTime, float speed) :
@@ -17,18 +18,30 @@ Player::Player(sf::Texture *texture, sf::Vector2u imageCount, float switchTime, 
     body.setTexture(texture);
 }
 
-void Player::Update(float deltaTime) {
+void Player::Update(float deltaTime, sf::View &gameView) {
     sf::Vector2f movement(0.f, 0.f);
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+    {
         movement.x -= speed * deltaTime;
+        gameView.move(movement.x, 0.f);
+
+    }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    {
         movement.x += speed * deltaTime;
+        gameView.move(movement.x, 0.f);
+    }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
         movement.y += speed * deltaTime;
+        gameView.move(0.f, movement.y);
+
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+    {
         movement.y -= speed * deltaTime;
+        gameView.move(0.f, movement.y);
+    }
 
     if(movement.x == 0)
     {

@@ -9,6 +9,18 @@ int main()
 {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Kurukshetra");
 
+    sf::View gameView;
+    sf::View minimapView;
+    gameView.setCenter(sf::Vector2f(400.f, 300.f));
+    gameView.setSize(sf::Vector2f(800.f, 600.f));
+
+
+    minimapView.setSize(sf::Vector2f(200.f, 200.f));
+
+    gameView.setViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
+    minimapView.setViewport(sf::FloatRect(0.75f, 0.f, 0.25f, 0.25f));
+
+
     sf::Texture skyTexture;
     sf::Texture groundTexture;
     sf::Texture rockTexture;
@@ -83,7 +95,9 @@ int main()
             }
         }
 
-        player.Update(deltaTime);
+        window.setView(gameView);
+
+        player.Update(deltaTime, gameView);
 
         window.clear();
 
