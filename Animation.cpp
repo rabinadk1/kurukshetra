@@ -4,20 +4,25 @@
 
 #include "Animation.h"
 
-Animation::~Animation() {}
 
-Animation::Animation(sf::Texture *texture, sf::Vector2u imageCount, float switchTime)
-{
+void Animation::SetData(sf::Texture *texture, sf::Vector2u imageCount, float switchTime) {
     this -> imageCount = imageCount;
-    this -> switchTime = switchTime;
     totalTime = 0;
+    this -> switchTime = switchTime;
     currentImage.x = 0;
-
-    uvRect.width = texture->getSize().x / float(imageCount.x);
-    uvRect.height = texture->getSize().y / float(imageCount.y);
+    currentImage.y = 0;
+    uvRect.width = static_cast<int>(texture->getSize().x / float(imageCount.x));
+    uvRect.height = static_cast<int>(texture->getSize().y / float(imageCount.y));
 }
+//
+//Animation::Animation(sf::Texture *texture, sf::Vector2u imageCount, float switchTime)
+//{
+//    SetData(texture, imageCount, switchTime);
+//}
+//
 
-void Animation::Update(int row, float deltaTime, bool faceRight){
+
+void Animation::Update(unsigned row, float deltaTime, bool faceRight){
     currentImage.y = row;
     totalTime += deltaTime;
 
@@ -44,3 +49,4 @@ void Animation::Update(int row, float deltaTime, bool faceRight){
         uvRect.width = -abs(uvRect.width);
     }
 }
+

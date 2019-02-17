@@ -3,28 +3,43 @@
 //
 
 #include "Game.h"
-#include <iostream>
-
 Game::Game()
-    : mWindow(sf::VideoMode(640, 480), "SFML Application"),
-    mIsMovingUp(false),
-    mIsMovingDown(false),
-    mIsMovingLeft(false),
-    mIsMovingRight(false),
-    mIsParabolic(false),
-    clear(false),
-    time(1.f)
+    :mWindow(sf::VideoMode(800, 600), "Kurukshetra")
+//    mIsMovingUp(false),
+//    mIsMovingDown(false),
+//    mIsMovingLeft(false),
+//    mIsMovingRight(false),
+//    mIsParabolic(false),
+//    clear(false)
     {
         mWindow.setVerticalSyncEnabled(true);
-        if (not mTexture.loadFromFile("../Eagle.gif")) {
-            std::cerr<<"Couldn't load texture from the file";
-            exit(1);
-        }
-        mTexture.setSmooth(true);
-        mSprite.setTexture(mTexture);
-//        mSprite.setPosition(100.f, 100.f);
-        speed.x = 1.f;
-        speed.y = 0.f;
+        textures.load(Textures::skyTexture, "../Media/Textures/redSky.jpg", sf::IntRect(100, 100, 300, 300));
+        textures.load(Textures::groundTexture, "../Media/Textures/ground.jpg");
+        textures.load(Textures::grassTexture, "../Media/Textures/grass.png");
+        textures.load(Textures::playerTexture, "../Media/Textures/fox.png");
+        textures.get(Textures::skyTexture).setRepeated(true);
+        textures.get(Textures::groundTexture).setRepeated(true);
+
+
+        sky.setPosition(sf::Vector2f(0, 0));
+        sky.setSize(sf::Vector2f(1920, 600));
+        sky.setTexture(&textures.get(Textures::skyTexture));
+        sky.setFillColor(sf::Color(102, 0, 0));
+
+        ground.setPosition(sf::Vector2f(0, 520));
+        ground.setSize(sf::Vector2f(1920, 80));
+        ground.setFillColor(sf::Color(255, 255, 255, 255)); //128 is half transparency
+        ground.setTexture(&textures.get(Textures::groundTexture));
+        ground.setFillColor(sf::Color(255, 174, 0, 128));
+
+        grass.setPosition(sf::Vector2f(1200, 420));
+        grass.setSize(sf::Vector2f(100, 100));
+        grass.setTexture(&textures.get(Textures::grassTexture));
+
+        player.SetData(&textures.get(Textures::playerTexture), sf::Vector2u(3, 9), 0.3f, 150.0f);
+        animation.SetData(&textures.get(Textures::playerTexture), sf::Vector2u(3,9), 0.3f);
+//        speed.x = 1.f;
+//        speed.y = 0.f;
     }
 
 void Game::run() {
@@ -40,72 +55,60 @@ void Game::processEvents() {
     sf::Event event = {};
     while (mWindow.pollEvent(event))
     {
-        switch (event.type) {
-            case sf::Event::KeyPressed:
-                handlePlayerInput(event.key.code, true);
-                break;
-            case sf::Event::KeyReleased:
-                handlePlayerInput(event.key.code, false);
-                break;
-            case sf::Event::Closed:
-                mWindow.close();
-                break;
+//        switch (event.type) {
+//            case sf::Event::KeyPressed:
+//                handlePlayerInput(event.key.code, true);
+//                break;
+//            case sf::Event::KeyReleased:
+//                handlePlayerInput(event.key.code, false);
+//                break;
+//            case sf::Event::Closed:
+//                mWindow.close();
+//                break;
+//        }
+        if (event.type == sf::Event::Closed)
+        {
+            mWindow.close();
+            break;
         }
     }
 }
 
 void Game::update() {
-    sf::Vector2f movement(0.f, 0.f);
-    if (clear) {
-        mSprite.setPosition(0.f, 0.f);
-        return;
-    }
-    if (mIsParabolic) {
-        speed.y = speed.y*time +  0.5f * 0.01f * time * time;
-        time *= 1.7;
-        movement += speed;
-        mSprite.move(movement);
-        return;
-    }
-    time = 1;
-    speed.y = 0;
-    if (mIsMovingUp)
-        movement.y -= 1.f;
-    if (mIsMovingDown)
-        movement.y += 1.f;
-    if (mIsMovingLeft)
-        movement.x -= 1.f;
-    if (mIsMovingRight)
-        movement.x += 1.f;
-    mSprite.move(movement);
+    player.Update(clock.restart().asSeconds());
+
 }
 
 void Game::render() {
     mWindow.clear();
-    mWindow.draw(mSprite);
+    mWindow.draw(sky);
+    mWindow.draw(grass);
+    mWindow.draw(ground);
+    player.Draw(mWindow);
     mWindow.display();
+
 }
 
-void Game::handlePlayerInput(sf::Keyboard::Key& key, bool isPressed) {
-    switch (key)
-    {
-        case sf::Keyboard::W:
-            mIsMovingUp = isPressed;
-            break;
-        case sf::Keyboard::A:
-            mIsMovingLeft = isPressed;
-            break;
-        case sf::Keyboard::S:
-            mIsMovingDown = isPressed;
-            break;
-        case sf::Keyboard::D:
-            mIsMovingRight = isPressed;
-            break;
-        case sf::Keyboard::F:
-            mIsParabolic = isPressed;
-            break;
-        case sf::Keyboard::LShift:
-            clear = isPressed;
-            break;
-    }
-}
+//void Game::handlePlayerInput(sf::Keyboard::Key& key, bool isPressed) {
+//    switch (key)
+//    {
+//        case sf::Keyboard::W:
+//            mIsMovingUp = isPressed;
+//            break;
+//        case sf::Keyboard::A:
+//            mIsMovingLeft = isPressed;
+//            break;
+//        case sf::Keyboard::S:
+//            mIsMovingDown = isPressed;
+//            break;
+//        case sf::Keyboard::D:
+//            mIsMovingRight = isPressed;
+//            break;
+//        case sf::Keyboard::F:
+//            mIsParabolic = isPressed;
+//            break;
+//        case sf::Keyboard::LShift:
+//            clear = isPressed;
+//            break;
+//    }
+//}

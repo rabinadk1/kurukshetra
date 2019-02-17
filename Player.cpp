@@ -5,9 +5,8 @@
 #include "Player.h"
 
 
-Player::Player(sf::Texture *texture, sf::Vector2u imageCount, float switchTime, float speed) :
-    animation(texture, imageCount, switchTime)
-{
+void Player::SetData(sf::Texture *texture, sf::Vector2u imageCount, float switchTime, float speed) {
+    animation.SetData(texture, imageCount, switchTime);
     this -> speed = speed;
     row = 0;
     faceRight = true;
@@ -15,6 +14,10 @@ Player::Player(sf::Texture *texture, sf::Vector2u imageCount, float switchTime, 
     body.setSize(sf::Vector2f(100.0f, 150.0f));
     body.setPosition(200.f, 372.f);
     body.setTexture(texture);
+}
+Player::Player(sf::Texture *texture, sf::Vector2u imageCount, float switchTime, float speed)
+{
+    SetData(texture, imageCount, switchTime, speed);
 }
 
 void Player::Update(float deltaTime) {
@@ -44,8 +47,4 @@ void Player::Update(float deltaTime) {
 
 void Player::Draw(sf::RenderWindow &window) {
     window.draw(body);
-}
-
-Player::~Player() {
-
 }

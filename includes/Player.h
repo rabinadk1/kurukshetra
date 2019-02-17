@@ -2,16 +2,16 @@
 // Created by safal on 13/2/19.
 //
 
-#ifndef TEST_PLAYER_H
-#define TEST_PLAYER_H
+#pragma once
 
-#include <SFML/Graphics.hpp>
 #include "Animation.h"
 class Player {
 public:
+    Player(){}
     Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed);
-    ~Player();
+    ~Player(){}
 
+    void SetData(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed);
     void Update(float deltaTime);
     void Draw(sf::RenderWindow& window);
 
@@ -24,5 +24,3 @@ private:
     bool faceRight;
 };
 
-
-#endif //TEST_PLAYER_H

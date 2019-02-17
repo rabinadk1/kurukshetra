@@ -2,18 +2,19 @@
 // Created by safal on 13/2/19.
 //
 
-#ifndef TEST_ANIMATION_H
-#define TEST_ANIMATION_H
+#pragma once
 
 
 #include <SFML/Graphics.hpp>
 
 class Animation {
 public:
-    Animation(sf::Texture* texture, sf::Vector2u imageCount, float switchTime);
-    ~Animation();
+    Animation(){}
+//    Animation(sf::Texture* texture, sf::Vector2u imageCount, float switchTime);
+    ~Animation(){}
 
-    void Update(int row, float deltaTime, bool faceRight);
+    void SetData(sf::Texture* texture, sf::Vector2u imageCount, float switchTime);
+    void Update(unsigned row, float deltaTime, bool faceRight);
 
 public:
     sf::IntRect uvRect;
@@ -25,6 +26,3 @@ private:
     float totalTime;
     float switchTime;
 };
-
-
-#endif //TEST_ANIMATION_H
