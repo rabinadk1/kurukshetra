@@ -6,6 +6,7 @@
 
 #include "TextureHolder.h"
 #include "Player.h"
+#include "Platform.h"
 
 class Game {
 public:
@@ -16,15 +17,17 @@ private:
     void processEvents();
     void update();
     void render();
-//    void handlePlayerInput(sf::Keyboard::Key& key, bool isPressed);
 
 private:
     sf::RenderWindow mWindow;
     TextureHolder textures;
     Player player;
     sf::RectangleShape sky;
-    sf::RectangleShape ground;
     sf::RectangleShape grass;
+    sf::RectangleShape rock;
     Animation animation;
     sf::Clock clock;
+    sf::View gameView;
+    sf::View minimapView;
+    Platform ground;
 };

@@ -4,18 +4,17 @@
 
 #pragma once
 
-#include <map>
 #include <SFML/Graphics/Texture.hpp>
 
 namespace Textures
 {
-    enum ID {skyTexture,groundTexture, playerTexture, grassTexture};
+    enum ID {skyTexture, groundTexture, rockTexture, playerTexture, grassTexture};
 }
 
 
 class TextureHolder {
 private:
-    sf::Texture textures[4];
+    sf::Texture textures[5];
 public:
 //    void load(Textures::ID id, const char* filename);
     void load(Textures::ID id, const char* filename, sf::IntRect area = sf::IntRect());

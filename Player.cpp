@@ -4,7 +4,6 @@
 
 #include "Player.h"
 
-
 void Player::SetData(sf::Texture *texture, sf::Vector2u imageCount, float switchTime, float speed) {
     animation.SetData(texture, imageCount, switchTime);
     this -> speed = speed;
@@ -20,13 +19,30 @@ Player::Player(sf::Texture *texture, sf::Vector2u imageCount, float switchTime, 
     SetData(texture, imageCount, switchTime, speed);
 }
 
-void Player::Update(float deltaTime) {
+void Player::Update(float deltaTime, sf::View &gameView) {
     sf::Vector2f movement(0.f, 0.f);
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+    {
         movement.x -= speed * deltaTime;
+        gameView.move(movement.x, 0.f);
+
+    }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    {
         movement.x += speed * deltaTime;
+        gameView.move(movement.x, 0.f);
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+        movement.y += speed * deltaTime;
+        gameView.move(0.f, movement.y);
+
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+    {
+        movement.y -= speed * deltaTime;
+        gameView.move(0.f, movement.y);
+    }
 
     if(movement.x == 0)
     {
@@ -35,10 +51,7 @@ void Player::Update(float deltaTime) {
     else
     {
         row = 1;
-        if(movement.x > 0)
-            faceRight = true;
-        else
-            faceRight = false;
+        faceRight = movement.x > 0;
     }
     animation.Update(row, deltaTime, faceRight);
     body.setTextureRect(animation.uvRect);
@@ -47,4 +60,8 @@ void Player::Update(float deltaTime) {
 
 void Player::Draw(sf::RenderWindow &window) {
     window.draw(body);
+}
+
+void Player::SetPosition(sf::Vector2f position) {
+    body.setPosition(position);
 }

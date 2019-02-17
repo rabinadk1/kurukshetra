@@ -5,6 +5,8 @@
 #pragma once
 
 #include "Animation.h"
+#include "Collider.h"
+
 class Player {
 public:
     Player(){}
@@ -12,15 +14,15 @@ public:
     ~Player(){}
 
     void SetData(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed);
-    void Update(float deltaTime);
+    void Update(float deltaTime, sf::View& gameView);
     void Draw(sf::RenderWindow& window);
-
+    Collider GetCollider() { return Collider(body); }
+    void SetPosition(sf::Vector2f position);
 
 private:
     sf::RectangleShape body;
     Animation animation;
-    unsigned int row;
+    unsigned row;
     float speed;
     bool faceRight;
 };
-
