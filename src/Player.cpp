@@ -14,31 +14,27 @@ void Player::SetData(sf::Texture *texture, sf::Vector2u imageCount, float switch
     body.setPosition(200.f, 372.f);
     body.setTexture(texture);
 }
-Player::Player(sf::Texture *texture, sf::Vector2u imageCount, float switchTime, float speed)
-{
-    SetData(texture, imageCount, switchTime, speed);
-}
 
 void Player::Update(float deltaTime, sf::View &gameView) {
     sf::Vector2f movement(0.f, 0.f);
 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
         movement.x -= speed * deltaTime;
         gameView.move(movement.x, 0.f);
 
     }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
     {
         movement.x += speed * deltaTime;
         gameView.move(movement.x, 0.f);
     }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
         movement.y += speed * deltaTime;
         gameView.move(0.f, movement.y);
 
     }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
     {
         movement.y -= speed * deltaTime;
         gameView.move(0.f, movement.y);

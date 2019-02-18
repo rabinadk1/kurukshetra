@@ -2,38 +2,37 @@
 // Created by samip on 13/2/19.
 //
 
-#ifndef KURUKSHETRA_MAINMENU_H
-#define KURUKSHETRA_MAINMENU_H
-
+#pragma once
 
 #include <SFML/Window.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include "Game.h"
 
+namespace Fonts
+{
+    enum ID {menuFont};
+}
+
 class MainMenu{
 public:
-    MainMenu(float width,float height);
+    MainMenu(unsigned int width, unsigned int height);
+    void run();
+
+private:
     void moveUp();
     void moveDown();
     void render();
     void handlePlayerInput(sf::Keyboard::Key &key, bool isPressed);
     void update();
     void processEvents();
-    void run();
     void onPressEnter();
-
-    ~MainMenu(){};
     //  void draw(sf::RenderWindow &window);
 private:
     sf::Text menu[4];
-    sf::Font font;
+//    sf::Font font;
+    ResourceHolder <sf::Font, Fonts::ID> font;
     int selectedItem;
-    bool isPressedUp;
-    bool isPressedDown;
-    bool isPressedReturn;
+    bool isPressedUp, isPressedDown, isPressedReturn;
     sf::RenderWindow mWindow2;
 };
-
-
-#endif //KURUKSHETRA_MAINMENU_H

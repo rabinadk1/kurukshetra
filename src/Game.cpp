@@ -1,12 +1,12 @@
 //
 // Created by maverick on 12/2/19.
 //
-
 #include "Game.h"
 Game::Game()
-    :mWindow(sf::VideoMode(800, 600), "Kurukshetra")
+    :textures(5),
+    window(sf::VideoMode(1366, 768), "Kurukshetra", sf::Style::Fullscreen)
     {
-        mWindow.setVerticalSyncEnabled(true);
+        window.setVerticalSyncEnabled(true);
 
         gameView.setCenter(sf::Vector2f(400.f, 300.f));
         gameView.setSize(sf::Vector2f(800.f, 600.f));
@@ -44,7 +44,7 @@ Game::Game()
     }
 
 void Game::run() {
-    while (mWindow.isOpen())
+    while (window.isOpen())
     {
         processEvents();
         update();
@@ -54,27 +54,27 @@ void Game::run() {
 
 void Game::processEvents() {
     sf::Event event = {};
-    while (mWindow.pollEvent(event))
+    while (window.pollEvent(event))
     {
         if (event.type == sf::Event::Closed)
         {
-            mWindow.close();
+            window.close();
             break;
         }
     }
 }
 
 void Game::update() {
-    mWindow.setView(gameView);
+    window.setView(gameView);
     player.Update(clock.restart().asSeconds(), gameView);
 }
 
 void Game::render() {
-    mWindow.clear();
-    mWindow.draw(sky);
-    mWindow.draw(grass);
-    mWindow.draw(rock);
-    player.Draw(mWindow);
-    mWindow.display();
+    window.clear();
+    window.draw(sky);
+    window.draw(grass);
+    window.draw(rock);
+    player.Draw(window);
+    window.display();
 
 }

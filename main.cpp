@@ -1,4 +1,3 @@
-#include "Game.h"
 #include "MainMenu.h"
 int main() {
     MainMenu menu(800,600);

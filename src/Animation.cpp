@@ -11,16 +11,9 @@ void Animation::SetData(sf::Texture *texture, sf::Vector2u imageCount, float swi
     this -> switchTime = switchTime;
     currentImage.x = 0;
     currentImage.y = 0;
-    uvRect.width = static_cast<int>(texture->getSize().x / float(imageCount.x));
-    uvRect.height = static_cast<int>(texture->getSize().y / float(imageCount.y));
+    uvRect.width = texture->getSize().x / imageCount.x;
+    uvRect.height = texture->getSize().y / imageCount.y;
 }
-//
-//Animation::Animation(sf::Texture *texture, sf::Vector2u imageCount, float switchTime)
-//{
-//    SetData(texture, imageCount, switchTime);
-//}
-//
-
 
 void Animation::Update(unsigned row, float deltaTime, bool faceRight){
     currentImage.y = row;

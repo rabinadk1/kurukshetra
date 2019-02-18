@@ -8,28 +8,30 @@
 void MainMenu::render(){
     mWindow2.clear();
     for(int i=0;i<4;i++) {
-        menu[i].setFillColor(i==selectedItem?sf::Color::Red:sf::Color::White);
+        menu[i].setFillColor(i==selectedItem? sf::Color::Red : sf::Color::White);
         mWindow2.draw(menu[i]);
     }
     mWindow2.display();
 }
-MainMenu::MainMenu(float width, float height):selectedItem(3),isPressedUp(false),isPressedDown(false),isPressedReturn(false),mWindow2(sf::VideoMode(800, 600), "Kurukshetra") {
-    if(!font.loadFromFile("../DejaVuSans.ttf"))
-    {
-        std::cerr<<"Error loading font";
-    }
-    menu[0].setFont(font);
+MainMenu::MainMenu(unsigned int width, unsigned int height)
+	:font(1),
+    selectedItem(3),
+	isPressedUp(false),
+	isPressedDown(false),
+	isPressedReturn(false),
+	mWindow2(sf::VideoMode(width, height), "Kurukshetra")
+{
+    font.load(Fonts::menuFont, "../Media/Fonts/DejaVuSans.ttf");
+    for (int i=0; i<4; i++)
+        menu[i].setFont(font.get(Fonts::menuFont));
     menu[0].setString("Play Single");
-    menu[0].setPosition(width/2,height/4*0);
-    menu[1].setFont(font);
+    menu[0].setPosition(width/2.f,height/4.f*0);
     menu[1].setString("Play with Friend");
-    menu[1].setPosition(width/2,height/4*1);
-    menu[2].setFont(font);
+    menu[1].setPosition(width/2.f,height/4.f*1);
     menu[2].setString("Options");
-    menu[2].setPosition(width/2,height/4*2);
-    menu[3].setFont(font);
+    menu[2].setPosition(width/2.f,height/4.f*2);
     menu[3].setString("Exit");
-    menu[3].setPosition(width/2,height/4*3);
+    menu[3].setPosition(width/2.f,height/4.f*3);
 }
 void MainMenu::moveUp() {
     if(selectedItem!=0){
@@ -40,17 +42,15 @@ void MainMenu::handlePlayerInput(sf::Keyboard::Key &key, bool isPressed) {
     switch (key){
         case sf::Keyboard::Up:
             isPressedUp=isPressed;
-            update();
             break;
         case sf::Keyboard::Down:
             isPressedDown=isPressed;
-            update();
             break;
         case sf::Keyboard::Return:
             isPressedReturn=isPressed;
-            update();
             break;
     }
+    update();
 }
 
 void MainMenu::update() {
@@ -64,11 +64,20 @@ void MainMenu::update() {
 }
 
 void MainMenu::onPressEnter(){
+    switch (selectedItem)
+    {
+        case 3:
+            std::cout<<"Program exited successfully!"<<std::endl;
+            exit(0);
+        case 0:
+            mWindow2.close();
+            Game game;
+            game.run();
+            break;
+    }
     if(selectedItem == 0)
     {
-        mWindow2.close();
-        Game game;
-        game.run();
+
     }
 }
 void MainMenu::run() {
@@ -89,7 +98,6 @@ void MainMenu::processEvents() {
                 break;
             case sf::Event::KeyReleased:
                 handlePlayerInput(event.key.code, false);
-                std::cout<<"Released";
                 break;
             case sf::Event::Closed:
                 mWindow2.close();
