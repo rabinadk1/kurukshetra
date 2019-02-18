@@ -1,7 +1,7 @@
 #include "Game.h"
-
+#include "MainMenu.h"
 int main() {
-    Game game;
-    game.run();
+    MainMenu menu(800,600);
+    menu.run();
     return 0;
 }
