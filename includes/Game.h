@@ -10,13 +10,15 @@
 
 class Game {
 public:
-    Game();
+    Game(float viewWidth,float viewHeight);
     void run();
 
 private:
     void processEvents();
     void update();
     void render();
+
+    void ResizedWindow(sf::RenderWindow& window, sf::View& view);
 
 private:
     sf::RenderWindow mWindow;
@@ -30,4 +32,6 @@ private:
     sf::View gameView;
     sf::View minimapView;
     Platform ground;
+    float viewWidth;
+    float viewHeight;
 };

@@ -2,20 +2,22 @@
 // Created by maverick on 12/2/19.
 //
 
+#include <Game.h>
+
 #include "Game.h"
-Game::Game()
-    :mWindow(sf::VideoMode(800, 600), "Kurukshetra")
+Game::Game(const float viewWidth, const float viewHeight)
+    :mWindow(sf::VideoMode(800, 600), "Kurukshetra"), viewHeight(viewHeight), viewWidth(viewWidth)
     {
         mWindow.setVerticalSyncEnabled(true);
 
-        gameView.setCenter(sf::Vector2f(400.f, 300.f));
-        gameView.setSize(sf::Vector2f(800.f, 600.f));
+        gameView.setCenter(sf::Vector2f(1000.f, 600.f));
+        gameView.setSize(sf::Vector2f(viewWidth, viewHeight));
         minimapView.setSize(sf::Vector2f(200.f, 200.f));
         gameView.setViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
         minimapView.setViewport(sf::FloatRect(0.75f, 0.f, 0.25f, 0.25f));
 
 
-        textures.load(Textures::skyTexture, "../Media/Textures/sereneBackground.png");
+        textures.load(Textures::skyTexture, "../Media/Textures/sky.png");
         textures.load(Textures::groundTexture, "../Media/Textures/ground.jpg");
         textures.load(Textures::rockTexture, "../Media/Textures/rockPlatform.png");
         textures.load(Textures::grassTexture, "../Media/Textures/grass.png");
@@ -25,10 +27,11 @@ Game::Game()
 
 
         sky.setPosition(sf::Vector2f(0, 0));
-        sky.setSize(sf::Vector2f(1920, 600));
+        sky.setSize(sf::Vector2f(1920, 1080));
         sky.setTexture(&textures.get(Textures::skyTexture));
 
         player.SetData(&textures.get(Textures::playerTexture), sf::Vector2u(3, 9), 0.3f, 150.0f);
+        player.SetPosition(sf::Vector2f(1000.f, 600.f));
 
         ground.SetData(&textures.get(Textures::groundTexture), sf::Vector2f(1920, 80), sf::Vector2f(0, 520));
 
@@ -61,6 +64,13 @@ void Game::processEvents() {
             mWindow.close();
             break;
         }
+        if (event.type == sf::Event::Resized)
+        {
+            // update the view to the new size of the window
+//            sf::FloatRect visibleArea(0.f, 0.f, event.size.width, event.size.height);
+//            mWindow.setView(sf::View(visibleArea));
+            ResizedWindow(mWindow, gameView);
+        }
     }
 }
 
@@ -77,4 +87,10 @@ void Game::render() {
     player.Draw(mWindow);
     mWindow.display();
 
+}
+
+void Game::ResizedWindow(sf::RenderWindow &window, sf::View &view) {
+    float aspectratio = float(window.getSize().x) / float(window.getSize().y);
+
+    view.setSize(viewWidth * aspectratio, viewHeight);
 }
