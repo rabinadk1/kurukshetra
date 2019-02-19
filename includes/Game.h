@@ -4,9 +4,13 @@
 
 #pragma once
 
-#include "TextureHolder.h"
+#include "../src/ResourceHolder.cpp"
 #include "Player.h"
 #include "Platform.h"
+namespace Textures
+{
+enum ID {skyTexture, groundTexture, rockTexture, playerTexture, grassTexture};
+}
 
 class Game {
 public:
@@ -21,16 +25,13 @@ private:
     void ResizedWindow(sf::RenderWindow& window, sf::View& view);
 
 private:
-    sf::RenderWindow mWindow;
-    TextureHolder textures;
+    sf::RenderWindow window;
+    ResourceHolder <sf::Texture, Textures::ID> textures;
     Player player;
-    sf::RectangleShape sky;
-    sf::RectangleShape grass;
-    sf::RectangleShape rock;
+    sf::RectangleShape sky, grass, rock;
     Animation animation;
     sf::Clock clock;
-    sf::View gameView;
-    sf::View minimapView;
+    sf::View gameView, minimapView;
     Platform ground;
     float viewWidth;
     float viewHeight;

@@ -12,9 +12,6 @@ void Platform::SetData(sf::Texture *texture, sf::Vector2f size, sf::Vector2f pos
     body.setPosition(position);
 }
 
-//Platform::Platform(sf::Texture *texture, sf::Vector2f size, sf::Vector2f position) {
-//    SetData(texture, size, position);
-//}
 
 void Platform::Draw(sf::RenderWindow &window) {
     window.draw(body);

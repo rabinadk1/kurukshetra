@@ -3,8 +3,7 @@
 //To use this, instantiate the remainTime with the total time as constructor argument. And call, getRemainTime() to get the remaining time in min:sec format.
 //
 
-#ifndef KURUKSHETRA_ELAPSEDTIME_H
-#define KURUKSHETRA_ELAPSEDTIME_H
+#pragma once
 
 
 #include <SFML/System/Clock.hpp>
@@ -21,7 +20,3 @@ public:
     int getRemainMinutes();
     std::string getRemainTime();
 };
-
-
-
-#endif //KURUKSHETRA_ELAPSEDTIME_H

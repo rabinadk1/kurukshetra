@@ -9,9 +9,6 @@
 
 class Animation {
 public:
-    Animation(){}
-//    Animation(sf::Texture* texture, sf::Vector2u imageCount, float switchTime);
-    ~Animation(){}
 
     void SetData(sf::Texture* texture, sf::Vector2u imageCount, float switchTime);
     void Update(unsigned row, float deltaTime, bool faceRight);

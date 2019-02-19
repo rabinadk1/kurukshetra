@@ -2,13 +2,12 @@
 // Created by maverick on 12/2/19.
 //
 
-#include <Game.h>
-
 #include "Game.h"
-Game::Game(const float viewWidth, const float viewHeight)
-    :mWindow(sf::VideoMode(800, 600), "Kurukshetra"), viewHeight(viewHeight), viewWidth(viewWidth)
+Game::Game(float viewWidth, float viewHeight)
+    :textures(5),
+    window(sf::VideoMode(1366, 768), "Kurukshetra", sf::Style::Fullscreen), viewWidth(viewWidth), viewHeight(viewHeight)
     {
-        mWindow.setVerticalSyncEnabled(true);
+        window.setVerticalSyncEnabled(true);
 
         gameView.setCenter(sf::Vector2f(1000.f, 600.f));
         gameView.setSize(sf::Vector2f(viewWidth, viewHeight));
@@ -47,7 +46,7 @@ Game::Game(const float viewWidth, const float viewHeight)
     }
 
 void Game::run() {
-    while (mWindow.isOpen())
+    while (window.isOpen())
     {
         processEvents();
         update();
@@ -57,11 +56,11 @@ void Game::run() {
 
 void Game::processEvents() {
     sf::Event event = {};
-    while (mWindow.pollEvent(event))
+    while (window.pollEvent(event))
     {
         if (event.type == sf::Event::Closed)
         {
-            mWindow.close();
+            window.close();
             break;
         }
         if (event.type == sf::Event::Resized)
@@ -69,23 +68,23 @@ void Game::processEvents() {
             // update the view to the new size of the window
 //            sf::FloatRect visibleArea(0.f, 0.f, event.size.width, event.size.height);
 //            mWindow.setView(sf::View(visibleArea));
-            ResizedWindow(mWindow, gameView);
+            ResizedWindow(window, gameView);
         }
     }
 }
 
 void Game::update() {
-    mWindow.setView(gameView);
+    window.setView(gameView);
     player.Update(clock.restart().asSeconds(), gameView);
 }
 
 void Game::render() {
-    mWindow.clear();
-    mWindow.draw(sky);
-    mWindow.draw(grass);
-    mWindow.draw(rock);
-    player.Draw(mWindow);
-    mWindow.display();
+    window.clear();
+    window.draw(sky);
+    window.draw(grass);
+    window.draw(rock);
+    player.Draw(window);
+    window.display();
 
 }
 
