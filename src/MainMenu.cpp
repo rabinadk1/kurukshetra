@@ -19,6 +19,8 @@ MainMenu::MainMenu(unsigned int width, unsigned int height)
 	isPressedUp(false),
 	isPressedDown(false),
 	isPressedReturn(false),
+	width(width),
+	height(height),
 	mWindow2(sf::VideoMode(width, height), "Kurukshetra")
 {
     font.load(Fonts::menuFont, "../Media/Fonts/DejaVuSans.ttf");
@@ -54,11 +56,10 @@ void MainMenu::handlePlayerInput(sf::Keyboard::Key &key, bool isPressed) {
 }
 
 void MainMenu::update() {
-    if(isPressedUp) {
-       moveUp();
-    }
+    if(isPressedUp)
+        moveUp();
     if(isPressedDown)
-       moveDown();
+        moveDown();
     if(isPressedReturn)
         onPressEnter();
 }
@@ -71,13 +72,9 @@ void MainMenu::onPressEnter(){
             exit(0);
         case 0:
             mWindow2.close();
-            Game game(800.f, 600.f);
+            Game game(width, height);
             game.run();
             break;
-    }
-    if(selectedItem == 0)
-    {
-
     }
 }
 void MainMenu::run() {

@@ -34,5 +34,5 @@ private:
     sf::View gameView, minimapView;
     Platform ground;
     float viewWidth;
-    float viewHeight;
+    float viewHeight, baseHeight;
 };

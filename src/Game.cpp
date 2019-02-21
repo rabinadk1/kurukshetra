@@ -5,7 +5,10 @@
 #include "Game.h"
 Game::Game(float viewWidth, float viewHeight)
     :textures(5),
-    window(sf::VideoMode(1366, 768), "Kurukshetra", sf::Style::Fullscreen), viewWidth(viewWidth), viewHeight(viewHeight)
+    window(sf::VideoMode(viewHeight, viewHeight), "Kurukshetra"),
+    viewWidth(viewWidth),
+    viewHeight(viewHeight),
+    baseHeight(1.4f*(viewHeight - 50.f))
     {
         window.setVerticalSyncEnabled(true);
 
@@ -29,16 +32,17 @@ Game::Game(float viewWidth, float viewHeight)
         sky.setSize(sf::Vector2f(1920, 1080));
         sky.setTexture(&textures.get(Textures::skyTexture));
 
-        player.SetData(&textures.get(Textures::playerTexture), sf::Vector2u(3, 9), 0.3f, 150.0f);
-        player.SetPosition(sf::Vector2f(1000.f, 600.f));
+        player.SetData(&textures.get(Textures::playerTexture), sf::Vector2u(3, 9), 0.3f, 150.0f, sf::Vector2f(1000.f, baseHeight));
 
         ground.SetData(&textures.get(Textures::groundTexture), sf::Vector2f(1920, 80), sf::Vector2f(0, 520));
 
-        grass.setPosition(sf::Vector2f(1200, 420));
-        grass.setSize(sf::Vector2f(100, 100));
+        const sf::Vector2f grassSize = sf::Vector2f(100, 100);
+        grass.setPosition(sf::Vector2f(1200, baseHeight));
+        grass.setSize(grassSize);
         grass.setTexture(&textures.get(Textures::grassTexture));
+        grass.setOrigin(grassSize);
 
-        rock.setPosition(sf::Vector2f(300, 420));
+        rock.setPosition(sf::Vector2f(300, baseHeight));
         rock.setSize(sf::Vector2f(300, 50));
         rock.setTexture(&textures.get(Textures::rockTexture));
 
@@ -75,7 +79,7 @@ void Game::processEvents() {
 
 void Game::update() {
     window.setView(gameView);
-    player.Update(clock.restart().asSeconds(), gameView);
+    player.Update(clock.restart().asSeconds(), gameView, baseHeight);
 }
 
 void Game::render() {
@@ -89,7 +93,7 @@ void Game::render() {
 }
 
 void Game::ResizedWindow(sf::RenderWindow &window, sf::View &view) {
-    float aspectratio = float(window.getSize().x) / float(window.getSize().y);
+    float aspectratio = window.getSize().x / float(window.getSize().y);
 
     view.setSize(viewWidth * aspectratio, viewHeight);
 }

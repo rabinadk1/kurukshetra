@@ -2,44 +2,46 @@
 // Created by safal on 13/2/19.
 //
 
+#include <iostream>
 #include "Player.h"
 
-void Player::SetData(sf::Texture *texture, sf::Vector2u imageCount, float switchTime, float speed) {
+void Player::SetData(sf::Texture *texture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position) {
     animation.SetData(texture, imageCount, switchTime);
     this -> speed = speed;
     row = 0;
     faceRight = true;
-
-    body.setSize(sf::Vector2f(100.0f, 150.0f));
-    body.setPosition(200.f, 372.f);
+    isJumping = false;
+	const sf::Vector2f playerSize = sf::Vector2f(100.0f, 150.0f);
+    body.setSize(playerSize);
+    body.setPosition(position);
     body.setTexture(texture);
+    body.setOrigin(playerSize);
+    velocity = sf::Vector2f(speed, 0.5f*speed);
 }
 
-void Player::Update(float deltaTime, sf::View &gameView) {
-    sf::Vector2f movement(0.f, 0.f);
-
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-    {
+void Player::Update(float deltaTime, sf::View &gameView, float &baseHeight)
+{
+    static sf::Vector2f movement(0.f, 0.f);
+    const float g = 9.81f;
+    bool isUp = body.getPosition().y <= baseHeight;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         movement.x -= speed * deltaTime;
-        gameView.move(movement.x, 0.f);
-
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-    {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         movement.x += speed * deltaTime;
-        gameView.move(movement.x, 0.f);
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) and isUp)
         movement.y += speed * deltaTime;
-        gameView.move(0.f, movement.y);
-
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) and not isJumping)
     {
-        movement.y -= speed * deltaTime;
-        gameView.move(0.f, movement.y);
+//        movement.y -= speed * deltaTime;
+        isJumping = true;
     }
 
+    if (not isUp)
+    {
+        body.setPosition(body.getPosition().x, baseHeight);
+        isJumping = false;
+        velocity.y = .5f*speed;
+    }
     if(movement.x == 0)
     {
         row = 0;
@@ -49,9 +51,18 @@ void Player::Update(float deltaTime, sf::View &gameView) {
         row = 1;
         faceRight = movement.x > 0;
     }
-    animation.Update(row, deltaTime, faceRight);
+	gameView.move(movement);
+	animation.Update(row, deltaTime, faceRight);
     body.setTextureRect(animation.uvRect);
     body.move(movement);
+
+    if (not isJumping)
+        movement = sf::Vector2f(0.f,0.f);
+    else
+    {
+            movement.y -= velocity.y * deltaTime;
+            velocity.y -= g;
+    }
 }
 
 void Player::Draw(sf::RenderWindow &window) {

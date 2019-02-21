@@ -35,4 +35,5 @@ private:
     int selectedItem;
     bool isPressedUp, isPressedDown, isPressedReturn;
     sf::RenderWindow mWindow2;
+    unsigned width, height;
 };
