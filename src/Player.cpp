@@ -25,15 +25,24 @@ void Player::Update(float deltaTime, sf::View &gameView, float &baseHeight)
     const float g = 9.81f;
     bool isUp = body.getPosition().y <= baseHeight;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    {
         movement.x -= speed * deltaTime;
+        gameView.move(movement.x, 0);
+    }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
         movement.x += speed * deltaTime;
+        gameView.move(movement.x, 0);
+    }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) and isUp)
+    {
         movement.y += speed * deltaTime;
+    }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) and not isJumping)
     {
 //        movement.y -= speed * deltaTime;
         isJumping = true;
+        gameView.move(0, movement.y);
     }
 
     if (not isUp)
@@ -51,7 +60,7 @@ void Player::Update(float deltaTime, sf::View &gameView, float &baseHeight)
         row = 1;
         faceRight = movement.x > 0;
     }
-	gameView.move(movement);
+//	gameView.move(movement);
 	animation.Update(row, deltaTime, faceRight);
     body.setTextureRect(animation.uvRect);
     body.move(movement);
