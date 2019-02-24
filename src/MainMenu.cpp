@@ -14,31 +14,28 @@ void MainMenu::render(){
     mWindow2.display();
 }
 MainMenu::MainMenu(unsigned int width, unsigned int height)
-	:font(1),
-    selectedItem(3),
+	:font(Fonts::fontNumber),
+    selectedItem(0),
 	isPressedUp(false),
 	isPressedDown(false),
 	isPressedReturn(false),
+	mWindow2(sf::VideoMode(width, height), "Kurukshetra"),
 	width(width),
-	height(height),
-	mWindow2(sf::VideoMode(width, height), "Kurukshetra")
+    height(height)
 {
     font.load(Fonts::menuFont, "../Media/Fonts/DejaVuSans.ttf");
     for (int i=0; i<4; i++)
         menu[i].setFont(font.get(Fonts::menuFont));
     menu[0].setString("Play Single");
-    menu[0].setPosition(width/2.f,height/4.f*0);
     menu[1].setString("Play with Friend");
-    menu[1].setPosition(width/2.f,height/4.f*1);
     menu[2].setString("Options");
-    menu[2].setPosition(width/2.f,height/4.f*2);
     menu[3].setString("Exit");
-    menu[3].setPosition(width/2.f,height/4.f*3);
+    for (int i=0; i<4; i++)
+        menu[i].setPosition(width/2.f,height/4.f*i);
 }
 void MainMenu::moveUp() {
-    if(selectedItem!=0){
+    if(selectedItem!=0)
         selectedItem--;
-    }
 }
 void MainMenu::handlePlayerInput(sf::Keyboard::Key &key, bool isPressed) {
     switch (key){
@@ -102,9 +99,8 @@ void MainMenu::processEvents() {
         }
     }
 }
+
 void MainMenu::moveDown() {
     if(selectedItem!=3)
-    {
         selectedItem++;
-    }
 }

@@ -11,7 +11,7 @@
 
 namespace Fonts
 {
-    enum ID {menuFont};
+    enum ID {menuFont, fontNumber};
 }
 
 class MainMenu{
@@ -30,7 +30,6 @@ private:
     //  void draw(sf::RenderWindow &window);
 private:
     sf::Text menu[4];
-//    sf::Font font;
     ResourceHolder <sf::Font, Fonts::ID> font;
     int selectedItem;
     bool isPressedUp, isPressedDown, isPressedReturn;

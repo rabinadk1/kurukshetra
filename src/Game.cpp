@@ -3,9 +3,9 @@
 //
 
 #include "Game.h"
-Game::Game(float viewWidth, float viewHeight)
-    :textures(5),
-    window(sf::VideoMode(viewHeight, viewHeight), "Kurukshetra"),
+Game::Game(unsigned viewWidth, unsigned viewHeight)
+    :window(sf::VideoMode(viewHeight, viewHeight), "Kurukshetra"),
+    textures(Textures::textureNumber),
     viewWidth(viewWidth),
     viewHeight(viewHeight),
     baseHeight(1900.f)
@@ -24,23 +24,29 @@ Game::Game(float viewWidth, float viewHeight)
         textures.load(Textures::rockTexture, "../Media/Textures/rockPlatform.png");
 //        textures.load(Textures::grassTexture, "../Media/Textures/grass.png");
         textures.load(Textures::playerTexture, "../Media/Textures/fox.png");
+        textures.load(Textures::bulletTexture, "../Media/Textures/bullet.png");
+
         textures.get(Textures::skyTexture).setRepeated(true);
 //        textures.get(Textures::groundTexture).setRepeated(true);
-
-
+        textures.get(Textures::playerTexture).setSmooth(true);
+        textures.get(Textures::bulletTexture).setSmooth(true);
+        textures.get(Textures::grassTexture).setSmooth(true);
         sky.setPosition(sf::Vector2f(0, 0));
         sky.setSize(sf::Vector2f(4000, 2500));
         sky.setTexture(&textures.get(Textures::skyTexture));
 
-        player.SetData(&textures.get(Textures::playerTexture), sf::Vector2u(3, 9), 0.3f, 100.0f, sf::Vector2f(1000.f, baseHeight));
+        player.SetData(&textures.get(Textures::playerTexture), &textures.get(Textures::bulletTexture), sf::Vector2u(3, 9), 0.3f, 150.0f, sf::Vector2f(1000.f, baseHeight));
+
 
 //        ground.SetData(&textures.get(Textures::groundTexture), sf::Vector2f(1920, 80), sf::Vector2f(0, 520));
+
 
 //        const sf::Vector2f grassSize = sf::Vector2f(100, 100);
 //        grass.setPosition(sf::Vector2f(1200, baseHeight));
 //        grass.setSize(grassSize);
 //        grass.setTexture(&textures.get(Textures::grassTexture));
 //        grass.setOrigin(grassSize);
+
 
         rock.setPosition(sf::Vector2f(300, baseHeight));
         rock.setSize(sf::Vector2f(300, 50));
