@@ -9,12 +9,12 @@
 #include "Platform.h"
 namespace Textures
 {
-enum ID {skyTexture, groundTexture, rockTexture, playerTexture, grassTexture};
+	enum ID {skyTexture, groundTexture, rockTexture, playerTexture, grassTexture, bulletTexture, textureNumber};
 }
 
 class Game {
 public:
-    Game(float viewWidth,float viewHeight);
+    Game(unsigned viewWidth, unsigned viewHeight);
     void run();
 
 private:

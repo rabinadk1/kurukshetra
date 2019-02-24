@@ -9,17 +9,16 @@
 
 class Player {
 public:
-    void SetData(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position);
+    void SetData(sf::Texture* playerTexture, sf::Texture* bulletTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position);
     void Update(float deltaTime, sf::View& gameView, float &baseHeight);
     void Draw(sf::RenderWindow& window);
     Collider GetCollider() { return Collider(body); }
     void SetPosition(sf::Vector2f position);
 
 private:
-    sf::RectangleShape body;
+    sf::RectangleShape body, bullet;
     Animation animation;
     unsigned row;
-    float speed;
     bool faceRight, isJumping;
     sf::Vector2f velocity;
 };
