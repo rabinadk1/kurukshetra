@@ -5,7 +5,7 @@
 #include "Game.h"
 Game::Game(unsigned viewWidth, unsigned viewHeight)
     :window(sf::VideoMode(viewHeight, viewHeight), "Kurukshetra"),
-    textures(Textures::textureNumber),
+    textures(Textures::textureNumber), server(5000),
     viewWidth(viewWidth),
     viewHeight(viewHeight),
     baseHeight(1.4f*(viewHeight - 50.f))
@@ -36,8 +36,8 @@ Game::Game(unsigned viewWidth, unsigned viewHeight)
         sky.setSize(sf::Vector2f(1920, 1080));
         sky.setTexture(&textures.get(Textures::skyTexture));
 
-        player.SetData(&textures.get(Textures::playerTexture), &textures.get(Textures::bulletTexture), sf::Vector2u(3, 9), 0.3f, 150.0f, sf::Vector2f(1000.f, baseHeight));
-
+        player.SetData(&textures.get(Textures::playerTexture), &textures.get(Textures::bulletTexture), sf::Vector2u(3, 9), 0.3f, 150.0f,baseHeight);
+        enemy.SetData(&textures.get(Textures::playerTexture), &textures.get(Textures::bulletTexture), sf::Vector2u(3, 9), 0.3f, 150.0f,baseHeight);
         ground.SetData(&textures.get(Textures::groundTexture), sf::Vector2f(1920, 80), sf::Vector2f(0, 520));
 
         const sf::Vector2f grassSize = sf::Vector2f(100, 100);
@@ -54,6 +54,7 @@ Game::Game(unsigned viewWidth, unsigned viewHeight)
     }
 
 void Game::run() {
+
     while (window.isOpen())
     {
         processEvents();
@@ -92,6 +93,10 @@ void Game::render() {
     window.draw(grass);
     window.draw(rock);
     player.Draw(window);
+    if(server.getM_playersConnected()>0)
+    {
+        enemy.Draw(window);
+    }
     window.display();
 
 }
