@@ -27,13 +27,15 @@ public:
     bool isConnected();
     unsigned short getPing();
     int getId();
-
+protected:
+	void HitCheck(sf::RectangleShape& bullet);
+	bool isDead(){ return health<=0;}
+	bool isUp(sf::RectangleShape& shape, float& baseHeight);
 protected:
     sf::RectangleShape body, bullet;
     Animation animation;
     unsigned row;
     bool faceRight, isJumping, isShooting;
-    sf::Vector2f velocity;
     sf::Vector2f m_position;
     sf::Time m_timeout;
     std::string m_name;
@@ -41,6 +43,7 @@ protected:
     bool m_connected;
     int m_id;
     unsigned short m_ping;
+    sf::Vector2f velocity, bulletVelocity;
 public:
-	unsigned health, mana;
+	int health, mana;
 };
