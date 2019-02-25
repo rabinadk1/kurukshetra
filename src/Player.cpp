@@ -31,7 +31,7 @@ void Player::SetData(sf::Texture *playerTexture, sf::Texture* bulletTexture, sf:
     velocity = sf::Vector2f(speed, 0.8f*speed);
 }
 
-void Player::Update(float deltaTime, sf::View &gameView, float &baseHeight, sf::RenderWindow& window)
+void Player::Update(float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window)
 {
     static sf::Vector2f movement(0.f, 0.f);
     static sf::Vector2f bulletMovement(0.f, 0.f);
@@ -42,12 +42,12 @@ void Player::Update(float deltaTime, sf::View &gameView, float &baseHeight, sf::
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
         movement.x -= velocity.x * deltaTime;
-        gameView.move(movement.x, 0);
+        gameView.Move(sf::Vector2f(movement.x, 0));
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
     {
         movement.x += velocity.x * deltaTime;
-        gameView.move(movement.x, 0);
+        gameView.Move(sf::Vector2f(movement.x, 0));
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         isJumping = true;
@@ -109,6 +109,7 @@ void Player::Update(float deltaTime, sf::View &gameView, float &baseHeight, sf::
     body.setTextureRect(animation.uvRect);
     body.move(movement);
     bullet.move(bulletMovement);
+//    gameView.Update(body.getPosition(), window);
 
     if (not isShooting)
         bulletMovement = sf::Vector2f(0.f, 0.f);
@@ -134,4 +135,8 @@ void Player::Draw(sf::RenderWindow &window) {
 
 void Player::SetPosition(sf::Vector2f position) {
     body.setPosition(position);
+}
+
+sf::Vector2f Player::GetPosition() {
+    return body.getPosition();
 }

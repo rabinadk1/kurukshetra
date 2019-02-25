@@ -11,7 +11,14 @@ public:
 //    Platform(){}
 //    Platform(sf::Texture* texture, sf::Vector2f size, sf::Vector2f position);
     void SetData(sf::Texture* texture, sf::Vector2f size, sf::Vector2f position);
+    void SetData(sf::Vector2f size, sf::Vector2f position);
+    void SetTexture(sf::Texture* texture);
+    void SetSize(sf::Vector2f size);
+    void SetPosition(sf::Vector2f position);
+    void SetTextureRect(sf::IntRect textureRect);
 
+    sf::Vector2f GetSize(){ return body.getSize();}
+    std::vector<Platform> SetWalls(sf::Texture& texture, sf::RenderWindow& window);
     void Draw(sf::RenderWindow& window);
     Collider GetCollider() { return Collider(body); }
 

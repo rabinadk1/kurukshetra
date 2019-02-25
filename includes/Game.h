@@ -7,9 +7,11 @@
 #include "../src/ResourceHolder.cpp"
 #include "Player.h"
 #include "Platform.h"
+#include <Camera.h>
+#include <vector>
 namespace Textures
 {
-	enum ID {skyTexture, groundTexture, rockTexture, playerTexture, grassTexture, bulletTexture, textureNumber};
+	enum ID {skyTexture, groundTexture, rockTexture, playerTexture, grassTexture, bulletTexture, textureNumber, wallTexture, barrelTexture};
 }
 
 class Game {
@@ -22,7 +24,7 @@ private:
     void update();
     void render();
 
-    void ResizedWindow(sf::RenderWindow& window, sf::View& view);
+    void ResizedWindow(sf::RenderWindow& window, Camera& view);
 
 private:
     sf::RenderWindow window;
@@ -31,8 +33,11 @@ private:
     sf::RectangleShape sky, grass, rock;
     Animation animation;
     sf::Clock clock;
-    sf::View gameView, minimapView;
-    Platform ground;
+    Camera gameView;
+    sf::View minimapView;
+    std::vector<Platform> walls;
+    Platform wall, barrel, ground;
+    std::vector<sf::Vector2f> wallsPosition;
     float viewWidth;
     float viewHeight, baseHeight;
 };
