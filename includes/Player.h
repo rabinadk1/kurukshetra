@@ -41,4 +41,6 @@ protected:
     bool m_connected;
     int m_id;
     unsigned short m_ping;
+public:
+	unsigned health, mana;
 };

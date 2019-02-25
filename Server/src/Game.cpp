@@ -2,6 +2,7 @@
 // Created by maverick on 12/2/19.
 //
 
+#include <sstream>
 #include "Game.h"
 Game::Game(unsigned viewWidth, unsigned viewHeight)
     :window(sf::VideoMode(viewHeight, viewHeight), "Kurukshetra"),
@@ -57,32 +58,31 @@ Game::Game(unsigned viewWidth, unsigned viewHeight)
     }
 
 void Game::run() {
-
-    while (window.isOpen())
-    {
-        processEvents();
-        update();
-        render();
-    }
+	while (window.isOpen())
+	{
+		processEvents();
+		update();
+		render();
+	}
 }
 
 void Game::processEvents() {
-    sf::Event event = {};
-    while (window.pollEvent(event))
-    {
-        switch (event.type)
-        {
-            case sf::Event::Closed:
-                window.close();
-                break;
-            case sf::Event::Resized:
-                // update the view to the new size of the window
+	sf::Event event = {};
+	while (window.pollEvent(event))
+	{
+		switch (event.type)
+		{
+			case sf::Event::Closed:
+				window.close();
+				break;
+			case sf::Event::Resized:
+				// update the view to the new size of the window
 //            sf::FloatRect visibleArea(0.f, 0.f, event.size.width, event.size.height);
 //            mWindow.setView(sf::View(visibleArea));
-                ResizedWindow(window, gameView);
-                break;
-        }
-    }
+				ResizedWindow(window, gameView);
+				break;
+		}
+	}
 }
 
 void Game::update() {
@@ -92,21 +92,23 @@ void Game::update() {
 }
 
 void Game::render() {
-    window.clear();
-    window.draw(sky);
-    window.draw(grass);
-    window.draw(rock);
-    player.Draw(window);
-    if(server.getM_playersConnected()>0)
-    {
-        enemy.Draw(window);
-    }
-    window.display();
+	window.clear();
+	window.draw(sky);
+	window.draw(grass);
+	window.draw(rock);
+	player.Draw(window);
+	if(server.getM_playersConnected()>0)
+	{
+		enemy.Draw(window);
+	}
+	for (int i=0; i<2 ; i++)
+		window.draw(info[i]);
+	window.display();
 
 }
 
 void Game::ResizedWindow(sf::RenderWindow &window, sf::View &view) {
-    float aspectratio = window.getSize().x / float(window.getSize().y);
+	float aspectratio = window.getSize().x / float(window.getSize().y);
 
-    view.setSize(viewWidth * aspectratio, viewHeight);
+	view.setSize(viewWidth * aspectratio, viewHeight);
 }
