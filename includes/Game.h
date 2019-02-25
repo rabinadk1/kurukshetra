@@ -32,7 +32,7 @@ private:
     ResourceHolder <sf::Texture, Textures::ID> textures;
     Player player;
     GameServer server;
-    Player enemy;
+    Enemy enemy;
     sf::RectangleShape sky, grass, rock;
     Animation animation;
     sf::Clock clock;
