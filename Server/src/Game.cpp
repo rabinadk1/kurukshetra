@@ -26,6 +26,7 @@ Game::Game(unsigned viewWidth, unsigned viewHeight)
 	textures.load(Textures::rockTexture, "../Media/Textures/rockPlatform.png");
 	textures.load(Textures::grassTexture, "../Media/Textures/grass.png");
 	textures.load(Textures::playerTexture, "../Media/Textures/fox.png");
+	textures.load(Textures::enemyTexture, "../Media/Textures/fox.png");
 	textures.load(Textures::bulletTexture, "../Media/Textures/bullet.png");
 
 	textures.get(Textures::skyTexture).setRepeated(true);
