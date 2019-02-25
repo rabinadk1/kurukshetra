@@ -68,24 +68,24 @@ void Game::processEvents() {
     sf::Event event = {};
     while (window.pollEvent(event))
     {
-        if (event.type == sf::Event::Closed)
+        switch (event.type)
         {
-            window.close();
-            break;
-        }
-        if (event.type == sf::Event::Resized)
-        {
-            // update the view to the new size of the window
+            case sf::Event::Closed:
+                window.close();
+                break;
+            case sf::Event::Resized:
+                // update the view to the new size of the window
 //            sf::FloatRect visibleArea(0.f, 0.f, event.size.width, event.size.height);
 //            mWindow.setView(sf::View(visibleArea));
-            ResizedWindow(window, gameView);
+                ResizedWindow(window, gameView);
+                break;
         }
     }
 }
 
 void Game::update() {
     window.setView(gameView);
-    player.Update(clock.restart().asSeconds(), gameView, baseHeight);
+    player.Update(clock.restart().asSeconds(), gameView, baseHeight, window);
 }
 
 void Game::render() {

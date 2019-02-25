@@ -3,13 +3,16 @@
 //
 
 #include <iostream>
+#include <Player.h>
+#include <cmath>
+
 #include "Player.h"
 
 void Player::SetData(sf::Texture *playerTexture, sf::Texture* bulletTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position) {
     animation.SetData(playerTexture, imageCount, switchTime);
     row = 0;
     faceRight = true;
-    isJumping = false;
+    isJumping = isShooting = false;
 
 	const sf::Vector2f playerSize = sf::Vector2f(100.0f, 150.0f);
     body.setSize(playerSize);
@@ -28,9 +31,10 @@ void Player::SetData(sf::Texture *playerTexture, sf::Texture* bulletTexture, sf:
     velocity = sf::Vector2f(speed, 0.8f*speed);
 }
 
-void Player::Update(float deltaTime, sf::View &gameView, float &baseHeight)
+void Player::Update(float deltaTime, sf::View &gameView, float &baseHeight, sf::RenderWindow& window)
 {
     static sf::Vector2f movement(0.f, 0.f);
+    static sf::Vector2f bulletMovement(0.f, 0.f);
     static float localVelocity = velocity.y;
     const float g = 9.81f;
     bool isUp = body.getPosition().y <= baseHeight;
@@ -63,6 +67,29 @@ void Player::Update(float deltaTime, sf::View &gameView, float &baseHeight)
 //        isJumping = true;
 
 
+    sf::Vector2f mousePos, moveDirection;
+    if (not isShooting and sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
+        sf::Vector2i pixelMousePos = sf::Mouse::getPosition();
+        mousePos = window.mapPixelToCoords(pixelMousePos);
+        sf::Vector2f localBulletPos = bullet.getPosition();
+
+        sf::Vector2f displacement = sf::Vector2f(mousePos.x - localBulletPos.x, mousePos.y - localBulletPos.y);
+        double distance = sqrt(double(displacement.x*displacement.x + displacement.y*displacement.y));
+
+        moveDirection = sf::Vector2f(float(displacement.x/distance) , float(displacement.y/distance));
+        isShooting = true;
+    }
+
+    if (isShooting)
+    {
+        if(bullet.getPosition() == mousePos)
+        {
+            isShooting = false;
+            bullet.setPosition(1000.f, 1.4f * (600.f - 50.f));
+        }
+    }
+
     if (not isUp)
     {
         body.setPosition(body.getPosition().x, baseHeight);
@@ -81,6 +108,15 @@ void Player::Update(float deltaTime, sf::View &gameView, float &baseHeight)
 	animation.Update(row, deltaTime, faceRight);
     body.setTextureRect(animation.uvRect);
     body.move(movement);
+    bullet.move(bulletMovement);
+
+    if (not isShooting)
+        bulletMovement = sf::Vector2f(0.f, 0.f);
+    else
+    {
+        bulletMovement.x += moveDirection.x * velocity.x * deltaTime;
+        bulletMovement.y += moveDirection.y * velocity.x * deltaTime;
+    }
 
     if (not isJumping)
         movement = sf::Vector2f(0.f,0.f);
