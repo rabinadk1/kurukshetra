@@ -9,6 +9,7 @@
 #include <SFML/Graphics/Text.hpp>
 #include "Game.h"
 
+// NOTE fontNumber is always at the last of enum to find the size of enum needed for constructor of ResourceHandler
 namespace Fonts
 {
     enum ID {menuFont, fontNumber};
