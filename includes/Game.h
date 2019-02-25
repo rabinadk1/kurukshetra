@@ -7,6 +7,9 @@
 #include "../src/ResourceHolder.cpp"
 #include "Player.h"
 #include "Platform.h"
+#include "../Server/src/GameServer.h"
+#include "../Server/src/Enemy.h"
+
 namespace Textures
 {
 	enum ID {skyTexture, groundTexture, rockTexture, playerTexture, grassTexture, bulletTexture, textureNumber};
@@ -28,6 +31,8 @@ private:
     sf::RenderWindow window;
     ResourceHolder <sf::Texture, Textures::ID> textures;
     Player player;
+    GameServer server;
+    Player enemy;
     sf::RectangleShape sky, grass, rock;
     Animation animation;
     sf::Clock clock;
