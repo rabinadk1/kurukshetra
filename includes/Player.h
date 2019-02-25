@@ -14,11 +14,12 @@ public:
     void Draw(sf::RenderWindow& window);
     Collider GetCollider() { return Collider(body); }
     void SetPosition(sf::Vector2f position);
-
 private:
     sf::RectangleShape body, bullet;
     Animation animation;
     unsigned row;
     bool faceRight, isJumping, isShooting;
     sf::Vector2f velocity;
+public:
+	unsigned health, mana;
 };

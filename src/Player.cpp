@@ -13,6 +13,7 @@ void Player::SetData(sf::Texture *playerTexture, sf::Texture* bulletTexture, sf:
 	row = 0;
 	faceRight = true;
 	isJumping = isShooting = false;
+	health = mana = 100;
 
 	const sf::Vector2f playerSize = sf::Vector2f(100.0f, 150.0f);
 	body.setSize(playerSize);
@@ -28,7 +29,7 @@ void Player::SetData(sf::Texture *playerTexture, sf::Texture* bulletTexture, sf:
 //    bullet.setOrigin(bulletSize);
 	bullet.setOrigin(bulletSize.x/2, bulletSize.y/2);
 
-	velocity = sf::Vector2f(speed, 2.f*speed);
+	velocity = sf::Vector2f(2*speed, 1.5f*speed);
 }
 
 void Player::Update(float deltaTime, sf::View &gameView, float &baseHeight, sf::RenderWindow& window)
@@ -39,9 +40,9 @@ void Player::Update(float deltaTime, sf::View &gameView, float &baseHeight, sf::
 	const float g = 9.81f;
 	bool isUp = body.getPosition().y <= baseHeight;
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		movement.x -= velocity.x * deltaTime;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		movement.x += velocity.x * deltaTime;
 //    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) and isUp)
 //        movement.y += velocity.x * deltaTime;
@@ -52,15 +53,20 @@ void Player::Update(float deltaTime, sf::View &gameView, float &baseHeight, sf::
 	if (not isShooting and sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
 		sf::Vector2i pixelMousePos = sf::Mouse::getPosition(window);
-		mousePos = window.mapPixelToCoords(pixelMousePos);
-		sf::Vector2f localBulletPos = bullet.getPosition();
 
-		sf::Vector2f displacement = sf::Vector2f(mousePos.x - localBulletPos.x, mousePos.y - localBulletPos.y);
-		double distance = sqrt(double(displacement.x*displacement.x + displacement.y*displacement.y));
+		sf::IntRect viewport = window.getViewport(gameView);
+		if (viewport.contains(pixelMousePos))
+		{
+			mousePos = window.mapPixelToCoords(pixelMousePos);
+			sf::Vector2f localBulletPos = bullet.getPosition();
 
-		moveDirection = sf::Vector2f(float(displacement.x/distance) , float(displacement.y/distance));
+			sf::Vector2f displacement = sf::Vector2f(mousePos.x - localBulletPos.x, mousePos.y - localBulletPos.y);
+			double distance = sqrt(double(displacement.x * displacement.x + displacement.y * displacement.y));
 
-		isShooting = true;
+			moveDirection = sf::Vector2f(float(displacement.x / distance), float(displacement.y / distance));
+
+			isShooting = true;
+		}
 	}
 
 	if (isShooting)
@@ -72,6 +78,7 @@ void Player::Update(float deltaTime, sf::View &gameView, float &baseHeight, sf::
 			checkX = bulletPos.x<=mousePos.x;
 		else
 			checkX = bulletPos.x >= mousePos.x;
+
 		if (moveDirection.y<0.f)
 			checkY = bulletPos.y<=mousePos.y;
 		else

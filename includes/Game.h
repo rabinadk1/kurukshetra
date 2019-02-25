@@ -12,6 +12,11 @@ namespace Textures
 	enum ID {skyTexture, groundTexture, rockTexture, playerTexture, grassTexture, bulletTexture, textureNumber};
 }
 
+namespace GameFonts
+{
+	enum ID {info, fontNumber};
+}
+
 class Game {
 public:
     Game(unsigned viewWidth, unsigned viewHeight);
@@ -21,13 +26,14 @@ private:
     void processEvents();
     void update();
     void render();
-
     void ResizedWindow(sf::RenderWindow& window, sf::View& view);
 
 private:
     sf::RenderWindow window;
     ResourceHolder <sf::Texture, Textures::ID> textures;
-    Player player[2];
+    ResourceHolder <sf::Font, GameFonts::ID> fonts;
+    sf::Text info[2];
+    Player player;
     sf::RectangleShape sky, grass, rock;
     Animation animation;
     sf::Clock clock;
