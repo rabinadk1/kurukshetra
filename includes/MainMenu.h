@@ -20,17 +20,16 @@ public:
     void run();
 
 private:
-    void moveUp();
-    void moveDown();
+    void moveUp(bool goUp);
+//    void moveDown();
     void render();
     void handlePlayerInput(sf::Keyboard::Key &key, bool isPressed);
     void update();
     void processEvents();
     void onPressEnter();
-    //  void draw(sf::RenderWindow &window);
 private:
     sf::Text menu[4];
-    ResourceHolder <sf::Font, Fonts::ID> font;
+    ResourceHolder <sf::Font, Fonts::ID> fonts;
     int selectedItem;
     bool isPressedUp, isPressedDown, isPressedReturn;
     sf::RenderWindow mWindow2;
