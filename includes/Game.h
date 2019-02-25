@@ -12,7 +12,7 @@
 
 namespace Textures
 {
-	enum ID {skyTexture, groundTexture, rockTexture, playerTexture, grassTexture, bulletTexture, textureNumber};
+	enum ID {skyTexture, groundTexture, rockTexture, playerTexture, grassTexture, bulletTexture, textureNumber, enemyTexture};
 }
 
 namespace GameFonts
@@ -38,9 +38,9 @@ private:
     sf::Text info[2];
     Player player;
     GameServer server;
-    Player enemy;
+    Enemy enemy;
     sf::RectangleShape sky, grass, rock;
-    Animation animation;
+    Animation playerAnimation, enemyAnimation;
     sf::Clock clock;
     sf::View gameView, minimapView;
     Platform ground;
