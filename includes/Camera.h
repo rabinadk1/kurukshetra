@@ -20,7 +20,7 @@ public:
     void Move(sf::Vector2f newCameraPosition);
     void Zoom(float factor);
     void Update(sf::Vector2f playerPosition, sf::RenderWindow& window);
-private:
+    sf::IntRect GetViewport();
     void SetCenter(sf::Vector2f center);
     void SetViewPort(sf::FloatRect rect);
 };

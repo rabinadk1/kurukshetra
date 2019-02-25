@@ -2,7 +2,7 @@
 // Created by samip on 12/2/19.
 //
 
-#include "remainTime.h"
+#include "RemainTime.h"
 #include <sstream>
 int remainTime::getRemainSeconds()
 {

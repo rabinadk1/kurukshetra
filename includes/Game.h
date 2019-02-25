@@ -4,14 +4,23 @@
 
 #pragma once
 
-#include "../src/ResourceHolder.cpp"
+#include "../Server/src/ResourceHolder.cpp"
 #include "Player.h"
 #include "Platform.h"
+#include "GameServer.h"
+#include "Enemy.h"
 #include <Camera.h>
 #include <vector>
+
+// NOTE: textureNumber and fontNumber is always at the last of enum to find the size of enum needed for constructor of ResourceHandler
 namespace Textures
 {
-	enum ID {skyTexture, groundTexture, rockTexture, playerTexture, grassTexture, bulletTexture, textureNumber, wallTexture, barrelTexture};
+    enum ID {skyTexture, groundTexture, rockTexture, playerTexture, grassTexture, bulletTexture, textureNumber, wallTexture, barrelTexture, enemyTexture};
+}
+
+namespace GameFonts
+{
+	enum ID {info, fontNumber};
 }
 
 class Game {
@@ -23,15 +32,18 @@ private:
     void processEvents();
     void update();
     void render();
-
     void ResizedWindow(sf::RenderWindow& window, Camera& view);
 
 private:
     sf::RenderWindow window;
     ResourceHolder <sf::Texture, Textures::ID> textures;
+    ResourceHolder <sf::Font, GameFonts::ID> fonts;
+    sf::Text info[2];
     Player player;
+    GameServer server;
+    Enemy enemy;
     sf::RectangleShape sky, grass, rock;
-    Animation animation;
+    Animation playerAnimation, enemyAnimation;
     sf::Clock clock;
     Camera gameView;
     sf::View minimapView;

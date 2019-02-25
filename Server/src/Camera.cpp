@@ -44,3 +44,7 @@ void Camera::Zoom(float factor) {
 void Camera::Update(sf::Vector2f playerPosition, sf::RenderWindow &window) {
     view.setCenter(view.getCenter().x + (view.getCenter().x - playerPosition.x), view.getCenter().y);
 }
+
+sf::IntRect Camera::GetViewport() {
+    return static_cast<sf::IntRect>(view.getViewport());
+}

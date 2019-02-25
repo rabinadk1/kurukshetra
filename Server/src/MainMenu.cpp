@@ -14,7 +14,7 @@ void MainMenu::render(){
     mWindow2.display();
 }
 MainMenu::MainMenu(unsigned int width, unsigned int height)
-	:font(Fonts::fontNumber),
+	:fonts(Fonts::fontNumber),
     selectedItem(0),
 	isPressedUp(false),
 	isPressedDown(false),
@@ -23,9 +23,9 @@ MainMenu::MainMenu(unsigned int width, unsigned int height)
 	width(width),
     height(height)
 {
-    font.load(Fonts::menuFont, "../Media/Fonts/DejaVuSans.ttf");
+    fonts.load(Fonts::menuFont, "../Media/Fonts/DejaVuSans.ttf");
     for (int i=0; i<4; i++)
-        menu[i].setFont(font.get(Fonts::menuFont));
+        menu[i].setFont(fonts.get(Fonts::menuFont));
     menu[0].setString("Play Single");
     menu[1].setString("Play with Friend");
     menu[2].setString("Options");
@@ -33,9 +33,11 @@ MainMenu::MainMenu(unsigned int width, unsigned int height)
     for (int i=0; i<4; i++)
         menu[i].setPosition(width/2.f,height/4.f*i);
 }
-void MainMenu::moveUp() {
-    if(selectedItem!=0)
+void MainMenu::moveUp(const bool goUp = true) {
+    if (goUp and selectedItem != 0)
         selectedItem--;
+    else if(not goUp and selectedItem!=3)
+        selectedItem++;
 }
 void MainMenu::handlePlayerInput(sf::Keyboard::Key &key, bool isPressed) {
     switch (key){
@@ -56,7 +58,7 @@ void MainMenu::update() {
     if(isPressedUp)
         moveUp();
     if(isPressedDown)
-        moveDown();
+        moveUp(false);
     if(isPressedReturn)
         onPressEnter();
 }
@@ -100,7 +102,3 @@ void MainMenu::processEvents() {
     }
 }
 
-void MainMenu::moveDown() {
-    if(selectedItem!=3)
-        selectedItem++;
-}
