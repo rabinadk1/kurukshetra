@@ -85,6 +85,7 @@ void Game::processEvents() {
 void Game::update() {
     window.setView(gameView);
     player.Update(clock.restart().asSeconds(), gameView, baseHeight, window);
+    enemy.Update(clock.restart().asSeconds(), gameView, baseHeight, window);
 }
 
 void Game::render() {
