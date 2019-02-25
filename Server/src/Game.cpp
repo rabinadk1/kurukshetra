@@ -24,11 +24,13 @@ Game::Game(unsigned viewWidth, unsigned viewHeight)
         textures.load(Textures::rockTexture, "../Media/Textures/rockPlatform.png");
         textures.load(Textures::grassTexture, "../Media/Textures/grass.png");
         textures.load(Textures::playerTexture, "../Media/Textures/fox.png");
+        textures.load(Textures::enemyTexture, "../Media/Textures/enemy.png");
         textures.load(Textures::bulletTexture, "../Media/Textures/bullet.png");
 
         textures.get(Textures::skyTexture).setRepeated(true);
         textures.get(Textures::groundTexture).setRepeated(true);
         textures.get(Textures::playerTexture).setSmooth(true);
+        textures.get(Textures::enemyTexture).setSmooth(true);
         textures.get(Textures::bulletTexture).setSmooth(true);
         textures.get(Textures::grassTexture).setSmooth(true);
 
@@ -37,7 +39,7 @@ Game::Game(unsigned viewWidth, unsigned viewHeight)
         sky.setTexture(&textures.get(Textures::skyTexture));
 
         player.SetData(&textures.get(Textures::playerTexture), &textures.get(Textures::bulletTexture), sf::Vector2u(3, 9), 0.3f, 150.0f,baseHeight);
-        enemy.SetData(&textures.get(Textures::playerTexture), &textures.get(Textures::bulletTexture), sf::Vector2u(3, 9), 0.3f, 150.0f,baseHeight);
+        enemy.SetData(&textures.get(Textures::enemyTexture), &textures.get(Textures::bulletTexture), sf::Vector2u(3, 9), 0.3f, 150.0f,baseHeight);
         ground.SetData(&textures.get(Textures::groundTexture), sf::Vector2f(1920, 80), sf::Vector2f(0, 520));
 
         const sf::Vector2f grassSize = sf::Vector2f(100, 100);
@@ -50,7 +52,8 @@ Game::Game(unsigned viewWidth, unsigned viewHeight)
         rock.setSize(sf::Vector2f(300, 50));
         rock.setTexture(&textures.get(Textures::rockTexture));
 
-        animation.SetData(&textures.get(Textures::playerTexture), sf::Vector2u(3,9), 0.3f);
+        playerAnimation.SetData(&textures.get(Textures::playerTexture), sf::Vector2u(3,9), 0.3f);
+        enemyAnimation.SetData(&textures.get(Textures::enemyTexture), sf::Vector2u(3,9), 0.3f);
     }
 
 void Game::run() {
@@ -85,6 +88,7 @@ void Game::processEvents() {
 void Game::update() {
     window.setView(gameView);
     player.Update(clock.restart().asSeconds(), gameView, baseHeight, window);
+    enemy.Update(clock.restart().asSeconds(), gameView, baseHeight, window);
 }
 
 void Game::render() {

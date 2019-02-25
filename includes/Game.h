@@ -12,7 +12,7 @@
 
 namespace Textures
 {
-	enum ID {skyTexture, groundTexture, rockTexture, playerTexture, grassTexture, bulletTexture, textureNumber};
+	enum ID {skyTexture, groundTexture, rockTexture, playerTexture, grassTexture, bulletTexture, textureNumber, enemyTexture};
 }
 
 class Game {
@@ -32,9 +32,9 @@ private:
     ResourceHolder <sf::Texture, Textures::ID> textures;
     Player player;
     GameServer server;
-    Player enemy;
+    Enemy enemy;
     sf::RectangleShape sky, grass, rock;
-    Animation animation;
+    Animation playerAnimation, enemyAnimation;
     sf::Clock clock;
     sf::View gameView, minimapView;
     Platform ground;

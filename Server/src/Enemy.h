@@ -9,6 +9,7 @@
 #include <Player.h>
 
 class Enemy: public Player {
+public:
     void Update(float deltaTime, sf::View &gameView, float &baseHeight, sf::RenderWindow& window);
 };
 #endif //KURUKSHETRA_ENEMY_H
