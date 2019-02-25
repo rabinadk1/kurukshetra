@@ -72,7 +72,7 @@ void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &game
 
 				moveDirection = sf::Vector2f(float(displacement.x / distance), float(displacement.y / distance));
 
-				bulletVelocity = sf::Vector2f(4*velocity.x * moveDirection.x, 4*velocity.y * moveDirection.y);
+				bulletVelocity = sf::Vector2f(4*velocity.x * moveDirection.x*deltaTime, 4*velocity.y * moveDirection.y* deltaTime);
 				isShooting = true;
 			}
 		}
@@ -108,8 +108,7 @@ void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &game
 //	}
 	if (isShooting)
 	{
-		Bullet newBullet(bulletTexture, sf::Vector2f(20.f, 12.4f), body.getPosition(), bulletVelocity);
-		bullets.push_back(newBullet);
+		bullets.emplace_back(bulletTexture, sf::Vector2f(20.f, 12.4f), body.getPosition(), bulletVelocity);
 		isShooting = false;
 	}
 
@@ -151,6 +150,7 @@ void Player::Draw(sf::RenderWindow &window) {
 	for (int i=0; i<int(bullets.size()); i++)
 	{
 		bullets[i].draw(window);
+		std::cout<<"Testing " <<i<<std::endl;
 		bullets[i].fire();
 	}
 	for(int i=0; i<int(bullets.size()); i++)
