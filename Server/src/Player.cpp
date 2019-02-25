@@ -13,13 +13,13 @@ Player::Player(std::unique_ptr<sf::TcpSocket>* socket,int id){
 
 }
 
-void Player::SetData(sf::Texture *playerTexture, sf::Texture* bulletTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position) {
+void Player::SetData(sf::Texture *playerTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position) {
 	animation.SetData(playerTexture, imageCount, switchTime);
 	row = 0;
 	faceRight = true;
 	isJumping = isShooting = false;
 	health = mana = 100;
-	bulletVelocity = sf::Vector2f(0.f, 0.f);
+	bulletVelocity = moveDirection = sf::Vector2f(0.f, 0.f);
 
 	const sf::Vector2f playerSize = sf::Vector2f(100.0f, 150.0f);
 	body.setSize(playerSize);
@@ -28,20 +28,20 @@ void Player::SetData(sf::Texture *playerTexture, sf::Texture* bulletTexture, sf:
 	body.setOrigin(playerSize);
 //    body.setOrigin(playerSize.x/2, playerSize.y/2);
 
-	const sf::Vector2f bulletSize = sf::Vector2f(20.f, 12.4f);
-	bullet.setSize(bulletSize);
-	bullet.setPosition(position.x+50, position.y-50);
-	bullet.setTexture(bulletTexture);
-//    bullet.setOrigin(bulletSize);
-	bullet.setOrigin(bulletSize.x/2, bulletSize.y/2);
+//	const sf::Vector2f bulletSize = sf::Vector2f(20.f, 12.4f);
+//	bullet.setSize(bulletSize);
+//	bullet.setPosition(position.x+50, position.y-50);
+//	bullet.setTexture(bulletTexture);
+////    bullet.setOrigin(bulletSize);
+//	bullet.setOrigin(bulletSize.x/2, bulletSize.y/2);
 
 	velocity = sf::Vector2f(2*speed, 1.5f*speed);
 }
 
-void Player::Update(float deltaTime, sf::View &gameView, float &baseHeight, sf::RenderWindow& window)
+void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &gameView, float &baseHeight, sf::RenderWindow& window)
 {
 	static sf::Vector2f movement(0.f, 0.f);
-	sf::Vector2f bulletMovement(0.f, 0.f);
+//	sf::Vector2f bulletMovement(0.f, 0.f);
 	static float localVelocity = velocity.y;
 	const float g = 9.81f;
 	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
@@ -53,7 +53,7 @@ void Player::Update(float deltaTime, sf::View &gameView, float &baseHeight, sf::
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		isJumping = true;
 
-	static sf::Vector2f mousePos, moveDirection;
+//	static sf::Vector2f mousePos;
 	if (not isShooting and sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
 		sf::Vector2i pixelMousePos = sf::Mouse::getPosition(window);
@@ -61,11 +61,11 @@ void Player::Update(float deltaTime, sf::View &gameView, float &baseHeight, sf::
 		sf::IntRect viewport = window.getViewport(gameView);
 		if (viewport.contains(pixelMousePos))
 		{
-			mousePos = window.mapPixelToCoords(pixelMousePos);
+			sf::Vector2f mousePos = window.mapPixelToCoords(pixelMousePos);
 			std::cout<<mousePos.y<<" "<<body.getPosition().y<<std::endl;
 			if (mousePos.y<=baseHeight)
 			{
-				sf::Vector2f localBulletPos = bullet.getPosition();
+				sf::Vector2f localBulletPos = body.getPosition();
 
 				sf::Vector2f displacement = sf::Vector2f(mousePos.x - localBulletPos.x, mousePos.y - localBulletPos.y);
 				double distance = sqrt(double(displacement.x * displacement.x + displacement.y * displacement.y));
@@ -78,34 +78,40 @@ void Player::Update(float deltaTime, sf::View &gameView, float &baseHeight, sf::
 		}
 	}
 
-		if (isShooting and not isUp(bullet, baseHeight))
-//	{
-//		sf::Vector2f bulletPos = bullet.getPosition();
+//		if (isShooting and not isUp(bullet, baseHeight))
+////	{
+////		sf::Vector2f bulletPos = bullet.getPosition();
+////
+////		bool checkX, checkY;
+////		if (moveDirection.x<0.f)
+////			checkX = bulletPos.x<=mousePos.x;
+////		else
+////			checkX = bulletPos.x >= mousePos.x;
+////
+////		if (moveDirection.y<0.f)
+////			checkY = bulletPos.y<=mousePos.y;
+////		else
+////			checkY = bulletPos.y >= mousePos.y;
 //
-//		bool checkX, checkY;
-//		if (moveDirection.x<0.f)
-//			checkX = bulletPos.x<=mousePos.x;
-//		else
-//			checkX = bulletPos.x >= mousePos.x;
-//
-//		if (moveDirection.y<0.f)
-//			checkY = bulletPos.y<=mousePos.y;
-//		else
-//			checkY = bulletPos.y >= mousePos.y;
-
-//		if(checkX and checkY and not isUp(bullet, baseHeight))
-		{
-			isShooting = false;
-			bullet.setPosition(1000.f, 1.4f * (600.f - 50.f));
-			bulletVelocity.y = 0;
-		}
-		else if (isShooting)
-		{
-			bulletMovement.x += bulletVelocity.x * deltaTime;
-			bulletMovement.y += bulletVelocity.y * deltaTime;
-			bulletVelocity.y += g;
-		}
+////		if(checkX and checkY and not isUp(bullet, baseHeight))
+//		{
+//			isShooting = false;
+//			bullet.setPosition(1000.f, 1.4f * (600.f - 50.f));
+//			bulletVelocity.y = 0;
+//		}
+//		else if (isShooting)
+//		{
+//			bulletMovement.x += bulletVelocity.x * deltaTime;
+//			bulletMovement.y += bulletVelocity.y * deltaTime;
+//			bulletVelocity.y += g;
+//		}
 //	}
+	if (isShooting)
+	{
+		Bullet newBullet(bulletTexture, sf::Vector2f(20.f, 12.4f), body.getPosition(), bulletVelocity);
+		bullets.push_back(newBullet);
+		isShooting = false;
+	}
 
 	if (not isUp(body, baseHeight))
 	{
@@ -125,8 +131,6 @@ void Player::Update(float deltaTime, sf::View &gameView, float &baseHeight, sf::
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
 	body.move(movement);
-	bullet.move(bulletMovement);
-
 
 	if (isJumping)
 	{
@@ -135,7 +139,6 @@ void Player::Update(float deltaTime, sf::View &gameView, float &baseHeight, sf::
 	}
 	else
 		movement = sf::Vector2f(0.f,0.f);
-//	HitCheck(bullet);
 }
 
 void Player::Draw(sf::RenderWindow &window) {
@@ -145,16 +148,22 @@ void Player::Draw(sf::RenderWindow &window) {
 //		exit(0);
 //	}
 	window.draw(body);
-	window.draw(bullet);
+	for (int i=0; i<int(bullets.size()); i++)
+	{
+		bullets[i].draw(window);
+		bullets[i].fire();
+	}
+	for(int i=0; i<int(bullets.size()); i++)
+		HitCheck(bullets[i]);
 }
 
 void Player::SetPosition(sf::Vector2f position) {
 	body.setPosition(position);
 }
 
-void Player::HitCheck(sf::RectangleShape& bullet)
+void Player::HitCheck(Bullet& bullet)
 {
-	if(GetCollider().CheckCollision(Collider(bullet)))
+	if(GetCollider().CheckCollision(Collider(bullet.getBullet())))
 		health-=50;
 }
 
