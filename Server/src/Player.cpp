@@ -3,10 +3,15 @@
 //
 
 #include <iostream>
-#include <Player.h>
 #include <cmath>
 
 #include "Player.h"
+
+Player::Player(std::unique_ptr<sf::TcpSocket>* socket,int id){
+	m_socket = std::move(*socket);
+	m_id=id;
+
+}
 
 void Player::SetData(sf::Texture *playerTexture, sf::Texture* bulletTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position) {
 	animation.SetData(playerTexture, imageCount, switchTime);
@@ -156,5 +161,56 @@ void Player::HitCheck(sf::RectangleShape& bullet)
 bool Player::isUp(sf::RectangleShape &shape, float &baseHeight)
 {
 	return shape.getPosition().y <= baseHeight;
+}
+
+void Player::setName(const std::string& name)
+{
+	m_name = name;
+}
+
+void Player::setTimeout(sf::Time time)
+{
+	m_timeout = time;
+}
+
+void Player::setConnected(bool status)
+{
+	m_connected = status;
+}
+
+void Player::setPing(unsigned short ping)
+{
+	m_ping = ping;
+}
+
+unsigned short Player::getPing() {
+	return m_ping;
+}
+sf::Vector2f Player::getPosition()
+{
+	return m_position;
+}
+sf::TcpSocket* Player::getSocket()
+{
+	return m_socket.get();
+}
+
+std::string Player::getName()
+{
+	return m_name;
+}
+
+int Player::getId()
+{
+	return m_id;
+}
+
+sf::Time Player::getTimeout()
+{
+	return m_timeout;
+}
+bool Player::isConnected()
+{
+	return m_connected;
 }
 

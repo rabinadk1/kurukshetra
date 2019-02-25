@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "../src/ResourceHolder.cpp"
+#include "../Server/src/ResourceHolder.cpp"
 #include "Player.h"
 #include "Platform.h"
 #include "GameServer.h"
