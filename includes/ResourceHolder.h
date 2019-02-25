@@ -12,8 +12,8 @@ class ResourceHolder
 private:
     Resource* resources;
 public:
-    ResourceHolder(unsigned count);
-    void loadTexture(Identifier id, const char* filename, sf::IntRect area = sf::IntRect());
+    ResourceHolder(Identifier id);
+    void load(Identifier id, const char* filename, sf::IntRect area);
     void load(Identifier id, const char* filename);
     Resource& get(Identifier id);
     ~ResourceHolder();

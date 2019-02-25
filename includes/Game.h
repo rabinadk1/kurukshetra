@@ -27,7 +27,7 @@ private:
 private:
     sf::RenderWindow window;
     ResourceHolder <sf::Texture, Textures::ID> textures;
-    Player player;
+    Player player[2];
     sf::RectangleShape sky, grass, rock;
     Animation animation;
     sf::Clock clock;

@@ -36,8 +36,8 @@ Game::Game(unsigned viewWidth, unsigned viewHeight)
 	sky.setSize(sf::Vector2f(1920, 1080));
 	sky.setTexture(&textures.get(Textures::skyTexture));
 
-	player.SetData(&textures.get(Textures::playerTexture), &textures.get(Textures::bulletTexture), sf::Vector2u(3, 9), 0.3f, 150.0f, sf::Vector2f(1000.f, baseHeight));
-
+	player[1].SetData(&textures.get(Textures::playerTexture), &textures.get(Textures::bulletTexture), sf::Vector2u(3, 9), 0.3f, 150.0f, sf::Vector2f(1000.f, baseHeight));
+//	player.
 	ground.SetData(&textures.get(Textures::groundTexture), sf::Vector2f(1920, 80), sf::Vector2f(0, 520));
 
 	const sf::Vector2f grassSize = sf::Vector2f(100, 100);
@@ -83,7 +83,7 @@ void Game::processEvents() {
 
 void Game::update() {
 	window.setView(gameView);
-	player.Update(clock.restart().asSeconds(), gameView, baseHeight, window);
+	player[1].Update(clock.restart().asSeconds(), gameView, baseHeight, window);
 }
 
 void Game::render() {
@@ -91,7 +91,7 @@ void Game::render() {
 	window.draw(sky);
 	window.draw(grass);
 	window.draw(rock);
-	player.Draw(window);
+	player[1].Draw(window);
 	window.display();
 
 }

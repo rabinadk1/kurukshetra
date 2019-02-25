@@ -28,7 +28,7 @@ void Player::SetData(sf::Texture *playerTexture, sf::Texture* bulletTexture, sf:
 //    bullet.setOrigin(bulletSize);
 	bullet.setOrigin(bulletSize.x/2, bulletSize.y/2);
 
-	velocity = sf::Vector2f(speed, 0.8f*speed);
+	velocity = sf::Vector2f(speed, 2.f*speed);
 }
 
 void Player::Update(float deltaTime, sf::View &gameView, float &baseHeight, sf::RenderWindow& window)
@@ -106,13 +106,14 @@ void Player::Update(float deltaTime, sf::View &gameView, float &baseHeight, sf::
 	body.move(movement);
 	bullet.move(bulletMovement);
 
-	if (not isJumping)
-		movement = sf::Vector2f(0.f,0.f);
-	else
+
+	if (isJumping)
 	{
-		movement.y -= localVelocity * deltaTime;
+		movement.y = -localVelocity * deltaTime;
 		localVelocity -= g;
 	}
+	else
+		movement = sf::Vector2f(0.f,0.f);
 }
 
 void Player::Draw(sf::RenderWindow &window) {
