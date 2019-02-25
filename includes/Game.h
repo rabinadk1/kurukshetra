@@ -7,8 +7,8 @@
 #include "../src/ResourceHolder.cpp"
 #include "Player.h"
 #include "Platform.h"
-#include "../Server/src/GameServer.h"
-#include "../Server/src/Enemy.h"
+#include "GameServer.h"
+#include "Enemy.h"
 
 namespace Textures
 {

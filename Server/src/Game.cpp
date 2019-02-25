@@ -98,9 +98,7 @@ void Game::render() {
 	window.draw(rock);
 	player.Draw(window);
 	if(server.getM_playersConnected()>0)
-	{
 		enemy.Draw(window);
-	}
 	for (int i=0; i<2 ; i++)
 		window.draw(info[i]);
 	window.display();
