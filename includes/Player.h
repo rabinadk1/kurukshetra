@@ -14,12 +14,15 @@ public:
     void Draw(sf::RenderWindow& window);
     Collider GetCollider() { return Collider(body); }
     void SetPosition(sf::Vector2f position);
+    void HitCheck(sf::RectangleShape& bullet);
+    bool isDead(){ return health<=0;}
+    bool isUp(sf::RectangleShape& shape, float& baseHeight);
 private:
     sf::RectangleShape body, bullet;
     Animation animation;
     unsigned row;
-    bool faceRight, isJumping, isShooting;
-    sf::Vector2f velocity;
+    bool faceRight, isJumping, isShooting, canFly;
+    sf::Vector2f velocity, bulletVelocity;
 public:
-	unsigned health, mana;
+	int health, mana;
 };
