@@ -48,7 +48,7 @@ private:
     Camera gameView;
     sf::View minimapView;
     std::vector<Platform> walls;
-    Platform wall, barrel, ground;
+    Platform ground, wall;
     std::vector<sf::Vector2f> wallsPosition;
     float viewWidth;
     float viewHeight, baseHeight;

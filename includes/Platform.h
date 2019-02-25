@@ -18,7 +18,7 @@ public:
     void SetTextureRect(sf::IntRect textureRect);
 
     sf::Vector2f GetSize(){ return body.getSize();}
-    std::vector<Platform> SetWalls(sf::Texture& texture, sf::RenderWindow& window);
+    Platform SetWalls(sf::Texture texture, sf::Vector2f size, sf::Vector2f position);
     void Draw(sf::RenderWindow& window);
     Collider GetCollider() { return Collider(body); }
 

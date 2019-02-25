@@ -31,17 +31,10 @@ void Platform::SetPosition(sf::Vector2f position) {
     body.setPosition(position);
 }
 
-std::vector<Platform> Platform::SetWalls(sf::Texture &texture,sf::RenderWindow &window){
-    std::vector<Platform> walls;
-    Platform wall1;
-    wall1.SetData(&texture, sf::Vector2f(500, 50), sf::Vector2f(1200, 1700));
-    walls.push_back(wall1);
-    wall1.SetData(sf::Vector2f(300, 100), sf::Vector2f(500, 1800));
-    walls.push_back(wall1);
-    wall1.SetData(sf::Vector2f(100, 150), sf::Vector2f(1400, 1750));
-    walls.push_back(wall1);
-
-    return walls;
+Platform Platform::SetWalls(sf::Texture texture, sf::Vector2f size, sf::Vector2f position){
+    Platform wall;
+    wall.SetData(&texture, size, position);
+    return wall;
 }
 
 void Platform::SetData(sf::Vector2f size, sf::Vector2f position) {

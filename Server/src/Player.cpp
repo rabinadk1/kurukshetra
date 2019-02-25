@@ -52,7 +52,8 @@ void Player::Update(sf::Texture* bulletTexture , float deltaTime, Camera &gameVi
 //        movement.y += velocity.x * deltaTime;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		isJumping = true;
-
+	if(body.getPosition().y < baseHeight-body.getSize().y)
+        isJumping = true;
 //	static sf::Vector2f mousePos;
 	if (not isShooting and sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
@@ -126,7 +127,7 @@ void Player::Update(sf::Texture* bulletTexture , float deltaTime, Camera &gameVi
 		row = 1;
 		faceRight = movement.x > 0;
 	}
-	gameView.Move(movement);
+	gameView.Update(body.getPosition(), window);
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
 	body.move(movement);

@@ -23,6 +23,8 @@ public:
     sf::IntRect GetViewport();
     void SetCenter(sf::Vector2f center);
     void SetViewPort(sf::FloatRect rect);
+
+    sf::FloatRect getViewBounds(const sf::View &view);
 };
 
 
