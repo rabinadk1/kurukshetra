@@ -44,7 +44,7 @@ public:
 
     void receive();
     void update(sf::Keyboard::Key key);
-    void update(float position);
+    void update(sf::Vector2f position);
 //
 //    void updateTick();
 //    void updateWorld(sf::Time dt);

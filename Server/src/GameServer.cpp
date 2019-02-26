@@ -104,10 +104,10 @@ void GameServer::update(sf::Keyboard::Key key) {
     ++m_currentPlayerId;
 
 }
-void GameServer::update(float position) {
+void GameServer::update(sf::Vector2f position ) {
     sf::Packet keyPress;
     //int32_t keyCode= static_cast<int32_t>(key);
-    keyPress<<position;
+    keyPress<<position.x<<position.y;
     if (m_playerList.back().getSocket()->send(keyPress) != sf::Socket::Done)
         std::cout << "Error sending KeyPress" << std::endl;
     ++m_currentPlayerId;

@@ -44,16 +44,16 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, sf::View &gameVi
     sf::Vector2f bulletMovement(0.f, 0.f);
     static float localVelocity = velocity.y;
     const float g = 9.81f;
-    if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        movement.x -= velocity.x * deltaTime;
-    if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        movement.x += velocity.x * deltaTime;
-//    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) and isUp)
-//        movement.y += velocity.x * deltaTime;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-    {
-        isJumping = true;
-    }
+//    if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+//        movement.x -= velocity.x * deltaTime;
+//    if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+//        movement.x += velocity.x * deltaTime;
+////    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) and isUp)
+////        movement.y += velocity.x * deltaTime;
+//    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+//    {
+//        isJumping = true;
+//    }
 
     static sf::Vector2f mousePos;
     if (not isShooting and sf::Mouse::isButtonPressed(sf::Mouse::Left))

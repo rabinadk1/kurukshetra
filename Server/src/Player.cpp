@@ -42,19 +42,16 @@ void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &game
 	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
 		movement.x -= velocity.x * deltaTime;
-		//server.update(movement.x);
 	}
 	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
 		movement.x += velocity.x * deltaTime;
-		//server.update(movement.x);
 	}
 //    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) and isUp)
 //        movement.y += velocity.x * deltaTime;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
 		isJumping = true;
-		//server.update(movement.x);
 	}
 
 //	static sf::Vector2f mousePos;
@@ -152,20 +149,19 @@ void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &game
 	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
 		movement.x -= velocity.x * deltaTime;
-		server.update(movement.x);
+//		server.update(movement);
 	}
 	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
 		movement.x += velocity.x * deltaTime;
-		server.update(movement.x);
+//		server.update(movement);
 	}
 //    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) and isUp)
 //        movement.y += velocity.x * deltaTime;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
 		isJumping = true;
-		server.update(movement.x);
-
+//		server.update(movement);
 	}
 
 //	static sf::Vector2f mousePos;
@@ -232,6 +228,7 @@ void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &game
 		body.setPosition(body.getPosition().x, baseHeight);
 		isJumping = false;
 		localVelocity = velocity.y;
+		//server.update(movement);
 	}
 
 	if(movement.x == 0)
@@ -245,14 +242,17 @@ void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &game
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
 	body.move(movement);
-
+	server.update(movement);
 	if (isJumping)
 	{
 		movement.y = -localVelocity * deltaTime;
 		localVelocity -= g;
+
 	}
 	else
+	{
 		movement = sf::Vector2f(0.f,0.f);
+	}
 }
 
 void Player::Draw(sf::RenderWindow &window) {
