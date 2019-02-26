@@ -87,7 +87,10 @@ void Game::update() {
     window.setView(gameView);
     float elapsedTime = clock.restart().asSeconds();
     if(server.getM_playersConnected()>0)
-    player.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window, server);
+	{
+    	player.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window, server);
+		enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window);
+	}
     else
     	player.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window);
    // enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window);
