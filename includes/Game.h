@@ -33,6 +33,7 @@ private:
     void update();
     void render();
     void ResizedWindow(sf::RenderWindow& window, Camera& view);
+    void setWalls();
 
 private:
     sf::RenderWindow window;
@@ -53,4 +54,7 @@ private:
     std::vector<sf::Vector2f> wallsPosition;
     float viewWidth;
     float viewHeight, baseHeight;
+
+public:
+    float leftExtremePoint, rightExtremePoint;
 };

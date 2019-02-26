@@ -35,7 +35,7 @@ void Camera::SetView(sf::RenderWindow &window) {
 }
 
 void Camera::Move(sf::Vector2f newCameraPosition) {
-    view.move(newCameraPosition);
+    view.move(newCameraPosition.x, 0);
 }
 
 void Camera::Zoom(float factor) {
@@ -43,16 +43,10 @@ void Camera::Zoom(float factor) {
 }
 
 void Camera::Update(sf::RectangleShape &player, sf::RenderWindow &window, sf::RectangleShape &sky) {
-    sf::FloatRect playerBounds = player.getGlobalBounds();
-//    view.setCenter(player.getPosition().x, player.getPosition().y - 300);
-    if(player.getPosition().x >= sky.getSize().x -player.getSize().x)
-        player.setPosition(sky.getSize().x - player.getSize().x, player.getPosition().y);
-    if(sky.getTexture()->getSize().x - player.getPosition().x >= 0)
-        view.setCenter(player.getPosition().x, player.getPosition().y - 300);
-    else
-        view.setCenter(sky.getTexture()->getSize().x + (sky.getTexture()->getSize().x + player.getPosition().x)/1000, player.getPosition().y -300);
 
-    std::cout << sky.getSize().x - player.getPosition().x << std::endl;
+    view.setCenter(player.getPosition().x, player.getPosition().y - 300);
+
+    std::cout << player.getPosition().x << std::endl;
 
 }
 

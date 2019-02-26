@@ -5,13 +5,14 @@
 #include <iostream>
 #include <cmath>
 #include <GameServer.h>
+#include <Player.h>
+
 
 #include "Player.h"
 
 Player::Player(std::unique_ptr<sf::TcpSocket>* socket,int id){
 	m_socket = std::move(*socket);
 	m_id=id;
-
 }
 
 void Player::SetData(sf::Texture *playerTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position) {
@@ -38,18 +39,24 @@ void Player::SetData(sf::Texture *playerTexture, sf::Vector2u imageCount, float 
 
 	velocity = sf::Vector2f(2*speed, 1.5f*speed);
 }
-void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window, sf::RectangleShape &sky)
+void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, std::vector<Platform>& walls, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape &sky)
 {
 	static sf::Vector2f movement(0.f, 0.f);
 	static float localVelocity = velocity.y;
 	const float g = 9.81f;
 	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		movement.x -= velocity.x * deltaTime;
+		if(body.getPosition().x <= leftExtremePoint + body.getSize().x)
+			movement.x = 0;
+		else
+			movement.x -= velocity.x * deltaTime;
 	}
 	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		movement.x += velocity.x * deltaTime;
+		if(body.getPosition().x >= rightExtremePoint)
+			movement.x = 0;
+		else
+			movement.x += velocity.x * deltaTime;
 	}
 //    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) and isUp)
 //        movement.y += velocity.x * deltaTime;
@@ -132,10 +139,29 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 		row = 1;
 		faceRight = movement.x > 0;
 	}
-	gameView.Update(body, window, sky);
+
+	if(body.getPosition().x < leftExtremePoint + 2000)
+	{
+		for(int i = 0; i<8; i++)
+		{
+			if(GetCollider().CheckCollision(walls[i].GetCollider()))
+				std::cout << "collided with wall " << i + 1 << std::endl;
+			//NOTE: Make a collision detection by comparing the positions of the wall and player
+		}
+	}
+	if(body.getPosition().x > leftExtremePoint + 2000)
+	{
+		for(int i = 8; i<16; i++)
+		{
+			if(GetCollider().CheckCollision(walls[i].GetCollider()))
+				std::cout << "collided with wall " << i + 1 << std::endl;
+		}
+	}
+	gameView.Move(movement);
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
 	body.move(movement);
+
 
 	if (isJumping)
 	{
@@ -150,6 +176,7 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 {
 	static sf::Vector2f movement(0.f, 0.f);
 	static float localVelocity = velocity.y;
+
 	const float g = 9.81f;
 	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		movement.x -= velocity.x * deltaTime;
@@ -235,7 +262,7 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 		row = 1;
 		faceRight = movement.x > 0;
 	}
-	gameView.Update(body, window, sky);
+	gameView.Move(movement);
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
 	body.move(movement);
@@ -256,6 +283,7 @@ void Player::Draw(sf::RenderWindow &window) {
 //		exit(0);
 //	}
 	window.draw(body);
+//	std::cout << body.getPosition().x << std::endl;
 	for (int i = 0; i < int(bullets.size()); i++)
 	{
 		bullets[i].draw(window);
@@ -336,5 +364,16 @@ sf::Time Player::getTimeout()
 bool Player::isConnected()
 {
 	return m_connected;
+}
+
+void Player::collisionTest(Player &player, std::vector<Platform> &walls, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint) {
+	if(player.getPosition().x < leftExtremePoint + 2000)
+	{
+		for(int i = 0; i<8; i++)
+		{
+			if(player.GetCollider().CheckCollision(walls[i].GetCollider()))
+				std::cout << "collided with wall " << i + 1 << std::endl;
+		}
+	}
 }
 

@@ -10,6 +10,7 @@
 #include "GameServer.h"
 #include "Bullet.h"
 #include "Camera.h"
+#include "Platform.h"
 #include <vector>
 
 class Player {
@@ -18,11 +19,12 @@ public:
 	Player(){};
     void SetData(sf::Texture *playerTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position);
 	void Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window, sf::RectangleShape& sky, GameServer& server);
-	void Update(sf::Texture* bulletTexture , float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window, sf::RectangleShape& sky);
+	void Update(sf::Texture* bulletTexture , float deltaTime, Camera &gameView, std::vector<Platform>& walls, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape& sky);
 	void Draw(sf::RenderWindow& window);
     Collider GetCollider() { return Collider(body); }
     sf::RectangleShape& GetBody() { return body;}
     void SetPosition(sf::Vector2f position);
+    void collisionTest(Player& player, std::vector<Platform>& walls, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint);
     void setName(const std::string& name);
     void setTimeout(sf::Time time);
     void setConnected(bool status);

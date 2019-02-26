@@ -8,8 +8,8 @@
 
 class Platform {
 public:
-//    Platform(){}
-//    Platform(sf::Texture* texture, sf::Vector2f size, sf::Vector2f position);
+    Platform(){}
+    Platform(sf::Texture* texture, sf::Vector2f size, sf::Vector2f position);
     void SetData(sf::Texture* texture, sf::Vector2f size, sf::Vector2f position);
     void SetData(sf::Vector2f size, sf::Vector2f position);
     void SetTexture(sf::Texture* texture);
@@ -17,8 +17,8 @@ public:
     void SetPosition(sf::Vector2f position);
     void SetTextureRect(sf::IntRect textureRect);
 
+    sf::Vector2f GetPosition() { return body.getPosition();}
     sf::Vector2f GetSize(){ return body.getSize();}
-    Platform SetWalls(sf::Texture texture, sf::Vector2f size, sf::Vector2f position);
     void Draw(sf::RenderWindow& window);
     Collider GetCollider() { return Collider(body); }
 
