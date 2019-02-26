@@ -85,18 +85,21 @@ void Game::run() {
 
 void Game::update() {
     window.setView(gameView);
-    float elapsedTime = clock.restart().asSeconds();
+//    static float elapsedTime = 0.f;
+    float deltaTime = clock.restart().asSeconds();
+//    elapsedTime += deltaTime;
     if(server.getM_playersConnected()>0)
-    player.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window, server);
+        player.Update(&textures.get(Textures::bulletTexture),  deltaTime, gameView, baseHeight, window, server);
     else
-    	player.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window);
-   // enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window);
+    	player.Update(&textures.get(Textures::bulletTexture), deltaTime, gameView, baseHeight, window);
+   // enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime,  gameView, baseHeight, window);
 	std::ostringstream s;
 	s<<player.health;
 	info[0].setString("Health: " + s.str());
 	s.str("");
 	s<<player.mana;
 	info[1].setString("Mana: " + s.str());
+//	std::cout<<"Time"<<elapsedTime<<" "<<deltaTime<<std::endl;
 }
 
 void Game::processEvents() {

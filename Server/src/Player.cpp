@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cmath>
 #include <GameServer.h>
+#include <Player.h>
 
 #include "Player.h"
 
@@ -34,7 +35,7 @@ void Player::SetData(sf::Texture *playerTexture, sf::Vector2u imageCount, float 
 
 	velocity = sf::Vector2f(2*speed, 1.5f*speed);
 }
-void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &gameView, float &baseHeight, sf::RenderWindow& window)
+void Player::Update(sf::Texture* bulletTexture, float deltaTime, sf::View &gameView, float &baseHeight, sf::RenderWindow& window)
 {
 	static sf::Vector2f movement(0.f, 0.f);
 	static float localVelocity = velocity.y;
@@ -78,6 +79,7 @@ void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &game
 
 				bulletVelocity = sf::Vector2f(4*velocity.x * moveDirection.x*deltaTime, 4*velocity.y * moveDirection.y* deltaTime);
 				isShooting = true;
+				clock.restart();
 			}
 		}
 	}
@@ -110,12 +112,12 @@ void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &game
 //			bulletVelocity.y += g;
 //		}
 //	}
-	if (isShooting)
+	if (isShooting and clock.getElapsedTime().asSeconds()>=0.2f )
 	{
-		bullets.emplace_back(bulletTexture, sf::Vector2f(20.f, 12.4f), body.getPosition(), bulletVelocity);
+		bullets.emplace_back(Bullet(bulletTexture, sf::Vector2f(20.f, 12.4f), body.getPosition(), bulletVelocity));
 		isShooting = false;
+		clock.restart();
 	}
-
 	if (not isUp(body, baseHeight))
 	{
 		body.setPosition(body.getPosition().x, baseHeight);
@@ -144,7 +146,7 @@ void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &game
 		movement = sf::Vector2f(0.f,0.f);
 }
 
-void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &gameView, float &baseHeight, sf::RenderWindow& window, GameServer& server)
+void Player::Update(sf::Texture* bulletTexture, float deltaTime, sf::View &gameView, float &baseHeight, sf::RenderWindow& window, GameServer& server)
 {
 	static sf::Vector2f movement(0.f, 0.f);
 	static float localVelocity = velocity.y;
@@ -189,6 +191,7 @@ void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &game
 
 				bulletVelocity = sf::Vector2f(4*velocity.x * moveDirection.x*deltaTime, 4*velocity.y * moveDirection.y* deltaTime);
 				isShooting = true;
+
 			}
 		}
 	}
@@ -226,7 +229,6 @@ void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &game
 		bullets.emplace_back(bulletTexture, sf::Vector2f(20.f, 12.4f), body.getPosition(), bulletVelocity);
 		isShooting = false;
 	}
-
 	if (not isUp(body, baseHeight))
 	{
 		body.setPosition(body.getPosition().x, baseHeight);
@@ -262,15 +264,17 @@ void Player::Draw(sf::RenderWindow &window) {
 //		exit(0);
 //	}
 	window.draw(body);
-	for (int i=0; i<int(bullets.size()); i++)
+	for (int i = 0; i < int(bullets.size()); i++)
 	{
 		bullets[i].draw(window);
-		std::cout<<"Testing " <<i<<std::endl;
+		std::cout << "Testing " << i << std::endl;
 		bullets[i].fire();
 	}
-	for(int i=0; i<int(bullets.size()); i++)
-		if(HitCheck(bullets[i]))
-			bullets.erase(bullets.begin()+i);
+	for (int i = 0; i < int(bullets.size()); i++)
+	{
+		if (HitCheck(bullets[i]))
+			bullets.erase(bullets.begin() + i);
+	}
 }
 
 void Player::SetPosition(sf::Vector2f position) {
@@ -342,4 +346,5 @@ bool Player::isConnected()
 {
 	return m_connected;
 }
+
 
