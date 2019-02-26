@@ -8,7 +8,11 @@
 
 #include "Player.h"
 
+Player::Player(std::unique_ptr<sf::TcpSocket>* socket,int id){
+	m_socket = std::move(*socket);
+	m_id=id;
 
+}
 
 void Player::SetData(sf::Texture *playerTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position) {
 	animation.SetData(playerTexture, imageCount, switchTime);
@@ -34,7 +38,7 @@ void Player::SetData(sf::Texture *playerTexture, sf::Vector2u imageCount, float 
 
 	velocity = sf::Vector2f(2*speed, 1.5f*speed);
 }
-void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &gameView, float &baseHeight, sf::RenderWindow& window)
+void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window, sf::RectangleShape &sky)
 {
 	static sf::Vector2f movement(0.f, 0.f);
 	static float localVelocity = velocity.y;
@@ -59,11 +63,10 @@ void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &game
 	{
 		sf::Vector2i pixelMousePos = sf::Mouse::getPosition(window);
 
-		sf::IntRect viewport = window.getViewport(gameView);
+		sf::IntRect viewport = gameView.GetViewport(window);
 		if (viewport.contains(pixelMousePos))
 		{
 			sf::Vector2f mousePos = window.mapPixelToCoords(pixelMousePos);
-			std::cout<<mousePos.y<<" "<<body.getPosition().y<<std::endl;
 			if (mousePos.y<=baseHeight)
 			{
 				sf::Vector2f localBulletPos = body.getPosition();
@@ -75,6 +78,7 @@ void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &game
 
 				bulletVelocity = sf::Vector2f(4*velocity.x * moveDirection.x*deltaTime, 4*velocity.y * moveDirection.y* deltaTime);
 				isShooting = true;
+				clock.restart();
 			}
 		}
 	}
@@ -107,10 +111,11 @@ void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &game
 //			bulletVelocity.y += g;
 //		}
 //	}
-	if (isShooting)
+	if (isShooting and clock.getElapsedTime().asSeconds()>=0.2f )
 	{
-		bullets.emplace_back(bulletTexture, sf::Vector2f(20.f, 12.4f), body.getPosition(), bulletVelocity);
+		bullets.emplace_back(Bullet(bulletTexture, sf::Vector2f(20.f, 12.4f), body.getPosition(), bulletVelocity));
 		isShooting = false;
+		clock.restart();
 	}
 
 	if (not isUp(body, baseHeight))
@@ -127,7 +132,7 @@ void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &game
 		row = 1;
 		faceRight = movement.x > 0;
 	}
-	gameView.move(movement);
+	gameView.Update(body, window, sky);
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
 	body.move(movement);
@@ -141,35 +146,28 @@ void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &game
 		movement = sf::Vector2f(0.f,0.f);
 }
 
-void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &gameView, float &baseHeight, sf::RenderWindow& window, GameServer& server)
+void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window, sf::RectangleShape& sky, GameServer& server)
 {
 	static sf::Vector2f movement(0.f, 0.f);
 	static float localVelocity = velocity.y;
 	const float g = 9.81f;
 	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-	{
 		movement.x -= velocity.x * deltaTime;
-//		server.update(movement);
-	}
 	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-	{
 		movement.x += velocity.x * deltaTime;
-//		server.update(movement);
-	}
 //    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) and isUp)
 //        movement.y += velocity.x * deltaTime;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-	{
 		isJumping = true;
-//		server.update(movement);
-	}
+
+
 	server.setPosition(movement);
 //	static sf::Vector2f mousePos;
 	if (not isShooting and sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
 		sf::Vector2i pixelMousePos = sf::Mouse::getPosition(window);
 
-		sf::IntRect viewport = window.getViewport(gameView);
+		sf::IntRect viewport = gameView.GetViewport(window);
 		if (viewport.contains(pixelMousePos))
 		{
 			sf::Vector2f mousePos = window.mapPixelToCoords(pixelMousePos);
@@ -228,7 +226,6 @@ void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &game
 		body.setPosition(body.getPosition().x, baseHeight);
 		isJumping = false;
 		localVelocity = velocity.y;
-		//server.update(movement);
 	}
 
 	if(movement.x == 0)
@@ -238,7 +235,7 @@ void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &game
 		row = 1;
 		faceRight = movement.x > 0;
 	}
-	gameView.move(movement);
+	gameView.Update(body, window, sky);
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
 	body.move(movement);
@@ -247,12 +244,9 @@ void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &game
 	{
 		movement.y = -localVelocity * deltaTime;
 		localVelocity -= g;
-
 	}
 	else
-	{
 		movement = sf::Vector2f(0.f,0.f);
-	}
 }
 
 void Player::Draw(sf::RenderWindow &window) {
@@ -262,24 +256,30 @@ void Player::Draw(sf::RenderWindow &window) {
 //		exit(0);
 //	}
 	window.draw(body);
-	for (int i=0; i<int(bullets.size()); i++)
+	for (int i = 0; i < int(bullets.size()); i++)
 	{
 		bullets[i].draw(window);
-		std::cout<<"Testing " <<i<<std::endl;
 		bullets[i].fire();
 	}
-	for(int i=0; i<int(bullets.size()); i++)
-		HitCheck(bullets[i]);
+	for (int i = 0; i < int(bullets.size()); i++)
+	{
+		if (HitCheck(bullets[i]))
+			bullets.erase(bullets.begin() + i);
+	}
 }
 
 void Player::SetPosition(sf::Vector2f position) {
 	body.setPosition(position);
 }
 
-void Player::HitCheck(Bullet& bullet)
+bool Player::HitCheck(Bullet& bullet)
 {
 	if(GetCollider().CheckCollision(Collider(bullet.getBullet())))
-		health-=50;
+	{
+		health -= 50;
+		return true;
+	}
+	return false;
 }
 
 bool Player::isUp(sf::RectangleShape &shape, float &baseHeight)

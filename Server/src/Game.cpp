@@ -10,39 +10,42 @@ Game::Game(unsigned viewWidth, unsigned viewHeight)
 	 server(sf::Socket::AnyPort+7000),
 	 viewWidth(viewWidth),
 	 viewHeight(viewHeight),
-	 baseHeight(1.4f*(viewHeight - 50.f))
+	 baseHeight(1900)
 {
 	window.setVerticalSyncEnabled(true);
 
-	gameView.setCenter(sf::Vector2f(1000.f, 600.f));
-	gameView.setSize(sf::Vector2f(viewWidth, viewHeight));
 	minimapView.setSize(sf::Vector2f(200.f, 200.f));
-	gameView.setViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
 	minimapView.setViewport(sf::FloatRect(0.75f, 0.f, 0.25f, 0.25f));
 
 
-	textures.load(Textures::skyTexture, "../Media/Textures/sky.png");
-	textures.load(Textures::groundTexture, "../Media/Textures/ground.jpg");
+	textures.load(Textures::skyTexture, "../Media/Textures/kurukshetra.png");
+	textures.load(Textures::groundTexture, "../Media/Textures/stoneTile.png");
+	textures.load(Textures::wallTexture, "../Media/Textures/stoneTile.png");
 	textures.load(Textures::rockTexture, "../Media/Textures/rockPlatform.png");
-	textures.load(Textures::grassTexture, "../Media/Textures/grass.png");
+//	textures.load(Textures::grassTexture, "../Media/Textures/grass.png");
 	textures.load(Textures::playerTexture, "../Media/Textures/fox.png");
-	textures.load(Textures::enemyTexture, "../Media/Textures/fox.png");
+	textures.load(Textures::enemyTexture, "../Media/Textures/enemy.png");
 	textures.load(Textures::bulletTexture, "../Media/Textures/bullet.png");
 
 	textures.get(Textures::skyTexture).setRepeated(true);
-	textures.get(Textures::groundTexture).setRepeated(true);
 	textures.get(Textures::playerTexture).setSmooth(true);
 	textures.get(Textures::bulletTexture).setSmooth(true);
 	textures.get(Textures::grassTexture).setSmooth(true);
 
 	sky.setPosition(sf::Vector2f(0, 0));
-	sky.setSize(sf::Vector2f(1920, 1080));
+	sky.setSize(sf::Vector2f(4000, 2500));
 	sky.setTexture(&textures.get(Textures::skyTexture));
 
-	player.SetData(&textures.get(Textures::playerTexture), sf::Vector2u(3, 9), 0.3f, 150.0f, sf::Vector2f(1000.f, baseHeight));
+	player.SetData(&textures.get(Textures::playerTexture), sf::Vector2u(3, 9), 0.3f, 150.0f, sf::Vector2f(1200, 1200));
 	enemy.SetData(&textures.get(Textures::enemyTexture), sf::Vector2u(3, 9), 0.3f, 150.0f,sf::Vector2f(1000.f, baseHeight));
 
-	fonts.load(GameFonts::info, "../Media/Fonts/DejaVuSans.ttf");
+
+    gameView.SetSize(sf::Vector2f(viewWidth, viewHeight));
+    gameView.SetViewPort(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
+    gameView.Update(player.GetBody(), window, sky);
+
+
+    fonts.load(GameFonts::info, "../Media/Fonts/DejaVuSans.ttf");
 	for (int i=0; i<2; i++)
 		info[i].setFont(fonts.get(GameFonts::info));
 //	std::ostringstream s;
@@ -58,13 +61,20 @@ Game::Game(unsigned viewWidth, unsigned viewHeight)
 		info[i].setFillColor(sf::Color::Red);
 	}
 
-	ground.SetData(&textures.get(Textures::groundTexture), sf::Vector2f(1920, 80), sf::Vector2f(0, 520));
+	ground.SetData(&textures.get(Textures::groundTexture), sf::Vector2f(4000, 200), sf::Vector2f(0, baseHeight));
+	ground.SetTextureRect(sf::IntRect(0, 0, 4000, 200));
+    textures.get(Textures::groundTexture).setRepeated(true);
 
-	const sf::Vector2f grassSize = sf::Vector2f(100, 100);
-	grass.setPosition(sf::Vector2f(1200.f, baseHeight));
-	grass.setSize(grassSize);
-	grass.setTexture(&textures.get(Textures::grassTexture));
-	grass.setOrigin(grassSize);
+	wallsPosition = {sf::Vector2f(0, baseHeight - 1000), sf::Vector2f(500, baseHeight - 50)};
+
+	walls.push_back(wall.SetWalls(textures.get(Textures::wallTexture), sf::Vector2f(300, 50), wallsPosition[1]));
+
+//
+//	const sf::Vector2f grassSize = sf::Vector2f(100, 100);
+//	grass.setPosition(sf::Vector2f(1200.f, baseHeight));
+//	grass.setSize(grassSize);
+//	grass.setTexture(&textures.get(Textures::grassTexture));
+//	grass.setOrigin(grassSize);
 
 	rock.setPosition(sf::Vector2f(300, baseHeight));
 	rock.setSize(sf::Vector2f(300, 50));
@@ -84,16 +94,17 @@ void Game::run() {
 }
 
 void Game::update() {
-    window.setView(gameView);
+    gameView.SetView(window);
     float elapsedTime = clock.restart().asSeconds();
     if(server.getM_playersConnected()>0)
 	{
     	static sf::Vector2f data=server.getRecievedData();
-		player.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window, server);
+		player.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window,sky, server);
 		enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window,data);
 	}
     else
-    	player.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window);
+    	player.Update(&textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window, sky);
+   // enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime,  gameView, baseHeight, window);
 	std::ostringstream s;
 	s<<player.health;
 	info[0].setString("Health: " + s.str());
@@ -124,8 +135,11 @@ void Game::processEvents() {
 void Game::render() {
 	window.clear();
 	window.draw(sky);
-	window.draw(grass);
-	window.draw(rock);
+//	window.draw(grass);
+//	window.draw(rock);
+    ground.Draw(window);
+    for(unsigned long i = 0; i < walls.size(); i++)
+        walls[i].Draw(window);
 	player.Draw(window);
 	if(server.getM_playersConnected()>0)
 		enemy.Draw(window);
@@ -135,8 +149,8 @@ void Game::render() {
 
 }
 
-void Game::ResizedWindow(sf::RenderWindow &window, sf::View &view) {
+void Game::ResizedWindow(sf::RenderWindow &window, Camera &view) {
 	float aspectratio = window.getSize().x / float(window.getSize().y);
 
-	view.setSize(viewWidth * aspectratio, viewHeight);
+	view.SetSize(sf::Vector2f(viewWidth * aspectratio, viewHeight));
 }

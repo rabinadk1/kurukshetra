@@ -12,6 +12,7 @@
 #include "Collider.h"
 #include "GameServer.h"
 #include "Bullet.h"
+#include "Camera.h"
 #include <vector>
 
 class Enemy {
@@ -19,7 +20,7 @@ public:
     Enemy(){};
     Enemy(std::unique_ptr<sf::TcpSocket> *socket, int id);
     void SetData(sf::Texture *EnemyTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position);
-    void Update(sf::Texture* bulletTexture, float deltaTime, sf::View &gameView, float &baseHeight, sf::RenderWindow& window,sf::Vector2f position);
+    void Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window, sf::Vector2f position);
     void Draw(sf::RenderWindow& window);
     Collider GetCollider() { return Collider(body); }
     void SetPosition(sf::Vector2f position);

@@ -38,7 +38,7 @@ void Enemy::SetData(sf::Texture *EnemyTexture, sf::Vector2u imageCount, float sw
     velocity = sf::Vector2f(2*speed, 1.5f*speed);
 }
 
-void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, sf::View &gameView, float &baseHeight, sf::RenderWindow& window,sf::Vector2f position)
+void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window, sf::Vector2f position)
 {
     static sf::Vector2f movement2(0.f, 0.f);
     sf::Vector2f bulletmovement2(0.f, 0.f);
@@ -60,7 +60,7 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, sf::View &gameVi
     {
         sf::Vector2i pixelMousePos = sf::Mouse::getPosition(window);
 
-        sf::IntRect viewport = window.getViewport(gameView);
+        sf::IntRect viewport = gameView.GetViewport(window);
         if (viewport.contains(pixelMousePos))
         {
             mousePos = window.mapPixelToCoords(pixelMousePos);

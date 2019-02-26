@@ -9,11 +9,13 @@
 #include "Platform.h"
 #include "GameServer.h"
 #include "Enemy.h"
+#include <Camera.h>
+#include <vector>
 
 // NOTE: textureNumber and fontNumber is always at the last of enum to find the size of enum needed for constructor of ResourceHandler
 namespace Textures
 {
-	enum ID {skyTexture, groundTexture, rockTexture, playerTexture, grassTexture, bulletTexture, enemyTexture, textureNumber};
+    enum ID {skyTexture, groundTexture, rockTexture, playerTexture, grassTexture, bulletTexture, wallTexture, barrelTexture, enemyTexture, textureNumber};
 }
 
 namespace GameFonts
@@ -30,7 +32,7 @@ private:
     void processEvents();
     void update();
     void render();
-    void ResizedWindow(sf::RenderWindow& window, sf::View& view);
+    void ResizedWindow(sf::RenderWindow& window, Camera& view);
 
 private:
     sf::RenderWindow window;
@@ -44,8 +46,11 @@ private:
     sf::RectangleShape sky, grass, rock;
     Animation playerAnimation, enemyAnimation;
     sf::Clock clock;
-    sf::View gameView, minimapView;
-    Platform ground;
+    Camera gameView;
+    sf::View minimapView;
+    std::vector<Platform> walls;
+    Platform ground, wall;
+    std::vector<sf::Vector2f> wallsPosition;
     float viewWidth;
     float viewHeight, baseHeight;
 };
