@@ -4,14 +4,11 @@
 
 #include <iostream>
 #include <cmath>
+#include <GameServer.h>
 
 #include "Player.h"
 
-Player::Player(std::unique_ptr<sf::TcpSocket>* socket,int id){
-	m_socket = std::move(*socket);
-	m_id=id;
 
-}
 
 void Player::SetData(sf::Texture *playerTexture, sf::Texture* bulletTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position) {
 	animation.SetData(playerTexture, imageCount, switchTime);
@@ -38,20 +35,30 @@ void Player::SetData(sf::Texture *playerTexture, sf::Texture* bulletTexture, sf:
 	velocity = sf::Vector2f(2*speed, 1.5f*speed);
 }
 
-void Player::Update(float deltaTime, sf::View &gameView, float &baseHeight, sf::RenderWindow& window)
+void Player::Update(float deltaTime, sf::View &gameView, float &baseHeight, sf::RenderWindow& window,GameServer& server)
 {
 	static sf::Vector2f movement(0.f, 0.f);
 	sf::Vector2f bulletMovement(0.f, 0.f);
 	static float localVelocity = velocity.y;
 	const float g = 9.81f;
 	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	{
 		movement.x -= velocity.x * deltaTime;
+		server.update(movement.x);
+	}
 	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	{
 		movement.x += velocity.x * deltaTime;
+		server.update(movement.x);
+	}
 //    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) and isUp)
 //        movement.y += velocity.x * deltaTime;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	{
 		isJumping = true;
+		server.update(movement.x);
+
+	}
 
 	static sf::Vector2f mousePos, moveDirection;
 	if (not isShooting and sf::Mouse::isButtonPressed(sf::Mouse::Left))

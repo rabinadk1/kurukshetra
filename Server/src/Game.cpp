@@ -7,7 +7,7 @@ Game::Game(unsigned viewWidth, unsigned viewHeight)
 	:window(sf::VideoMode(viewHeight, viewHeight), "Kurukshetra"),
 	 textures(Textures::textureNumber),
 	 fonts(GameFonts::fontNumber),
-	 server(5000),
+	 server(sf::Socket::AnyPort+7000),
 	 viewWidth(viewWidth),
 	 viewHeight(viewHeight),
 	 baseHeight(1.4f*(viewHeight - 50.f))
@@ -84,7 +84,7 @@ void Game::run() {
 
 void Game::update() {
     window.setView(gameView);
-    player.Update(clock.restart().asSeconds(), gameView, baseHeight, window);
+    player.Update(clock.restart().asSeconds(), gameView, baseHeight, window,server);
     enemy.Update(clock.restart().asSeconds(), gameView, baseHeight, window);
 }
 

@@ -7,13 +7,13 @@
 #include <SFML/Network/TcpSocket.hpp>
 #include "Animation.h"
 #include "Collider.h"
+#include "GameServer.h"
 #include <queue>
 class Player {
 public:
-	Player(std::unique_ptr<sf::TcpSocket>* socket,int id);
 	Player(){};
     void SetData(sf::Texture *playerTexture, sf::Texture* bulletTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position);
-    void Update(float deltaTime, sf::View& gameView, float &baseHeight, sf::RenderWindow& window);
+    void Update(float deltaTime, sf::View& gameView, float &baseHeight, sf::RenderWindow& window,GameServer& server);
     void Draw(sf::RenderWindow& window);
     Collider GetCollider() { return Collider(body); }
     void SetPosition(sf::Vector2f position);

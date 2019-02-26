@@ -11,11 +11,13 @@
 #include <thread>
 #include <mutex>
 #include <SFML/Network/TcpSocket.hpp>
+#include <Enemy.h>
+
 enum SIGNAL_SEND
 {
     PING = 0,
     SERVER_FULL = 51,
-//    CLIENT_ID,
+    CLIENT_ID,
 //    PLAYER_LIST,
 //    PLAYER_CONNECTED,
 //    PLAYER_DISCONNECTED,
@@ -41,12 +43,13 @@ public:
     ~GameServer();
 
     void receive();
-//    void update();
+    void update(sf::Keyboard::Key key);
+    void update(float position);
 //
 //    void updateTick();
 //    void updateWorld(sf::Time dt);
 
-   //  void setPlayerList(std::vector<Player> *players);
+    //  void setPlayerList(std::vector<Player> *players);
 
     int getM_playersConnected() const;
 
@@ -66,16 +69,16 @@ private:
 
 
     // Variables
-    int m_playersConnected;
-    int m_currentPlayerId;
+    int32_t m_playersConnected;
+    int32_t m_currentPlayerId;
 
-     //std::vector<Player> *m_playerList = nullptr;
- //   std::queue<sf::Packet> m_receivedPackets;
+    std::vector<Enemy> m_playerList;
+    //   std::queue<sf::Packet> m_receivedPackets;
 
- //   char m_tmp[1400];
+    //   char m_tmp[1400];
 
     std::thread t0;
-//    std::mutex m_mutex;
+    std::mutex m_mutex;
 
 
     // Map
