@@ -2,10 +2,7 @@
 // Created by safal on 25/2/19.
 //
 
-#ifndef KURUKSHETRA_CAMERA_H
-#define KURUKSHETRA_CAMERA_H
-
-
+#pragma once
 #include <SFML/Graphics.hpp>
 
 class Camera {
@@ -27,5 +24,3 @@ public:
     sf::FloatRect getViewBounds(const sf::View &view);
 };
 
-
-#endif //KURUKSHETRA_CAMERA_H

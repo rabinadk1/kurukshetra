@@ -2,8 +2,7 @@
 // Created by samip on 21/1/19.
 //
 
-#ifndef UNTITLED_SERVER_H
-#define UNTITLED_SERVER_H
+#pragma once
 #include <SFML/System/Time.hpp>
 #include <SFML/Network.hpp>
 #include <queue>
@@ -81,5 +80,3 @@ private:
     // Map
     //  LevelManager m_currentLevel;
 };
-
-#endif //UNTITLED_SERVER_H

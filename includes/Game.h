@@ -15,7 +15,7 @@
 // NOTE: textureNumber and fontNumber is always at the last of enum to find the size of enum needed for constructor of ResourceHandler
 namespace Textures
 {
-    enum ID {skyTexture, groundTexture, rockTexture, playerTexture, grassTexture, bulletTexture, textureNumber, wallTexture, barrelTexture, enemyTexture};
+    enum ID {skyTexture, groundTexture, rockTexture, playerTexture, grassTexture, bulletTexture, wallTexture, barrelTexture, enemyTexture, textureNumber};
 }
 
 namespace GameFonts
