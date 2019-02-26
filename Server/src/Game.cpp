@@ -4,7 +4,7 @@
 #include <sstream>
 #include "Game.h"
 Game::Game(unsigned viewWidth, unsigned viewHeight)
-	:window(sf::VideoMode(viewHeight, viewHeight), "Kurukshetra"),
+	:window(sf::VideoMode(viewHeight, viewHeight), "Kurukshetra Server"),
 	 textures(Textures::textureNumber),
 	 fonts(GameFonts::fontNumber),
 	 server(sf::Socket::AnyPort+7000),
@@ -88,8 +88,9 @@ void Game::update() {
     float elapsedTime = clock.restart().asSeconds();
     if(server.getM_playersConnected()>0)
 	{
-		enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window);
+    	static sf::Vector2f data=server.getRecievedData();
 		player.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window, server);
+		enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window,data);
 	}
     else
     	player.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window);

@@ -38,23 +38,23 @@ void Enemy::SetData(sf::Texture *EnemyTexture, sf::Vector2u imageCount, float sw
     velocity = sf::Vector2f(2*speed, 1.5f*speed);
 }
 
-void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, sf::View &gameView, float &baseHeight, sf::RenderWindow& window)
+void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, sf::View &gameView, float &baseHeight, sf::RenderWindow& window,sf::Vector2f position)
 {
-    static sf::Vector2f movement(0.f, 0.f);
-    sf::Vector2f bulletMovement(0.f, 0.f);
+    static sf::Vector2f movement2(0.f, 0.f);
+    sf::Vector2f bulletmovement2(0.f, 0.f);
     static float localVelocity = velocity.y;
     const float g = 9.81f;
 //    if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-//        movement.x -= velocity.x * deltaTime;
+//        movement2.x -= velocity.x * deltaTime;
 //    if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-//        movement.x += velocity.x * deltaTime;
+//        movement2.x += velocity.x * deltaTime;
 ////    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) and isUp)
-////        movement.y += velocity.x * deltaTime;
+////        movement2.y += velocity.x * deltaTime;
 //    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 //    {
 //        isJumping = true;
 //    }
-
+    movement2=position;
     static sf::Vector2f mousePos;
     if (not isShooting and sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {
@@ -64,7 +64,7 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, sf::View &gameVi
         if (viewport.contains(pixelMousePos))
         {
             mousePos = window.mapPixelToCoords(pixelMousePos);
-            std::cout<<mousePos.y<<" "<<body.getPosition().y<<std::endl;
+//            std::cout<<mousePos.y<<" "<<body.getPosition().y<<std::endl;
             if (mousePos.y<=baseHeight)
             {
                 sf::Vector2f localBulletPos = body.getPosition();
@@ -103,8 +103,8 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, sf::View &gameVi
 //		}
 //		else if (isShooting)
 //		{
-//			bulletMovement.x += bulletVelocity.x * deltaTime;
-//			bulletMovement.y += bulletVelocity.y * deltaTime;
+//			bulletmovement2.x += bulletVelocity.x * deltaTime;
+//			bulletmovement2.y += bulletVelocity.y * deltaTime;
 //			bulletVelocity.y += g;
 //		}
 //	}
@@ -123,28 +123,27 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, sf::View &gameVi
         localVelocity = velocity.y;
     }
 
-    if(movement.x == 0)
+    if(movement2.x == 0)
         row = 0;
     else
     {
         row = 1;
-        faceRight = movement.x > 0;
+        faceRight = movement2.x > 0;
     }
-    gameView.move(movement);
+
+//    std::cout<<movement2.x<<movement2.y;
+   // gameView.move(movement2);
     animation.Update(row, deltaTime, faceRight);
     body.setTextureRect(animation.uvRect);
-    body.move(movement);
-
+    body.move(movement2);
     if (isJumping)
     {
-        movement.y = -localVelocity * deltaTime;
+        movement2.y = -localVelocity * deltaTime;
         localVelocity -= g;
     }
     else
-        movement = sf::Vector2f(0.f,0.f);
+        movement2 = sf::Vector2f(0.f,0.f);
 }
-
-
 void Enemy::Draw(sf::RenderWindow &window) {
 //	if (isDead())
 //	{
@@ -155,7 +154,7 @@ void Enemy::Draw(sf::RenderWindow &window) {
     for (int i=0; i<int(bullets.size()); i++)
     {
         bullets[i].draw(window);
-        std::cout<<"Testing " <<i<<std::endl;
+       // std::cout<<"Testing " <<i<<std::endl;
         bullets[i].fire();
     }
     for(int i=0; i<int(bullets.size()); i++)

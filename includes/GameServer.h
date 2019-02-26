@@ -43,8 +43,9 @@ public:
     ~GameServer();
 
     void receive();
-    void update(sf::Keyboard::Key key);
-    void update(sf::Vector2f position);
+    //void update(sf::Keyboard::Key key);
+    void update();
+    sf::Vector2f recieveData();
 //
 //    void updateTick();
 //    void updateWorld(sf::Time dt);
@@ -53,13 +54,17 @@ public:
 
     int getM_playersConnected() const;
 
+    const sf::Vector2f &getRecievedData() const;
+
+    void setPosition(const sf::Vector2f &position);
+
 private:
     bool m_running;
 
     sf::TcpListener m_listener;
     sf::SocketSelector m_selector;
 
-
+    sf::Vector2f recievedData;
     // Server settings
     unsigned short m_port;
     unsigned short m_maxPlayers;
@@ -79,7 +84,10 @@ private:
 
     std::thread t0;
     std::mutex m_mutex;
-
+    std::thread t1;
+    std::thread t2;
+    sf::Vector2f position;
+    sf::TcpSocket socket;
 
     // Map
     //  LevelManager m_currentLevel;

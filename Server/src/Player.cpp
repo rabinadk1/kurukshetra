@@ -163,7 +163,7 @@ void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &game
 		isJumping = true;
 //		server.update(movement);
 	}
-
+	server.setPosition(movement);
 //	static sf::Vector2f mousePos;
 	if (not isShooting and sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
@@ -242,7 +242,7 @@ void Player::Update(sf::Texture* bulletTexture , float deltaTime, sf::View &game
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
 	body.move(movement);
-	server.update(movement);
+
 	if (isJumping)
 	{
 		movement.y = -localVelocity * deltaTime;
