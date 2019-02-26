@@ -16,6 +16,7 @@ public:
 	Player(){};
     void SetData(sf::Texture *playerTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position);
 	void Update(sf::Texture* bulletTexture , float deltaTime, sf::View &gameView, float &baseHeight, sf::RenderWindow& window, GameServer& server);
+	void Update(sf::Texture* bulletTexture , float deltaTime, sf::View &gameView, float &baseHeight, sf::RenderWindow& window);
 	void Draw(sf::RenderWindow& window);
     Collider GetCollider() { return Collider(body); }
     void SetPosition(sf::Vector2f position);
