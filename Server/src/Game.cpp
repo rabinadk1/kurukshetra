@@ -26,7 +26,7 @@ Game::Game(unsigned viewWidth, unsigned viewHeight)
 	textures.load(Textures::rockTexture, "../Media/Textures/rockPlatform.png");
 //	textures.load(Textures::grassTexture, "../Media/Textures/grass.png");
 	textures.load(Textures::playerTexture, "../Media/Textures/fox.png");
-	textures.load(Textures::enemyTexture, "../Media/Textures/fox.png");
+	textures.load(Textures::enemyTexture, "../Media/Textures/enemy.png");
 	textures.load(Textures::bulletTexture, "../Media/Textures/bullet.png");
 
 	textures.get(Textures::skyTexture).setRepeated(true);
@@ -38,13 +38,13 @@ Game::Game(unsigned viewWidth, unsigned viewHeight)
 	sky.setSize(sf::Vector2f(4000, 2500));
 	sky.setTexture(&textures.get(Textures::skyTexture));
 
-	player.SetData(&textures.get(Textures::playerTexture), sf::Vector2u(3, 9), 0.3f, 150.0f, sf::Vector2f(150, 150));
+	player.SetData(&textures.get(Textures::playerTexture), sf::Vector2u(3, 9), 0.3f, 150.0f, sf::Vector2f(1200, 1200));
 	enemy.SetData(&textures.get(Textures::enemyTexture), sf::Vector2u(3, 9), 0.3f, 150.0f,sf::Vector2f(1000.f, baseHeight));
 
 
     gameView.SetSize(sf::Vector2f(viewWidth, viewHeight));
     gameView.SetViewPort(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
-    gameView.Update(player.getPosition(), window);
+    gameView.Update(player.GetBody(), window, sky);
 
 
     fonts.load(GameFonts::info, "../Media/Fonts/DejaVuSans.ttf");
@@ -98,7 +98,7 @@ void Game::run() {
 void Game::update() {
     gameView.SetView(window);
     float elapsedTime = clock.restart().asSeconds();
-    player.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window);
+    player.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window, sky);
     enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window);
 	std::ostringstream s;
 	s<<player.health;

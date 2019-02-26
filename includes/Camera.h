@@ -19,7 +19,7 @@ public:
     void SetSize(sf::Vector2f size);
     void Move(sf::Vector2f newCameraPosition);
     void Zoom(float factor);
-    void Update(sf::Vector2f playerPosition, sf::RenderWindow& window);
+    void Update(sf::RectangleShape& player, sf::RenderWindow& window, sf::RectangleShape& sky);
     sf::IntRect GetViewport();
     void SetCenter(sf::Vector2f center);
     void SetViewPort(sf::FloatRect rect);

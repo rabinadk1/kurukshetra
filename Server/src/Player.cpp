@@ -38,7 +38,7 @@ void Player::SetData(sf::Texture *playerTexture, sf::Vector2u imageCount, float 
 	velocity = sf::Vector2f(2*speed, 1.5f*speed);
 }
 
-void Player::Update(sf::Texture* bulletTexture , float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window)
+void Player::Update(sf::Texture* bulletTexture , float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window, sf::RectangleShape &sky)
 {
 	static sf::Vector2f movement(0.f, 0.f);
 //	sf::Vector2f bulletMovement(0.f, 0.f);
@@ -127,7 +127,7 @@ void Player::Update(sf::Texture* bulletTexture , float deltaTime, Camera &gameVi
 		row = 1;
 		faceRight = movement.x > 0;
 	}
-	gameView.Update(body.getPosition(), window);
+	gameView.Update(body, window, sky);
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
 	body.move(movement);

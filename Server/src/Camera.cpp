@@ -41,14 +41,17 @@ void Camera::Zoom(float factor) {
     view.zoom(factor);
 }
 
-void Camera::Update(sf::Vector2f playerPosition, sf::RenderWindow &window) {
-    sf::FloatRect viewBound = getViewBounds(view);
-    if(4000 - viewBound.left >= viewBound.width)
-        view.setCenter(playerPosition.x, playerPosition.y - 300);
+void Camera::Update(sf::RectangleShape &player, sf::RenderWindow &window, sf::RectangleShape &sky) {
+    sf::FloatRect playerBounds = player.getGlobalBounds();
+//    view.setCenter(player.getPosition().x, player.getPosition().y - 300);
+    if(player.getPosition().x >= sky.getSize().x -player.getSize().x)
+        player.setPosition(sky.getSize().x - player.getSize().x, player.getPosition().y);
+    if(sky.getTexture()->getSize().x - player.getPosition().x >= 0)
+        view.setCenter(player.getPosition().x, player.getPosition().y - 300);
     else
-        view.setCenter((4000 - viewBound.width)/2, playerPosition.y - 300);
-    std::cout << viewBound.left << std::endl;
-    std::cout <<"width: " <<  viewBound.width << std::endl;
+        view.setCenter(sky.getTexture()->getSize().x + (sky.getTexture()->getSize().x + player.getPosition().x)/1000, player.getPosition().y -300);
+
+    std::cout << sky.getSize().x - player.getPosition().x << std::endl;
 
 }
 
