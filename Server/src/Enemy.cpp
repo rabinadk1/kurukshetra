@@ -2,9 +2,42 @@
 // Created by samip on 25/2/19.
 //
 
-#include <cmath>
 #include <iostream>
+#include <cmath>
+#include <GameServer.h>
+
 #include "Enemy.h"
+
+Enemy::Enemy(std::unique_ptr<sf::TcpSocket> *socket, int id) {
+    m_socket = std::move(*socket);
+    m_id=id;
+}
+
+void Enemy::SetData(sf::Texture *EnemyTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position) {
+    animation.SetData(EnemyTexture, imageCount, switchTime);
+    row = 0;
+    faceRight = true;
+    isJumping = isShooting = false;
+    health = mana = 100;
+    bulletVelocity = moveDirection = sf::Vector2f(0.f, 0.f);
+
+    const sf::Vector2f EnemySize = sf::Vector2f(100.0f, 150.0f);
+    body.setSize(EnemySize);
+    body.setPosition(position);
+    body.setTexture(EnemyTexture);
+    body.setOrigin(EnemySize);
+//    body.setOrigin(EnemySize.x/2, EnemySize.y/2);
+
+//	const sf::Vector2f bulletSize = sf::Vector2f(20.f, 12.4f);
+//	bullet.setSize(bulletSize);
+//	bullet.setPosition(position.x+50, position.y-50);
+//	bullet.setTexture(bulletTexture);
+////    bullet.setOrigin(bulletSize);
+//	bullet.setOrigin(bulletSize.x/2, bulletSize.y/2);
+
+    velocity = sf::Vector2f(2*speed, 1.5f*speed);
+}
+
 void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window)
 {
     static sf::Vector2f movement(0.f, 0.f);
@@ -25,7 +58,7 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
     {
         sf::Vector2i pixelMousePos = sf::Mouse::getPosition(window);
 
-        sf::IntRect viewport = gameView.GetViewport();
+        sf::IntRect viewport = gameView.GetViewport(window);
         if (viewport.contains(pixelMousePos))
         {
             mousePos = window.mapPixelToCoords(pixelMousePos);
@@ -79,6 +112,7 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
         bullets.push_back(newBullet);
         isShooting = false;
     }
+//	}
 
     if (not isUp(body, baseHeight))
     {
@@ -106,4 +140,88 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
     }
     else
         movement = sf::Vector2f(0.f,0.f);
+}
+
+
+void Enemy::Draw(sf::RenderWindow &window) {
+//	if (isDead())
+//	{
+//		std::cout<<"Enemy died successfully!"<<std::endl;
+//		exit(0);
+//	}
+    window.draw(body);
+    for (int i=0; i<int(bullets.size()); i++)
+    {
+        bullets[i].draw(window);
+        std::cout<<"Testing " <<i<<std::endl;
+        bullets[i].fire();
+    }
+    for(int i=0; i<int(bullets.size()); i++)
+        HitCheck(bullets[i]);
+}
+
+void Enemy::SetPosition(sf::Vector2f position) {
+    body.setPosition(position);
+}
+
+void Enemy::HitCheck(Bullet& bullet)
+{
+    if(GetCollider().CheckCollision(Collider(bullet.getBullet())))
+        health-=50;
+}
+
+bool Enemy::isUp(sf::RectangleShape &shape, float &baseHeight)
+{
+    return shape.getPosition().y <= baseHeight;
+}
+
+void Enemy::setName(const std::string& name)
+{
+    m_name = name;
+}
+
+void Enemy::setTimeout(sf::Time time)
+{
+    m_timeout = time;
+}
+
+void Enemy::setConnected(bool status)
+{
+    m_connected = status;
+}
+
+void Enemy::setPing(unsigned short ping)
+{
+    m_ping = ping;
+}
+
+unsigned short Enemy::getPing() {
+    return m_ping;
+}
+sf::Vector2f Enemy::getPosition()
+{
+    return m_position;
+}
+sf::TcpSocket* Enemy::getSocket()
+{
+    return m_socket.get();
+}
+
+std::string Enemy::getName()
+{
+    return m_name;
+}
+
+int Enemy::getId()
+{
+    return m_id;
+}
+
+sf::Time Enemy::getTimeout()
+{
+    return m_timeout;
+}
+bool Enemy::isConnected()
+{
+    return m_connected;
 }

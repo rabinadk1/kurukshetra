@@ -4,6 +4,7 @@
 
 #include <Camera.h>
 #include <iostream>
+#include <SFML/Graphics/RenderWindow.hpp>
 #include "Camera.h"
 
 Camera::Camera() {
@@ -55,8 +56,8 @@ void Camera::Update(sf::RectangleShape &player, sf::RenderWindow &window, sf::Re
 
 }
 
-sf::IntRect Camera::GetViewport() {
-    return static_cast<sf::IntRect>(view.getViewport());
+sf::IntRect Camera::GetViewport(sf::RenderWindow& window) {
+    return static_cast<sf::IntRect>(window.getViewport(view));
 }
 
 sf::FloatRect Camera::getViewBounds(const sf::View &view) {

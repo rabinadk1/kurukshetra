@@ -17,8 +17,10 @@ Bullet::Bullet(sf::Texture *bulletTexture, sf::Vector2f bulletSize, sf::Vector2f
 
 void Bullet::fire()
 {
-	std::cout<<velocity.x<<" "<<velocity.y<<std::endl;
+	const float g = .2f;
+//	std::cout<<velocity.x<<" "<<velocity.y<<std::endl;
 	bullet.move(velocity);
+	velocity.y+=g;
 }
 
 void Bullet::draw(sf::RenderWindow &window)

@@ -39,7 +39,8 @@ private:
     ResourceHolder <sf::Texture, Textures::ID> textures;
     ResourceHolder <sf::Font, GameFonts::ID> fonts;
     sf::Text info[2];
-    Player player;
+	friend class Player;
+	Player player;
     GameServer server;
     Enemy enemy;
     sf::RectangleShape sky, grass, rock;

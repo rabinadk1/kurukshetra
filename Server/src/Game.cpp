@@ -2,14 +2,12 @@
 // Created by maverick on 12/2/19.
 //
 #include <sstream>
-#include <Game.h>
-
 #include "Game.h"
 Game::Game(unsigned viewWidth, unsigned viewHeight)
 	:window(sf::VideoMode(viewHeight, viewHeight), "Kurukshetra"),
 	 textures(Textures::textureNumber),
 	 fonts(GameFonts::fontNumber),
-	 server(5000),
+	 server(sf::Socket::AnyPort+7000),
 	 viewWidth(viewWidth),
 	 viewHeight(viewHeight),
 	 baseHeight(1900)
@@ -97,15 +95,22 @@ void Game::run() {
 
 void Game::update() {
     gameView.SetView(window);
-    float elapsedTime = clock.restart().asSeconds();
-    player.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window, sky);
-    enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window);
+    float deltaTime = clock.restart().asSeconds();
+    if(server.getM_playersConnected()>0)
+	{
+    	player.Update( &textures.get(Textures::bulletTexture), deltaTime, gameView, baseHeight, window, sky, server);
+		enemy.Update( &textures.get(Textures::bulletTexture), deltaTime, gameView, baseHeight, window);
+	}
+    else
+    	player.Update(&textures.get(Textures::bulletTexture), deltaTime, gameView, baseHeight, window, sky);
+   // enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime,  gameView, baseHeight, window);
 	std::ostringstream s;
 	s<<player.health;
 	info[0].setString("Health: " + s.str());
 	s.str("");
 	s<<player.mana;
 	info[1].setString("Mana: " + s.str());
+//	std::cout<<"Time"<<elapsedTime<<" "<<deltaTime<<std::endl;
 }
 
 void Game::processEvents() {
