@@ -1,22 +1,25 @@
 //
 // Created by samip on 25/2/19.
 //
+//
+// Created by safal on 13/2/19.
+//
 
-#ifndef KURUKSHETRA_ENEMY_H
-#define KURUKSHETRA_ENEMY_H
-
+#pragma once
 
 #include <SFML/Network/TcpSocket.hpp>
 #include "Animation.h"
 #include "Collider.h"
-//#include "GameServer.h"
-#include <queue>
+#include "GameServer.h"
+#include "Bullet.h"
+#include <vector>
+
 class Enemy {
 public:
-    Enemy();
+    Enemy(){};
     Enemy(std::unique_ptr<sf::TcpSocket> *socket, int id);
-    void SetData(sf::Texture *EnemyTexture, sf::Texture* bulletTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position);
-    void Update(float deltaTime, sf::View& gameView, float &baseHeight, sf::RenderWindow& window);
+    void SetData(sf::Texture *EnemyTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position);
+    void Update(sf::Texture* bulletTexture, float deltaTime, sf::View &gameView, float &baseHeight, sf::RenderWindow& window);
     void Draw(sf::RenderWindow& window);
     Collider GetCollider() { return Collider(body); }
     void SetPosition(sf::Vector2f position);
@@ -32,11 +35,11 @@ public:
     unsigned short getPing();
     int getId();
 protected:
-    void HitCheck(sf::RectangleShape& bullet);
+    void HitCheck(Bullet& bullet);
     bool isDead(){ return health<=0;}
     bool isUp(sf::RectangleShape& shape, float& baseHeight);
 protected:
-    sf::RectangleShape body, bullet;
+    sf::RectangleShape body;
     Animation animation;
     unsigned row;
     bool faceRight, isJumping, isShooting;
@@ -47,8 +50,8 @@ protected:
     bool m_connected;
     int m_id;
     unsigned short m_ping;
-    sf::Vector2f velocity, bulletVelocity;
+    sf::Vector2f velocity, bulletVelocity, moveDirection;
+    std::vector <Bullet> bullets;
 public:
     int health, mana;
 };
-#endif //KURUKSHETRA_ENEMY_H

@@ -10,9 +10,10 @@
 #include "GameServer.h"
 #include "Enemy.h"
 
+// NOTE: textureNumber and fontNumber is always at the last of enum to find the size of enum needed for constructor of ResourceHandler
 namespace Textures
 {
-	enum ID {skyTexture, groundTexture, rockTexture, playerTexture, grassTexture, bulletTexture, textureNumber, enemyTexture};
+	enum ID {skyTexture, groundTexture, rockTexture, playerTexture, grassTexture, bulletTexture, enemyTexture, textureNumber};
 }
 
 namespace GameFonts

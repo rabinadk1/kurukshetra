@@ -26,6 +26,7 @@ Game::Game(unsigned viewWidth, unsigned viewHeight)
 	textures.load(Textures::rockTexture, "../Media/Textures/rockPlatform.png");
 	textures.load(Textures::grassTexture, "../Media/Textures/grass.png");
 	textures.load(Textures::playerTexture, "../Media/Textures/fox.png");
+	textures.load(Textures::enemyTexture, "../Media/Textures/fox.png");
 	textures.load(Textures::bulletTexture, "../Media/Textures/bullet.png");
 
 	textures.get(Textures::skyTexture).setRepeated(true);
@@ -38,18 +39,18 @@ Game::Game(unsigned viewWidth, unsigned viewHeight)
 	sky.setSize(sf::Vector2f(1920, 1080));
 	sky.setTexture(&textures.get(Textures::skyTexture));
 
-	player.SetData(&textures.get(Textures::playerTexture), &textures.get(Textures::bulletTexture), sf::Vector2u(3, 9), 0.3f, 150.0f, sf::Vector2f(1000.f, baseHeight));
-	enemy.SetData(&textures.get(Textures::enemyTexture), &textures.get(Textures::bulletTexture), sf::Vector2u(3, 9), 0.3f, 150.0f,sf::Vector2f(1000.f, baseHeight));
+	player.SetData(&textures.get(Textures::playerTexture), sf::Vector2u(3, 9), 0.3f, 150.0f, sf::Vector2f(1000.f, baseHeight));
+	enemy.SetData(&textures.get(Textures::enemyTexture), sf::Vector2u(3, 9), 0.3f, 150.0f,sf::Vector2f(1000.f, baseHeight));
 
 	fonts.load(GameFonts::info, "../Media/Fonts/DejaVuSans.ttf");
 	for (int i=0; i<2; i++)
 		info[i].setFont(fonts.get(GameFonts::info));
-	std::ostringstream s;
-	s<<player.health;
-	info[0].setString("Health: " + s.str());
-	s.str("");
-	s<<player.mana;
-	info[1].setString("Mana: " + s.str());
+//	std::ostringstream s;
+//	s<<player.health;
+//	info[0].setString("Health: " + s.str());
+//	s.str("");
+//	s<<player.mana;
+//	info[1].setString("Mana: " + s.str());
 
 	for (int i=0; i<2; i++)
 	{
@@ -84,8 +85,15 @@ void Game::run() {
 
 void Game::update() {
     window.setView(gameView);
-    player.Update(clock.restart().asSeconds(), gameView, baseHeight, window,server);
-    enemy.Update(clock.restart().asSeconds(), gameView, baseHeight, window);
+    float elapsedTime = clock.restart().asSeconds();
+    player.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window, server);
+    enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window);
+	std::ostringstream s;
+	s<<player.health;
+	info[0].setString("Health: " + s.str());
+	s.str("");
+	s<<player.mana;
+	info[1].setString("Mana: " + s.str());
 }
 
 void Game::processEvents() {

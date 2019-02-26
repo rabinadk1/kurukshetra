@@ -8,13 +8,15 @@
 #include "Animation.h"
 #include "Collider.h"
 #include "GameServer.h"
-#include <queue>
+#include "Bullet.h"
+#include <vector>
+
 class Player {
 public:
 	Player(){};
-    void SetData(sf::Texture *playerTexture, sf::Texture* bulletTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position);
-    void Update(float deltaTime, sf::View& gameView, float &baseHeight, sf::RenderWindow& window,GameServer& server);
-    void Draw(sf::RenderWindow& window);
+    void SetData(sf::Texture *playerTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position);
+	void Update(sf::Texture* bulletTexture , float deltaTime, sf::View &gameView, float &baseHeight, sf::RenderWindow& window, GameServer& server);
+	void Draw(sf::RenderWindow& window);
     Collider GetCollider() { return Collider(body); }
     void SetPosition(sf::Vector2f position);
     void setName(const std::string& name);
@@ -29,11 +31,11 @@ public:
     unsigned short getPing();
     int getId();
 protected:
-	void HitCheck(sf::RectangleShape& bullet);
+	void HitCheck(Bullet& bullet);
 	bool isDead(){ return health<=0;}
 	bool isUp(sf::RectangleShape& shape, float& baseHeight);
 protected:
-    sf::RectangleShape body, bullet;
+    sf::RectangleShape body;
     Animation animation;
     unsigned row;
     bool faceRight, isJumping, isShooting;
@@ -44,7 +46,8 @@ protected:
     bool m_connected;
     int m_id;
     unsigned short m_ping;
-    sf::Vector2f velocity, bulletVelocity;
+    sf::Vector2f velocity, bulletVelocity, moveDirection;
+    std::vector <Bullet> bullets;
 public:
 	int health, mana;
 };
