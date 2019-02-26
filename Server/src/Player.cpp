@@ -160,17 +160,22 @@ void Player::Draw(sf::RenderWindow &window) {
 		bullets[i].fire();
 	}
 	for(int i=0; i<int(bullets.size()); i++)
-		HitCheck(bullets[i]);
+		if(HitCheck(bullets[i]))
+			bullets.erase(bullets.begin()+i);
 }
 
 void Player::SetPosition(sf::Vector2f position) {
 	body.setPosition(position);
 }
 
-void Player::HitCheck(Bullet& bullet)
+bool Player::HitCheck(Bullet& bullet)
 {
 	if(GetCollider().CheckCollision(Collider(bullet.getBullet())))
-		health-=50;
+	{
+		health -= 50;
+		return true;
+	}
+	return false;
 }
 
 bool Player::isUp(sf::RectangleShape &shape, float &baseHeight)

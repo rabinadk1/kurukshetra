@@ -31,7 +31,7 @@ public:
     unsigned short getPing();
     int getId();
 protected:
-	void HitCheck(Bullet& bullet);
+	bool HitCheck(Bullet& bullet);
 	bool isDead(){ return health<=0;}
 	bool isUp(sf::RectangleShape& shape, float& baseHeight);
 protected:
