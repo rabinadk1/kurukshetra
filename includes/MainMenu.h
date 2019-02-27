@@ -22,14 +22,13 @@ public:
 
 private:
     void moveUp(bool goUp);
-//    void moveDown();
     void render();
     void handlePlayerInput(sf::Keyboard::Key &key, bool isPressed);
     void update();
     void processEvents();
     void onPressEnter();
 private:
-    sf::Text menu[4];
+    sf::Text menu[3];
     ResourceHolder <sf::Font, Fonts::ID> fonts;
     int selectedItem;
     bool isPressedUp, isPressedDown, isPressedReturn;

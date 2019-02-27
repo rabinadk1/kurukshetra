@@ -3,12 +3,12 @@
 //
 #include <sstream>
 #include "Game.h"
-Game::Game(unsigned viewWidth, unsigned viewHeight)
+Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip)
 	:window(sf::VideoMode(viewHeight, viewHeight), "Kurukshetra Server"),
 	 textures(Textures::textureNumber),
 	 fonts(GameFonts::fontNumber),
-	 server(11006),
-	 client("192.168.1.155",9025),
+	 server(11003),
+	 client(Ip,9023),
 	 viewWidth(viewWidth),
 	 viewHeight(viewHeight),
 	 baseHeight(1900),
@@ -40,7 +40,7 @@ Game::Game(unsigned viewWidth, unsigned viewHeight)
 	sky.setTexture(&textures.get(Textures::skyTexture));
 
 	player.SetData(&textures.get(Textures::playerTexture), sf::Vector2u(4, 4), 0.3f, 150.0f, sf::Vector2f(leftExtremePoint + 500, baseHeight));
-	enemy.SetData(&textures.get(Textures::enemyTexture), sf::Vector2u(4, 4), 0.3f, 150.0f,sf::Vector2f(leftExtremePoint + 500, baseHeight));
+	enemy.SetData(&textures.get(Textures::enemyTexture), sf::Vector2u(4, 4), 0.3f, 150.0f,sf::Vector2f(rightExtremePoint - 500, baseHeight));
 
 
     gameView.SetSize(sf::Vector2f(viewWidth, viewHeight));

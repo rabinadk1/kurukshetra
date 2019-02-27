@@ -38,10 +38,10 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	static sf::Vector2f movement(0.f, 0.f);
 	static float localVelocity = velocity.y;
 	const float g = 9.81f;
-	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		movement.x -= velocity.x * deltaTime;
 	//NOTE: Make a collision detection by comparing the positions of the wall and player
-	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		movement.x += velocity.x * deltaTime;
 	if (body.getPosition().x <= leftExtremePoint + body.getSize().x)
 	{
@@ -57,7 +57,7 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	}
 //    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) and isUp)
 //        movement.y += velocity.x * deltaTime;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         isJumping = true;
 
 //	static sf::Vector2f mousePos;
@@ -145,11 +145,10 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	static sf::Vector2f movement(0.f, 0.f);
 	static float localVelocity = velocity.y;
 	const float g = 9.81f;
-
-	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		movement.x -= velocity.x * deltaTime;
 	//NOTE: Make a collision detection by comparing the positions of the wall and player
-	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		movement.x += velocity.x * deltaTime;
 	if (body.getPosition().x <= leftExtremePoint + body.getSize().x)
 	{
@@ -163,7 +162,7 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 			movement.x = 0;
 		body.setPosition(rightExtremePoint, body.getPosition().y);
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 		isJumping = true;
 
 	sf::Vector2i pixelMousePos = sf::Mouse::getPosition(window);
