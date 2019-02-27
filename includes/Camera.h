@@ -15,7 +15,7 @@ public:
     void SetView(sf::RenderWindow& window);
     void SetSize(sf::Vector2f size);
     void Move(sf::Vector2f newCameraPosition);
-    void showInfo(sf::Text info, sf::RectangleShape& player);
+    void showInfo(sf::Text* info, sf::RectangleShape& player);
     void Zoom(float factor);
     void Update(sf::RectangleShape& player, sf::RenderWindow& window, sf::RectangleShape& sky);
     sf::IntRect GetViewport(sf::RenderWindow& window);

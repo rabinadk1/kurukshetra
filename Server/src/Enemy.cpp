@@ -78,7 +78,7 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
 	body.move(movement2);
-	gameView.showInfo(info[1], body);
+	gameView.showInfo(&info[1], body);
 
 	if (isJumping)
 	{
