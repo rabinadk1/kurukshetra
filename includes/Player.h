@@ -36,9 +36,10 @@ public:
     bool isConnected();
     unsigned short getPing();
     int getId();
+    bool isDead(){ return health<=0;}
+
 protected:
 	bool HitCheck(Bullet& bullet);
-	bool isDead(){ return health<=0;}
 	bool isUp(sf::RectangleShape& shape, float& baseHeight);
 protected:
     sf::RectangleShape body;

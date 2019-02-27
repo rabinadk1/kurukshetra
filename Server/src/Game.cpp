@@ -106,6 +106,7 @@ void Game::update() {
     else
     	player.Update(&textures.get(Textures::bulletTexture), elapsedTime, gameView, walls, baseHeight, leftExtremePoint, rightExtremePoint, window, sky);
    // enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime,  gameView, baseHeight, window);
+
 	std::ostringstream s;
 	s<<player.health;
 	info[0].setString("Health: " + s.str());
@@ -158,20 +159,5 @@ void Game::ResizedWindow(sf::RenderWindow &window, Camera &view) {
 
 void Game::setWalls() {
 	walls.push_back(Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 250), sf::Vector2f(leftExtremePoint + 0, baseHeight - 250)));
-	walls.push_back(Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 50), sf::Vector2f(leftExtremePoint + 700, baseHeight - 50)));
-	walls.push_back(Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 100), sf::Vector2f(leftExtremePoint + 850, baseHeight - 100)));
-	walls.push_back(Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 150), sf::Vector2f(leftExtremePoint + 1000, baseHeight - 150)));
-	walls.push_back(Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 200), sf::Vector2f(leftExtremePoint + 1150, baseHeight - 200)));
-	walls.push_back(Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 150), sf::Vector2f(leftExtremePoint + 1300, baseHeight - 150)));
-	walls.push_back(Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 100), sf::Vector2f(leftExtremePoint + 1450, baseHeight - 100)));
-	walls.push_back(Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 50), sf::Vector2f(leftExtremePoint + 1600, baseHeight - 50)));
-
 	walls.push_back(Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 250), sf::Vector2f(rightExtremePoint - 150, baseHeight - 250)));
-	walls.push_back(Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 50), sf::Vector2f(rightExtremePoint - 700, baseHeight - 50)));
-	walls.push_back(Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 100), sf::Vector2f(rightExtremePoint - 850, baseHeight - 100)));
-	walls.push_back(Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 150), sf::Vector2f(rightExtremePoint - 1000, baseHeight - 150)));
-	walls.push_back(Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 200), sf::Vector2f(rightExtremePoint - 1150, baseHeight - 200)));
-	walls.push_back(Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 150), sf::Vector2f(rightExtremePoint - 1300, baseHeight - 150)));
-	walls.push_back(Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 100), sf::Vector2f(rightExtremePoint - 1450, baseHeight - 100)));
-	walls.push_back(Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 50), sf::Vector2f(rightExtremePoint - 1600, baseHeight - 50)));
 }

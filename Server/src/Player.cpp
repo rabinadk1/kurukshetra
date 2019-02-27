@@ -311,7 +311,7 @@ bool Player::HitCheck(Bullet& bullet)
 {
 	if(GetCollider().CheckCollision(Collider(bullet.getBullet())))
 	{
-		health -= 50;
+		health -= 20;
 		return true;
 	}
 	return false;
