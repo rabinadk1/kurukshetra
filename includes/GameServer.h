@@ -29,6 +29,6 @@ private:
     sf::TcpListener m_listener;
     sf::SocketSelector m_selector;
     std::thread t0;
-    sf::Vector2f position;
+    std::mutex m_mutex;
     sf::TcpSocket socket;
 };
