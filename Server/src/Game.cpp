@@ -64,7 +64,7 @@ Game::Game(unsigned viewWidth, unsigned viewHeight)
 		info[i].setFillColor(sf::Color::Red);
 	}
 
-	ground.SetData(&textures.get(Textures::groundTexture), sf::Vector2f(4000, 200), sf::Vector2f(leftExtremePoint, baseHeight));
+	ground.SetData(&textures.get(Textures::groundTexture), sf::Vector2f(4300, 200), sf::Vector2f(leftExtremePoint - 150, baseHeight));
 	ground.SetTextureRect(sf::IntRect(0, 0, 4000, 200));
     textures.get(Textures::groundTexture).setRepeated(true);
 
@@ -157,5 +157,5 @@ void Game::ResizedWindow(sf::RenderWindow &window, Camera &view) {
 
 void Game::setWalls() {
 	walls[0] = Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 250), sf::Vector2f(leftExtremePoint - 150, baseHeight - 250));
-	walls[1] = Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 250), sf::Vector2f(rightExtremePoint + 150, baseHeight - 250));
+	walls[1] = Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 250), sf::Vector2f(rightExtremePoint, baseHeight - 250));
 }
