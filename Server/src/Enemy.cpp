@@ -89,13 +89,6 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 	else
 		movement2 = sf::Vector2f(0.f,0.f);
 
-	if (isDead())
-	{
-		sf::Clock waitClock;
-		std::cout<<"Player Wins!!"<<std::endl;
-		while(waitClock.getElapsedTime().asSeconds()<3.f);
-		window.close();
-	}
 }
 void Enemy::Draw(sf::RenderWindow &window, Player& player) {
 //	if (isDead())

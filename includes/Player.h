@@ -51,7 +51,7 @@ private:
 	ResourceHolder <sf::SoundBuffer, Sounds::ID> sounds;
 	sf::Sound gunSound;
     unsigned row;
-    bool faceRight, isJumping, isShooting, isPlayer;
+    bool faceRight, isJumping, isShooting, isPlayer, checkforMouse;
     sf::Vector2f m_position;
     sf::Time m_timeout;
     std::string m_name;
@@ -62,6 +62,7 @@ private:
     sf::Vector2f velocity, bulletVelocity, moveDirection;
     std::vector <Bullet> bullets;
     sf::Clock clock;
+    sf::Vertex line[2];
 public:
 	int health;
 };

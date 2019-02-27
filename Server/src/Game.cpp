@@ -146,6 +146,20 @@ void Game::render() {
 	for (const auto &i : info)
 		window.draw(i);
 	window.display();
+	if (player.isDead())
+	{
+		sf::Clock waitClock;
+		std::cout<<"You Win!!"<<std::endl;
+		while(waitClock.getElapsedTime().asSeconds()<3.f);
+		window.close();
+	}
+	if (enemy.isDead())
+	{
+		sf::Clock waitClock;
+		std::cout<<"Enemy Wins!!"<<std::endl;
+		while(waitClock.getElapsedTime().asSeconds()<3.f);
+		window.close();
+	}
 
 }
 

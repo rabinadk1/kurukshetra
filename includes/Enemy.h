@@ -28,9 +28,9 @@ public:
     void Draw(sf::RenderWindow& window, Player& player);
     Collider GetCollider() { return Collider(body); }
     void SetPosition(sf::Vector2f position);
+	bool isDead(){ return health<=0;}
 private:
 	bool HitCheck(Player& player, Bullet& bullet);
-    bool isDead(){ return health<=0;}
     bool isUp(sf::RectangleShape& shape, float& baseHeight);
 private:
     sf::RectangleShape body;
