@@ -51,7 +51,7 @@ private:
 	ResourceHolder <sf::SoundBuffer, Sounds::ID> sounds;
 	sf::Sound gunSound;
     unsigned row;
-    bool faceRight, isJumping, isShooting;
+    bool faceRight, isJumping, isShooting, isPlayer;
     sf::Vector2f m_position;
     sf::Time m_timeout;
     std::string m_name;

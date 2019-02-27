@@ -9,7 +9,7 @@
 #include "Player.h"
 
 Player::Player()
-	:sounds(Sounds::soundNumber)
+	:sounds(Sounds::soundNumber), isPlayer(true)
 {
 	sounds.load(Sounds::gunShot, "../Media/Audio/gunShot0.wav");
 	gunSound.setBuffer(sounds.get(Sounds::gunShot));
@@ -115,7 +115,7 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
 	body.move(movement);
-	gameView.showInfo(info, body);
+	gameView.showInfo(info, body, true);
 
 	if (isJumping)
 	{
@@ -212,7 +212,7 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
 	body.move(movement);
-	gameView.showInfo(info, body);
+	gameView.showInfo(info, body, true);
 
 	if (isJumping)
 	{
