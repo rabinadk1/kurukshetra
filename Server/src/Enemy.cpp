@@ -24,7 +24,7 @@ void Enemy::SetData(sf::Texture *EnemyTexture, sf::Vector2u imageCount, float sw
 	health = 100;
 	bulletVelocity = moveDirection = sf::Vector2f(0.f, 0.f);
 
-	const sf::Vector2f EnemySize = sf::Vector2f(100.0f, 150.0f);
+	const sf::Vector2f EnemySize = sf::Vector2f(250.0f, 250.0f);
 	body.setSize(EnemySize);
 	body.setPosition(position);
 	body.setTexture(EnemyTexture);

@@ -26,7 +26,7 @@ Game::Game(unsigned viewWidth, unsigned viewHeight)
 	textures.load(Textures::wallTexture, "../Media/Textures/stoneTile.png");
 	textures.load(Textures::rockTexture, "../Media/Textures/rockPlatform.png");
 //	textures.load(Textures::grassTexture, "../Media/Textures/grass.png");
-	textures.load(Textures::playerTexture, "../Media/Textures/fox.png");
+	textures.load(Textures::playerTexture, "../Media/Textures/player.png");
 	textures.load(Textures::enemyTexture, "../Media/Textures/enemy.png");
 	textures.load(Textures::bulletTexture, "../Media/Textures/bullet.png");
 
@@ -39,8 +39,8 @@ Game::Game(unsigned viewWidth, unsigned viewHeight)
 	sky.setSize(sf::Vector2f(7000, 2500));
 	sky.setTexture(&textures.get(Textures::skyTexture));
 
-	player.SetData(&textures.get(Textures::playerTexture), sf::Vector2u(3, 9), 0.3f, 150.0f, sf::Vector2f(leftExtremePoint + 500, baseHeight));
-	enemy.SetData(&textures.get(Textures::enemyTexture), sf::Vector2u(3, 9), 0.3f, 150.0f,sf::Vector2f(leftExtremePoint + 500, baseHeight));
+	player.SetData(&textures.get(Textures::playerTexture), sf::Vector2u(4, 4), 0.3f, 150.0f, sf::Vector2f(leftExtremePoint + 500, baseHeight));
+	enemy.SetData(&textures.get(Textures::enemyTexture), sf::Vector2u(4, 4), 0.3f, 150.0f,sf::Vector2f(leftExtremePoint + 500, baseHeight));
 
 
     gameView.SetSize(sf::Vector2f(viewWidth, viewHeight));

@@ -23,7 +23,7 @@ void Player::SetData(sf::Texture *playerTexture, sf::Vector2u imageCount, float 
 	health = 100;
 	bulletVelocity = moveDirection = sf::Vector2f(0.f, 0.f);
 
-	const sf::Vector2f playerSize = sf::Vector2f(100.0f, 150.0f);
+	const sf::Vector2f playerSize = sf::Vector2f(250.0f, 250.0f);
 	body.setSize(playerSize);
 	body.setPosition(position);
 	body.setTexture(playerTexture);
