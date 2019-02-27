@@ -5,6 +5,8 @@
 #include <iostream>
 #include "MainMenu.h"
 #include "Game.h"
+#include "IpEnter.h"
+
 void MainMenu::render(){
     mWindow2.clear();
     for(int i=0;i<3;i++) {
@@ -70,8 +72,8 @@ void MainMenu::onPressEnter(){
             exit(0);
         case 0:
             mWindow2.close();
-            Game game(width, height);
-            game.run();
+            IpEnter ipEnter(1377,720);
+            ipEnter.run();
             break;
     }
 }
