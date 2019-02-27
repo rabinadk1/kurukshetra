@@ -4,12 +4,11 @@
 
 #pragma once
 
-#include "../Server/src/ResourceHolder.cpp"
 #include "Player.h"
 #include "Platform.h"
 #include "GameServer.h"
 #include "Enemy.h"
-#include <Camera.h>
+#include "Camera.h"
 #include <vector>
 
 // NOTE: textureNumber and fontNumber is always at the last of enum to find the size of enum needed for constructor of ResourceHandler

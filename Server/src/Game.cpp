@@ -49,8 +49,8 @@ Game::Game(unsigned viewWidth, unsigned viewHeight)
 
 
     fonts.load(GameFonts::info, "../Media/Fonts/DejaVuSans.ttf");
-	for (int i=0; i<2; i++)
-		info[i].setFont(fonts.get(GameFonts::info));
+	for (auto &text : info)
+		text.setFont(fonts.get(GameFonts::info));
 //	std::ostringstream s;
 //	s<<player.health;
 //	info[0].setString("Health: " + s.str());

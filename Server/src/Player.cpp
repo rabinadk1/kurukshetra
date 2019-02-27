@@ -6,13 +6,13 @@
 #include <cmath>
 #include <GameServer.h>
 #include "Enemy.h"
-
 #include "Player.h"
 
-Player::Player(std::unique_ptr<sf::TcpSocket>* socket,int id){
-	m_socket = std::move(*socket);
-	m_id=id;
-
+Player::Player()
+	:sounds(Sounds::soundNumber)
+{
+	sounds.load(Sounds::gunShot, "../Media/Audio/gunShot0.wav");
+	gunSound.setBuffer(sounds.get(Sounds::gunShot));
 }
 
 void Player::SetData(sf::Texture *playerTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position) {
@@ -142,6 +142,7 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 //	}
 	if (isShooting and clock.getElapsedTime().asSeconds()>=0.2f )
 	{
+		gunSound.play();
 		bullets.emplace_back(Bullet(bulletTexture, sf::Vector2f(20.f, 12.4f), body.getPosition(), bulletVelocity));
 		isShooting = false;
 		clock.restart();
@@ -418,4 +419,5 @@ void Player::collisionTest(Player &player, std::vector<Platform> &walls, float &
 		}
 	}
 }
+
 

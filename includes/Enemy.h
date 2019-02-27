@@ -14,13 +14,15 @@
 #include "Bullet.h"
 #include "Camera.h"
 #include "GameClient.h"
+#include "ResourceHolder.h"
+#include <SFML/Audio.hpp>
 #include <vector>
 
 class Player;
 
 class Enemy {
 public:
-    Enemy(){};
+    Enemy();
     void SetData(sf::Texture *EnemyTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position);
     void Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window, sf::RectangleShape& sky, sf::Text* info, GameClient& client);
     void Draw(sf::RenderWindow& window, Player& player);
@@ -37,13 +39,15 @@ public:
     bool isConnected();
     unsigned short getPing();
     int getId();
-protected:
+private:
 	bool HitCheck(Player& player, Bullet& bullet);
     bool isDead(){ return health<=0;}
     bool isUp(sf::RectangleShape& shape, float& baseHeight);
-protected:
+private:
     sf::RectangleShape body;
     Animation animation;
+	ResourceHolder <sf::SoundBuffer, Sounds::ID> sounds;
+	sf::Sound gunSound;
     unsigned row;
     bool faceRight, isJumping, isShooting;
     sf::Vector2f m_position;

@@ -9,6 +9,13 @@
 #include "Global.h"
 #include "Enemy.h"
 
+Enemy::Enemy()
+	:sounds(Sounds::soundNumber)
+{
+	sounds.load(Sounds::gunShot, "../Media/Audio/gunShot0.wav");
+	gunSound.setBuffer(sounds.get(Sounds::gunShot));
+}
+
 void Enemy::SetData(sf::Texture *EnemyTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position) {
 	animation.SetData(EnemyTexture, imageCount, switchTime);
 	row = 0;
@@ -45,8 +52,8 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 	if (isShooting)
 	{
 		bulletVelocity=client.getRecievedData().bullet;
-		Bullet newBullet(bulletTexture, sf::Vector2f(20.f, 12.4f), body.getPosition(), bulletVelocity);
-		bullets.push_back(newBullet);
+		gunSound.play();
+		bullets.emplace_back(bulletTexture, sf::Vector2f(20.f, 12.4f), body.getPosition(), bulletVelocity);
 		isShooting = false;
 	}
 //	}
