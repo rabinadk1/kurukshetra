@@ -80,16 +80,20 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 	body.setTextureRect(animation.uvRect);
 	body.move(movement2);
 	gameView.showInfo(&info[1], body);
-
-	if (isJumping)
-	{
-		movement2.y = -localVelocity * deltaTime;
-		localVelocity -= g;
-	}
-	else
-		movement2 = sf::Vector2f(0.f,0.f);
+//	if (isJumping)
+//	{
+//		movement2.y = -localVelocity * deltaTime;
+//		localVelocity -= g;
+//	}
+//	else
+//		movement2 = sf::Vector2f(0.f,0.f);
     if(client.getRecievedData().isJumping)
         row = 2;
+    if(client.getRecievedData().isshooting)
+    {
+        row = 3;
+        faceRight = bulletVelocity.x>0;
+    }
 	if (isDead())
 	{
 		sf::Clock waitClock;
