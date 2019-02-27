@@ -151,6 +151,10 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		isJumping = true;
 
+//	static sf::Vector2f mousePos;	if(isJumping)
+	    row = 2;
+	if(isShooting)
+	    row = 3;
 	if (not isShooting and sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
 		sf::Vector2i pixelMousePos = sf::Mouse::getPosition(window);
@@ -198,6 +202,10 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 		row = 1;
 		faceRight = movement.x > 0;
 	}
+	if(isJumping)
+		row = 2;
+	if(isShooting)
+		row = 3;
 
     server.update(body.getPosition(),movement,bulletVelocity, playerIsShooting);
 	gameView.Move(movement);
