@@ -15,11 +15,8 @@ GameServer::GameServer(unsigned short port):position(0.f,0.f)
     {
         std::cout << "Server is started on port: " << port <<  ". Waiting for clients.\n";
         m_selector.add(m_listener);
-        m_maxPlayers = 2;
         m_playersConnected = 0;
         m_dataWaiting = false;
-        m_currentPlayerId = 0;
-      //  receive();
         t0 = std::thread(&GameServer::receive, this);
         t0.detach();
     }
@@ -37,21 +34,12 @@ GameServer::~GameServer(){
     m_listener.close();
 }
 
-
-//void GameServer::setPlayerList(std::vector<Player> *players)
-//{
-//    m_playerList = players;
-//}
-
 void GameServer::receive() {
     while (m_running) {
         while (m_playersConnected == 0) {
             if (m_listener.accept(this->socket) == sf::Socket::Done) {
                 std::cout << "Connected";
                 ++m_playersConnected;
-//                    t2 = std::thread(&GameServer::update, this);
-//                    t2.detach();
-//                        // TODO Create a function that send the id
             }
         }
         if (this->m_dataWaiting){
@@ -65,21 +53,10 @@ void GameServer::receive() {
 }
 
 void GameServer::update(sf::Vector2f position2,sf::Vector2f movement,sf::Vector2f bullet, bool isShooting) {
-//while (m_running)
-//{
     sf::Packet keyPress;
     keyPress<<position2.x<<position2.y<<movement.x<<movement.y<<bullet.x<<bullet.y<<isShooting;
     std::cout<<position2.x;
         this->m_toSend = keyPress;
         this->m_dataWaiting = true;
-
-//    if (socket.send(keyPress) != sf::Socket::Done)
-//        std::cout << "Error sending KeyPress" << std::endl;
-////}
-
-}
-
-void GameServer::setPosition(const sf::Vector2f &position) {
-    GameServer::position = position;
 }
 

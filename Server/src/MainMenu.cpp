@@ -7,7 +7,7 @@
 #include "Game.h"
 void MainMenu::render(){
     mWindow2.clear();
-    for(int i=0;i<4;i++) {
+    for(int i=0;i<3;i++) {
         menu[i].setFillColor(i==selectedItem? sf::Color::Red : sf::Color::White);
         mWindow2.draw(menu[i]);
     }
@@ -24,19 +24,18 @@ MainMenu::MainMenu(unsigned int width, unsigned int height)
     height(height)
 {
     fonts.load(Fonts::menuFont, "../Media/Fonts/DejaVuSans.ttf");
-    for (int i=0; i<4; i++)
+    for (int i=0; i<3; i++)
         menu[i].setFont(fonts.get(Fonts::menuFont));
-    menu[0].setString("Play Single");
-    menu[1].setString("Play with Friend");
-    menu[2].setString("Options");
-    menu[3].setString("Exit");
-    for (int i=0; i<4; i++)
+    menu[0].setString("Play");
+    menu[1].setString("About");
+    menu[2].setString("Exit");
+    for (int i=0; i<3; i++)
         menu[i].setPosition(width/2.f,height/4.f*i);
 }
 void MainMenu::moveUp(const bool goUp = true) {
     if (goUp and selectedItem != 0)
         selectedItem--;
-    else if(not goUp and selectedItem!=3)
+    else if(not goUp and selectedItem!=2)
         selectedItem++;
 }
 void MainMenu::handlePlayerInput(sf::Keyboard::Key &key, bool isPressed) {
@@ -66,7 +65,7 @@ void MainMenu::update() {
 void MainMenu::onPressEnter(){
     switch (selectedItem)
     {
-        case 3:
+        case 2:
             std::cout<<"Program exited successfully!"<<std::endl;
             exit(0);
         case 0:
