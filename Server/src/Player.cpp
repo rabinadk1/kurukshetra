@@ -36,7 +36,7 @@ void Player::SetData(sf::Texture *playerTexture, sf::Vector2u imageCount, float 
 ////    bullet.setOrigin(bulletSize);
 //	bullet.setOrigin(bulletSize.x/2, bulletSize.y/2);
 
-	velocity = sf::Vector2f(2.4f*speed, 7*speed);
+	velocity = sf::Vector2f(2*speed, 1.5f*speed);
 }
 void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, std::vector<Platform>& walls, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape &sky)
 {
@@ -311,7 +311,7 @@ bool Player::HitCheck(Enemy& enemy, Bullet& bullet)
 {
 	if(enemy.GetCollider().CheckCollision(Collider(bullet.getBullet())))
 	{
-		enemy.health -= 50;
+		enemy.health -= 20;
 		return true;
 	}
 	return false;
