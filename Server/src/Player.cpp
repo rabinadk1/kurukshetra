@@ -115,7 +115,7 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
 	body.move(movement);
-	gameView.showInfo(info, body);
+	gameView.showInfo(info[0], body);
 
 	if (isJumping)
 	{
