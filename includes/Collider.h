@@ -11,7 +11,6 @@ public:
     Collider(sf::RectangleShape& body);
 
     bool CheckCollision(Collider other);
-private:
     sf::FloatRect GetGlobalBounds() { return body.getGlobalBounds(); }
 
 private:

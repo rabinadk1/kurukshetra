@@ -46,10 +46,22 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	const float g = 9.81f;
 	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		if(body.getPosition().x <= leftExtremePoint + body.getSize().x)
-			movement.x = 0;
-		else
-			movement.x -= velocity.x * deltaTime;
+			if(body.getPosition().x <= leftExtremePoint + body.getSize().x)
+				movement.x = 0;
+			else
+				movement.x -= velocity.x * deltaTime;
+			for (auto &wall : walls) {
+				if(GetCollider().CheckCollision(wall.GetCollider()))
+				{
+					if(wall.GetCollider().GetGlobalBounds().left + wall.GetCollider().GetGlobalBounds().width <= body.getPosition().x)
+					{
+						movement.x += velocity.x * deltaTime;
+						if(velocity.x < 0)	velocity.x =0;
+					}
+				}
+
+			}
+			//NOTE: Make a collision detection by comparing the positions of the wall and player
 	}
 	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
@@ -57,6 +69,18 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 			movement.x = 0;
 		else
 			movement.x += velocity.x * deltaTime;
+
+		for (auto &wall : walls) {
+			if(GetCollider().CheckCollision(wall.GetCollider()))
+			{
+				if(wall.GetCollider().GetGlobalBounds().left + wall.GetCollider().GetGlobalBounds().width >= body.getPosition().x)
+				{
+					movement.x -= velocity.x * deltaTime;
+					if(velocity.x < 0)	velocity.x =0;
+				}
+			}
+
+		}
 	}
 //    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) and isUp)
 //        movement.y += velocity.x * deltaTime;
@@ -140,23 +164,6 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 		faceRight = movement.x > 0;
 	}
 
-	if(body.getPosition().x < leftExtremePoint + 2000)
-	{
-		for(int i = 0; i<8; i++)
-		{
-			if(GetCollider().CheckCollision(walls[i].GetCollider()))
-				std::cout << "collided with wall " << i + 1 << std::endl;
-			//NOTE: Make a collision detection by comparing the positions of the wall and player
-		}
-	}
-	if(body.getPosition().x > leftExtremePoint + 2000)
-	{
-		for(int i = 8; i<16; i++)
-		{
-			if(GetCollider().CheckCollision(walls[i].GetCollider()))
-				std::cout << "collided with wall " << i + 1 << std::endl;
-		}
-	}
 	gameView.Move(movement);
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
