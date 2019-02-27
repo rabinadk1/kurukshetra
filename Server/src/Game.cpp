@@ -8,7 +8,7 @@ Game::Game(unsigned viewWidth, unsigned viewHeight)
 	 textures(Textures::textureNumber),
 	 fonts(GameFonts::fontNumber),
 	 server(9023),
-	 client("192.168.43.54",11002),
+	 client("192.168.43.95",11002),
 	 viewWidth(viewWidth),
 	 viewHeight(viewHeight),
 	 baseHeight(1900),

@@ -278,7 +278,8 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 //			bulletVelocity.y += g;
 //		}
 //	}
-	if (isShooting and clock.getElapsedTime().asSeconds()>=0.2f )
+	bool playerIsShooting = isShooting and clock.getElapsedTime().asSeconds()>=0.2f;
+	if (playerIsShooting)
 	{
 		bullets.emplace_back(Bullet(bulletTexture, sf::Vector2f(20.f, 12.4f), body.getPosition(), bulletVelocity));
 		isShooting = false;
@@ -300,7 +301,7 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 		faceRight = movement.x > 0;
 	}
 
-    server.update(body.getPosition(),movement,bulletVelocity,not isShooting);
+    server.update(body.getPosition(),movement,bulletVelocity, playerIsShooting);
 	gameView.Move(movement);
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
