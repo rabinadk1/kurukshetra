@@ -20,7 +20,7 @@ void Player::SetData(sf::Texture *playerTexture, sf::Vector2u imageCount, float 
 	row = 0;
 	faceRight = true;
 	isJumping = isShooting = false;
-	health = mana = 100;
+	health = 100;
 	bulletVelocity = moveDirection = sf::Vector2f(0.f, 0.f);
 
 	const sf::Vector2f playerSize = sf::Vector2f(100.0f, 150.0f);
@@ -177,16 +177,49 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 		movement = sf::Vector2f(0.f,0.f);
 }
 
-void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window, sf::RectangleShape& sky, GameServer& server)
+void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, std::vector<Platform>& walls, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape &sky, GameServer& server)
 {
 	static sf::Vector2f movement(0.f, 0.f);
 	static float localVelocity = velocity.y;
 	const float g = 9.81f;
 	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		movement.x -= velocity.x * deltaTime;
+	{
+		if(body.getPosition().x <= leftExtremePoint + body.getSize().x)
+			movement.x = 0;
+		else
+			movement.x -= velocity.x * deltaTime;
+		for (auto &wall : walls) {
+			if(GetCollider().CheckCollision(wall.GetCollider()))
+			{
+				if(wall.GetCollider().GetGlobalBounds().left + wall.GetCollider().GetGlobalBounds().width <= body.getPosition().x)
+				{
+					movement.x += velocity.x * deltaTime;
+					if(velocity.x < 0)	velocity.x =0;
+				}
+			}
 
+		}
+		//NOTE: Make a collision detection by comparing the positions of the wall and player
+	}
 	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		movement.x += velocity.x * deltaTime;
+	{
+		if(body.getPosition().x >= rightExtremePoint)
+			movement.x = 0;
+		else
+			movement.x += velocity.x * deltaTime;
+
+		for (auto &wall : walls) {
+			if(GetCollider().CheckCollision(wall.GetCollider()))
+			{
+				if(wall.GetCollider().GetGlobalBounds().left + wall.GetCollider().GetGlobalBounds().width >= body.getPosition().x)
+				{
+					movement.x -= velocity.x * deltaTime;
+					if(velocity.x < 0)	velocity.x =0;
+				}
+			}
+
+		}
+	}
 //    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) and isUp)
 //        movement.y += velocity.x * deltaTime;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
@@ -201,16 +234,18 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 		if (viewport.contains(pixelMousePos))
 		{
 			sf::Vector2f mousePos = window.mapPixelToCoords(pixelMousePos);
-			std::cout<<mousePos.y<<" "<<body.getPosition().y<<std::endl;
 			if (mousePos.y<=baseHeight)
 			{
 				sf::Vector2f localBulletPos = body.getPosition();
 
 				sf::Vector2f displacement = sf::Vector2f(mousePos.x - localBulletPos.x, mousePos.y - localBulletPos.y);
 				double distance = sqrt(double(displacement.x * displacement.x + displacement.y * displacement.y));
+
 				moveDirection = sf::Vector2f(float(displacement.x / distance), float(displacement.y / distance));
+
 				bulletVelocity = sf::Vector2f(4*velocity.x * moveDirection.x*deltaTime, 4*velocity.y * moveDirection.y* deltaTime);
 				isShooting = true;
+				clock.restart();
 			}
 		}
 	}
@@ -243,9 +278,11 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 //			bulletVelocity.y += g;
 //		}
 //	}
-	if (isShooting)
+	if (isShooting and clock.getElapsedTime().asSeconds()>=0.2f )
 	{
-		bullets.emplace_back(bulletTexture, sf::Vector2f(20.f, 12.4f), body.getPosition(), bulletVelocity);
+		bullets.emplace_back(Bullet(bulletTexture, sf::Vector2f(20.f, 12.4f), body.getPosition(), bulletVelocity));
+		isShooting = false;
+		clock.restart();
 	}
 
 	if (not isUp(body, baseHeight))
@@ -262,9 +299,9 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 		row = 1;
 		faceRight = movement.x > 0;
 	}
-    server.update(body.getPosition(),movement,bulletVelocity,isShooting);
-	isShooting = false;
-	gameView.Update(body, window, sky);
+
+    server.update(body.getPosition(),movement,bulletVelocity,not isShooting);
+	gameView.Move(movement);
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
 	body.move(movement);

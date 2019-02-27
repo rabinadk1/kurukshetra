@@ -20,7 +20,7 @@ public:
 	Player(std::unique_ptr<sf::TcpSocket>* socket,int id);
 	Player(){};
     void SetData(sf::Texture *playerTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position);
-	void Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window, sf::RectangleShape& sky, GameServer& server);
+	void Update(sf::Texture* bulletTexture , float deltaTime, Camera &gameView, std::vector<Platform>& walls, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape& sky, GameServer& server);
 	void Update(sf::Texture* bulletTexture , float deltaTime, Camera &gameView, std::vector<Platform>& walls, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape& sky);
 	void Draw(sf::RenderWindow& window, Enemy& enemy);
     Collider GetCollider() { return Collider(body); }
@@ -59,5 +59,5 @@ protected:
     std::vector <Bullet> bullets;
     sf::Clock clock;
 public:
-	int health, mana;
+	int health;
 };

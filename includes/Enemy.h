@@ -57,5 +57,5 @@ protected:
     std::vector <Bullet> bullets;
     friend class Player;
 public:
-    int health, mana;
+    int health;
 };
