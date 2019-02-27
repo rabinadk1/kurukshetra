@@ -7,7 +7,7 @@ Game::Game(unsigned viewWidth, unsigned viewHeight)
 	:window(sf::VideoMode(viewHeight, viewHeight), "Kurukshetra Server"),
 	 textures(Textures::textureNumber),
 	 fonts(GameFonts::fontNumber),
-	 server(11002),
+	 server(11003),
 	 client("192.168.1.142",9023),
 	 viewWidth(viewWidth),
 	 viewHeight(viewHeight),
