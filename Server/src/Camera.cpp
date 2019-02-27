@@ -62,10 +62,7 @@ sf::FloatRect Camera::getViewBounds(const sf::View &view) {
     return rt;
 }
 
-void Camera::showInfo(sf::Text info, sf::RectangleShape &player) {
-    for (int i=0; i<1; i++)
-    {
-        info.setPosition(player.getPosition().x - player.getSize().x, player.getPosition().y - (3.f / 2.f) * player.getSize().y);
-        info.setFillColor(sf::Color::Red);
-    }
+void Camera::showInfo(sf::Text* info, sf::RectangleShape &player) {
+        info->setPosition(player.getPosition().x - player.getSize().x, player.getPosition().y - (3.f / 2.f) * player.getSize().y);
+        info->setFillColor(sf::Color::Red);
 }

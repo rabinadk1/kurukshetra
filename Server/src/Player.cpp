@@ -109,23 +109,32 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	if(isJumping)
 	    row = 2;
 	if(isShooting)
-	    row = 3;
+	{
+		row = 3;
+		faceRight = bulletVelocity.x>0;
+	}
 
 	gameView.Move(movement);
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
 	body.move(movement);
-	gameView.showInfo(info[0], body);
+	gameView.showInfo(&info[0], body);
 
-	if (isJumping)
+    if (isJumping)
 	{
 		movement.y = -localVelocity * deltaTime;
 		localVelocity -= g;
 	}
 	else
 		movement = sf::Vector2f(0.f,0.f);
+
 	if (isDead())
+	{
+		sf::Clock waitClock;
+		std::cout<<"Player Wins!!"<<std::endl;
+		while(waitClock.getElapsedTime().asSeconds()<3.f);
 		window.close();
+	}
 }
 
 void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape &sky, sf::Text *info, GameServer& server)
@@ -152,11 +161,11 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		isJumping = true;
-
-//	static sf::Vector2f mousePos;	if(isJumping)
-	    row = 2;
-	if(isShooting)
-	    row = 3;
+//
+////	static sf::Vector2f mousePos;	if(isJumping)
+//	    row = 2;
+//	if(isShooting)
+//	    row = 3;
 	if (not isShooting and sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
 		sf::Vector2i pixelMousePos = sf::Mouse::getPosition(window);
@@ -207,14 +216,17 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	if(isJumping)
 		row = 2;
 	if(isShooting)
+	{
 		row = 3;
+		faceRight = bulletVelocity.x>0;
+	}
 
     server.update(body.getPosition(),movement,bulletVelocity, playerIsShooting);
 	gameView.Move(movement);
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
 	body.move(movement);
-	gameView.showInfo(info[1], body);
+	gameView.showInfo(&info[0], body);
 
 	if (isJumping)
 	{
@@ -223,8 +235,14 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	}
 	else
 		movement = sf::Vector2f(0.f,0.f);
+
 	if (isDead())
+	{
+		sf::Clock waitClock;
+		std::cout<<"Player Wins!!"<<std::endl;
+		while(waitClock.getElapsedTime().asSeconds()<3.f);
 		window.close();
+	}
 }
 
 void Player::Draw(sf::RenderWindow &window, Enemy& enemy) {

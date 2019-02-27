@@ -55,6 +55,7 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 		gunSound.play();
 		bullets.emplace_back(bulletTexture, sf::Vector2f(20.f, 12.4f), body.getPosition(), bulletVelocity);
 		isShooting = false;
+		faceRight = bulletVelocity.x>0;
 	}
 //	}
 
@@ -70,7 +71,7 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 	else
 	{
 		row = 1;
-		faceRight = client.getRecievedData().bodyMovement.x > 0;
+		faceRight |= client.getRecievedData().bodyMovement.x > 0;
 	}
 
 //    std::cout<<movement2.x<<movement2.y;
@@ -78,7 +79,7 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
 	body.move(movement2);
-	gameView.showInfo(info[1], body);
+	gameView.showInfo(&info[1], body);
 
 	if (isJumping)
 	{
@@ -87,8 +88,14 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 	}
 	else
 		movement2 = sf::Vector2f(0.f,0.f);
+
 	if (isDead())
+	{
+		sf::Clock waitClock;
+		std::cout<<"Player Wins!!"<<std::endl;
+		while(waitClock.getElapsedTime().asSeconds()<3.f);
 		window.close();
+	}
 }
 void Enemy::Draw(sf::RenderWindow &window, Player& player) {
 //	if (isDead())
