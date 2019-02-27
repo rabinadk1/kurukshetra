@@ -221,7 +221,7 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 		faceRight = bulletVelocity.x>0;
 	}
 
-    server.update(body.getPosition(),movement,bulletVelocity, playerIsShooting);
+    server.update(body.getPosition(),movement,bulletVelocity, playerIsShooting,isJumping);
 	gameView.Move(movement);
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);

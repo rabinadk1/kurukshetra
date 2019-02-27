@@ -54,13 +54,13 @@ struct clientInfo GameClient::recieveData(){
         sf::Packet Sam;
 
         if (m_socket.receive(Sam) == sf::Socket::Done) {
-            Sam>>c1.bodyPosition.x>>c1.bodyPosition.y>>c1.bodyMovement.x>>c1.bodyMovement.y>>c1.bullet.x>>c1.bullet.y>>c1.isshooting;
+            Sam>>c1.bodyPosition.x>>c1.bodyPosition.y>>c1.bodyMovement.x>>c1.bodyMovement.y>>c1.bullet.x>>c1.bullet.y>>c1.isshooting>>c1.isJumping;
             //std::cout << moveX;
             return c1;
         } else
         {
             std::cout << "No data recieved";
-            struct clientInfo c1={sf::Vector2f(0.f,0.f),sf::Vector2f(0.f,0.f),sf::Vector2f(0.f,0.f),false};
+            struct clientInfo c1={sf::Vector2f(0.f,0.f),sf::Vector2f(0.f,0.f),sf::Vector2f(0.f,0.f),false, false};
             return c1;
         }
    // }
