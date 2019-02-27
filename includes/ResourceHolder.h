@@ -5,7 +5,10 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-
+namespace Sounds
+{
+    enum ID {gunShot, soundNumber};
+}
 template <typename Resource, typename Identifier>
 class ResourceHolder
 {
