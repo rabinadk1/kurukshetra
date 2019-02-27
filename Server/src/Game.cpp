@@ -40,7 +40,7 @@ Game::Game(unsigned viewWidth, unsigned viewHeight)
 	sky.setTexture(&textures.get(Textures::skyTexture));
 
 	player.SetData(&textures.get(Textures::playerTexture), sf::Vector2u(4, 4), 0.3f, 150.0f, sf::Vector2f(leftExtremePoint + 500, baseHeight));
-	enemy.SetData(&textures.get(Textures::enemyTexture), sf::Vector2u(4, 4), 0.3f, 150.0f,sf::Vector2f(leftExtremePoint + 500, baseHeight));
+	enemy.SetData(&textures.get(Textures::enemyTexture), sf::Vector2u(4, 4), 0.3f, 150.0f,sf::Vector2f(rightExtremePoint - 500, baseHeight));
 
 
     gameView.SetSize(sf::Vector2f(viewWidth, viewHeight));
