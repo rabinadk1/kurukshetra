@@ -162,6 +162,10 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 		row = 1;
 		faceRight = movement.x > 0;
 	}
+	if(isJumping)
+	    row = 2;
+	if(isShooting)
+	    row = 3;
 
 	gameView.Move(movement);
 	animation.Update(row, deltaTime, faceRight);
