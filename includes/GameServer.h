@@ -18,51 +18,17 @@ public:
     ~GameServer();
 
     void receive();
-    //void update(sf::Keyboard::Key key);
     void update(sf::Vector2f position2,sf::Vector2f movement,sf::Vector2f bullet,bool isShooting);
-    //sf::Vector2f recieveData();
-//
-//    void updateTick();
-//    void updateWorld(sf::Time dt);
-
-    //  void setPlayerList(std::vector<Player> *players);
-
     int getM_playersConnected() const;
-    void setPosition(const sf::Vector2f &position);
 
 private:
     bool m_running;
     bool m_dataWaiting;
-
     sf::Packet m_toSend;
-
+    int m_playersConnected;
     sf::TcpListener m_listener;
     sf::SocketSelector m_selector;
-
-    sf::Vector2f recievedData;
-    // Server settings
-    unsigned short m_port;
-    unsigned short m_maxPlayers;
-
-    // Maybe add here "ticks" like in the counter strike.
-    // Then the user should get the number of ticks and run it on the same speed on his simulation
-
-
-    // Variables
-    int32_t m_playersConnected;
-    int32_t m_currentPlayerId;
-
-   // std::vector<Enemy> m_playerList;
-    //   std::queue<sf::Packet> m_receivedPackets;
-
-    //   char m_tmp[1400];
     std::thread t0;
-    std::mutex m_mutex;
-    std::thread t1;
-    std::thread t2;
     sf::Vector2f position;
     sf::TcpSocket socket;
-
-    // Map
-    //  LevelManager m_currentLevel;
 };
