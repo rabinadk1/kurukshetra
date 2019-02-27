@@ -6,11 +6,6 @@
 
 #include "ResourceHolder.h"
 
-namespace Sounds
-{
-    enum ID {gunShot, soundNumber};
-}
-
 template<typename Resource, typename Identifier>
 ResourceHolder<Resource, Identifier>::ResourceHolder(Identifier id) {
     resources = new Resource[id];

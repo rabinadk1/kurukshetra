@@ -99,11 +99,11 @@ void Game::update() {
     float elapsedTime = clock.restart().asSeconds();
     if(server.getM_playersConnected()>0 && client.isConnected())
 	{
-		player.Update( &textures.get(Textures::bulletTexture),  elapsedTime, gameView, walls, baseHeight, leftExtremePoint, rightExtremePoint, window, sky, server);
+		player.Update( &textures.get(Textures::bulletTexture),  elapsedTime, gameView, baseHeight, leftExtremePoint, rightExtremePoint, window, sky, server);
 		enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window,sky,client);
 	}
     else
-	    player.Update(&textures.get(Textures::bulletTexture), elapsedTime, gameView, walls, baseHeight, leftExtremePoint, rightExtremePoint, window, sky);
+	    player.Update(&textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, leftExtremePoint, rightExtremePoint, window, sky);
    // enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime,  gameView, baseHeight, window);
 	std::ostringstream s;
 	s<<player.health;
@@ -137,13 +137,13 @@ void Game::render() {
 //	window.draw(grass);
 //	window.draw(rock);
     ground.Draw(window);
-    for(unsigned long i = 0; i < walls.size(); i++)
-        walls[i].Draw(window);
+    for(auto& wall : walls)
+        wall.Draw(window);
 	player.Draw(window, enemy);
 	if(server.getM_playersConnected()>0 && client.isConnected())
 		enemy.Draw(window, player);
-	for (int i=0; i<2 ; i++)
-		window.draw(info[i]);
+	for (const auto &i : info)
+		window.draw(i);
 	window.display();
 
 }
@@ -155,6 +155,6 @@ void Game::ResizedWindow(sf::RenderWindow &window, Camera &view) {
 }
 
 void Game::setWalls() {
-	walls.push_back(Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 250), sf::Vector2f(leftExtremePoint + 0, baseHeight - 250)));
-	walls.push_back(Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 250), sf::Vector2f(rightExtremePoint - 150, baseHeight - 250)));
+	walls[0] = Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 250), sf::Vector2f(leftExtremePoint - 150, baseHeight - 250));
+	walls[1] = Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 250), sf::Vector2f(rightExtremePoint + 150, baseHeight - 250));
 }

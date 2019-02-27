@@ -39,48 +39,27 @@ void Player::SetData(sf::Texture *playerTexture, sf::Vector2u imageCount, float 
 
 	velocity = sf::Vector2f(2*speed, 1.5f*speed);
 }
-void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, std::vector<Platform>& walls, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape &sky)
+void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape &sky)
 {
 	static sf::Vector2f movement(0.f, 0.f);
 	static float localVelocity = velocity.y;
 	const float g = 9.81f;
 	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-	{
-			if(body.getPosition().x <= leftExtremePoint + body.getSize().x)
-				movement.x = 0;
-			else
-				movement.x -= velocity.x * deltaTime;
-			for (auto &wall : walls) {
-				if(GetCollider().CheckCollision(wall.GetCollider()))
-				{
-					if(wall.GetCollider().GetGlobalBounds().left + wall.GetCollider().GetGlobalBounds().width <= body.getPosition().x)
-					{
-						movement.x += velocity.x * deltaTime;
-						if(velocity.x < 0)	velocity.x =0;
-					}
-				}
-
-			}
-			//NOTE: Make a collision detection by comparing the positions of the wall and player
-	}
+		movement.x -= velocity.x * deltaTime;
+	//NOTE: Make a collision detection by comparing the positions of the wall and player
 	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		movement.x += velocity.x * deltaTime;
+	if (body.getPosition().x <= leftExtremePoint + body.getSize().x)
 	{
-		if(body.getPosition().x >= rightExtremePoint)
+		if (movement.x<0)
 			movement.x = 0;
-		else
-			movement.x += velocity.x * deltaTime;
-
-		for (auto &wall : walls) {
-			if(GetCollider().CheckCollision(wall.GetCollider()))
-			{
-				if(wall.GetCollider().GetGlobalBounds().left + wall.GetCollider().GetGlobalBounds().width >= body.getPosition().x)
-				{
-					movement.x -= velocity.x * deltaTime;
-					if(velocity.x < 0)	velocity.x =0;
-				}
-			}
-
-		}
+		body.setPosition(leftExtremePoint+body.getSize().x, body.getPosition().y);
+	}
+	else if(body.getPosition().x >= rightExtremePoint)
+	{
+		if(movement.x>0)
+			movement.x = 0;
+		body.setPosition(rightExtremePoint, body.getPosition().y);
 	}
 //    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) and isUp)
 //        movement.y += velocity.x * deltaTime;
@@ -178,48 +157,27 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 		movement = sf::Vector2f(0.f,0.f);
 }
 
-void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, std::vector<Platform>& walls, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape &sky, GameServer& server)
+void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape &sky, GameServer& server)
 {
 	static sf::Vector2f movement(0.f, 0.f);
 	static float localVelocity = velocity.y;
 	const float g = 9.81f;
 	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-	{
-		if(body.getPosition().x <= leftExtremePoint + body.getSize().x)
-			movement.x = 0;
-		else
-			movement.x -= velocity.x * deltaTime;
-		for (auto &wall : walls) {
-			if(GetCollider().CheckCollision(wall.GetCollider()))
-			{
-				if(wall.GetCollider().GetGlobalBounds().left + wall.GetCollider().GetGlobalBounds().width <= body.getPosition().x)
-				{
-					movement.x += velocity.x * deltaTime;
-					if(velocity.x < 0)	velocity.x =0;
-				}
-			}
-
-		}
-		//NOTE: Make a collision detection by comparing the positions of the wall and player
-	}
+		movement.x -= velocity.x * deltaTime;
+	//NOTE: Make a collision detection by comparing the positions of the wall and player
 	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		movement.x += velocity.x * deltaTime;
+	if (body.getPosition().x <= leftExtremePoint + body.getSize().x)
 	{
-		if(body.getPosition().x >= rightExtremePoint)
+		if (movement.x<0)
 			movement.x = 0;
-		else
-			movement.x += velocity.x * deltaTime;
-
-		for (auto &wall : walls) {
-			if(GetCollider().CheckCollision(wall.GetCollider()))
-			{
-				if(wall.GetCollider().GetGlobalBounds().left + wall.GetCollider().GetGlobalBounds().width >= body.getPosition().x)
-				{
-					movement.x -= velocity.x * deltaTime;
-					if(velocity.x < 0)	velocity.x =0;
-				}
-			}
-
-		}
+		body.setPosition(leftExtremePoint+body.getSize().x, body.getPosition().y);
+	}
+	else if(body.getPosition().x >= rightExtremePoint)
+	{
+		if(movement.x>0)
+			movement.x = 0;
+		body.setPosition(rightExtremePoint, body.getPosition().y);
 	}
 //    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) and isUp)
 //        movement.y += velocity.x * deltaTime;
