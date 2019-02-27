@@ -9,8 +9,9 @@
 
 void MainMenu::render(){
     mWindow2.clear();
+    mWindow2.draw(menuImage);
     for(int i=0;i<3;i++) {
-        menu[i].setFillColor(i==selectedItem? sf::Color::Red : sf::Color::White);
+        menu[i].setFillColor(i==selectedItem? sf::Color::Red : sf::Color::Black);
         mWindow2.draw(menu[i]);
     }
     mWindow2.display();
@@ -32,7 +33,11 @@ MainMenu::MainMenu(unsigned int width, unsigned int height)
     menu[1].setString("About");
     menu[2].setString("Exit");
     for (int i=0; i<3; i++)
-        menu[i].setPosition(width/2.f,height/4.f*i);
+        menu[i].setPosition(width - (width/4.f),(height / 2.f) + (height/6.f*i));
+    menuTexture.loadFromFile("../Media/Textures/menu.png");
+    menuImage.setSize(sf::Vector2f(width, height));
+    menuImage.setPosition(0,0);
+    menuImage.setTexture(&menuTexture);
 }
 void MainMenu::moveUp(const bool goUp = true) {
     if (goUp and selectedItem != 0)

@@ -131,7 +131,7 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	if (isDead())
 	{
 		sf::Clock waitClock;
-		std::cout<<"Player Wins!!"<<std::endl;
+		std::cout<<"Enemy Wins!!"<<std::endl;
 		while(waitClock.getElapsedTime().asSeconds()<3.f);
 		window.close();
 	}
