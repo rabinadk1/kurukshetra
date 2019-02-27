@@ -40,7 +40,7 @@ Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip)
 	sky.setTexture(&textures.get(Textures::skyTexture));
 
 	player.SetData(&textures.get(Textures::playerTexture), sf::Vector2u(4, 4), 0.3f, 150.0f, sf::Vector2f(leftExtremePoint + 500, baseHeight));
-	enemy.SetData(&textures.get(Textures::enemyTexture), sf::Vector2u(4, 4), 0.3f, 150.0f,sf::Vector2f(leftExtremePoint + 500, baseHeight));
+	enemy.SetData(&textures.get(Textures::enemyTexture), sf::Vector2u(4, 4), 0.3f, 150.0f,sf::Vector2f(rightExtremePoint - 500, baseHeight));
 
 
     gameView.SetSize(sf::Vector2f(viewWidth, viewHeight));
@@ -146,6 +146,20 @@ void Game::render() {
 	for (const auto &i : info)
 		window.draw(i);
 	window.display();
+	if (player.isDead())
+	{
+		sf::Clock waitClock;
+		std::cout<<"You Win!!"<<std::endl;
+		while(waitClock.getElapsedTime().asSeconds()<3.f);
+		window.close();
+	}
+	if (enemy.isDead())
+	{
+		sf::Clock waitClock;
+		std::cout<<"Enemy Wins!!"<<std::endl;
+		while(waitClock.getElapsedTime().asSeconds()<3.f);
+		window.close();
+	}
 
 }
 

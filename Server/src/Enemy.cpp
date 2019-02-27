@@ -97,6 +97,7 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 		while(waitClock.getElapsedTime().asSeconds()<3.f);
 		window.close();
 	}
+
 }
 void Enemy::Draw(sf::RenderWindow &window, Player& player) {
 //	if (isDead())
