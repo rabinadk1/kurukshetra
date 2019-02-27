@@ -24,7 +24,7 @@ void Enemy::SetData(sf::Texture *EnemyTexture, sf::Vector2u imageCount, float sw
 	health = 100;
 	bulletVelocity = moveDirection = sf::Vector2f(0.f, 0.f);
 
-	const sf::Vector2f EnemySize = sf::Vector2f(100.0f, 150.0f);
+	const sf::Vector2f EnemySize = sf::Vector2f(250.0f, 250.0f);
 	body.setSize(EnemySize);
 	body.setPosition(position);
 	body.setTexture(EnemyTexture);
@@ -41,7 +41,7 @@ void Enemy::SetData(sf::Texture *EnemyTexture, sf::Vector2u imageCount, float sw
 	velocity = sf::Vector2f(2*speed, 1.5f*speed);
 }
 
-void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window, sf::RectangleShape& sky, GameClient& client)
+void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window, sf::RectangleShape& sky, sf::Text *info, GameClient& client)
 {
 	static sf::Vector2f movement2(0.f, 0.f);
 	static float localVelocity = velocity.y;
@@ -78,6 +78,7 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
 	body.move(movement2);
+	gameView.showInfo(info, body);
 
 	if (isJumping)
 	{
