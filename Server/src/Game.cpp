@@ -99,7 +99,7 @@ void Game::update() {
     float elapsedTime = clock.restart().asSeconds();
     if(server.getM_playersConnected()>0 && client.isConnected())
 	{
-		player.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window,sky, server);
+		player.Update( &textures.get(Textures::bulletTexture),  elapsedTime, gameView, walls, baseHeight, leftExtremePoint, rightExtremePoint, window, sky, server);
 		enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window,sky,client);
 	}
     else
@@ -109,7 +109,6 @@ void Game::update() {
 	s<<player.health;
 	info[0].setString("Health: " + s.str());
 	s.str("");
-	s<<player.mana;
 	info[1].setString("Mana: " + s.str());
 }
 
