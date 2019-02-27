@@ -30,7 +30,6 @@ void Animation::Update(unsigned row, float deltaTime, bool faceRight){
         }
     }
     uvRect.top = currentImage.y * uvRect.height;
-
     if(faceRight)
     {
         uvRect.left = currentImage.x * uvRect.width;
