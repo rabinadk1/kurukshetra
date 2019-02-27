@@ -13,6 +13,8 @@
 #include "Platform.h"
 #include <vector>
 
+class Enemy;
+
 class Player {
 public:
 	Player(std::unique_ptr<sf::TcpSocket>* socket,int id);
@@ -20,7 +22,7 @@ public:
     void SetData(sf::Texture *playerTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position);
 	void Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window, sf::RectangleShape& sky, GameServer& server);
 	void Update(sf::Texture* bulletTexture , float deltaTime, Camera &gameView, std::vector<Platform>& walls, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape& sky);
-	void Draw(sf::RenderWindow& window);
+	void Draw(sf::RenderWindow& window, Enemy& enemy);
     Collider GetCollider() { return Collider(body); }
     sf::RectangleShape& GetBody() { return body;}
     void SetPosition(sf::Vector2f position);
@@ -37,7 +39,7 @@ public:
     unsigned short getPing();
     int getId();
 protected:
-	bool HitCheck(Bullet& bullet);
+	bool HitCheck(Enemy& enemy, Bullet& bullet);
 	bool isDead(){ return health<=0;}
 	bool isUp(sf::RectangleShape& shape, float& baseHeight);
 protected:

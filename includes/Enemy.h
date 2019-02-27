@@ -15,13 +15,15 @@
 #include "Camera.h"
 #include <vector>
 
+class Player;
+
 class Enemy {
 public:
     Enemy(){};
     Enemy(std::unique_ptr<sf::TcpSocket> *socket, int id);
     void SetData(sf::Texture *EnemyTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position);
     void Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window, sf::Vector2f position);
-    void Draw(sf::RenderWindow& window);
+    void Draw(sf::RenderWindow& window, Player& player);
     Collider GetCollider() { return Collider(body); }
     void SetPosition(sf::Vector2f position);
     void setName(const std::string& name);
@@ -36,7 +38,7 @@ public:
     unsigned short getPing();
     int getId();
 protected:
-    void HitCheck(Bullet& bullet);
+	bool HitCheck(Player& player, Bullet& bullet);
     bool isDead(){ return health<=0;}
     bool isUp(sf::RectangleShape& shape, float& baseHeight);
 protected:
@@ -53,6 +55,7 @@ protected:
     unsigned short m_ping;
     sf::Vector2f velocity, bulletVelocity, moveDirection;
     std::vector <Bullet> bullets;
+    friend class Player;
 public:
     int health, mana;
 };

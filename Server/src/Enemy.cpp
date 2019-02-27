@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cmath>
 #include <GameServer.h>
+#include "Player.h"
 
 #include "Enemy.h"
 
@@ -144,35 +145,42 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
     else
         movement2 = sf::Vector2f(0.f,0.f);
 }
-void Enemy::Draw(sf::RenderWindow &window) {
+void Enemy::Draw(sf::RenderWindow &window, Player& player) {
 //	if (isDead())
 //	{
 //		std::cout<<"Enemy died successfully!"<<std::endl;
 //		exit(0);
 //	}
     window.draw(body);
-    for (int i=0; i<int(bullets.size()); i++)
+//	std::cout << body.getPosition().x << std::endl;
+    for (int i = 0; i < int(bullets.size()); i++)
     {
         bullets[i].draw(window);
-       // std::cout<<"Testing " <<i<<std::endl;
         bullets[i].fire();
     }
-    for(int i=0; i<int(bullets.size()); i++)
-        HitCheck(bullets[i]);
+
+    for (int i = 0; i < int(bullets.size()); i++)
+    {
+        if (HitCheck(player, bullets[i]))
+            bullets.erase(bullets.begin() + i--);
+    }
 }
 
 void Enemy::SetPosition(sf::Vector2f position) {
     body.setPosition(position);
 }
 
-void Enemy::HitCheck(Bullet& bullet)
+bool Enemy::HitCheck(Player& player, Bullet& bullet)
 {
-    if(GetCollider().CheckCollision(Collider(bullet.getBullet())))
-        health-=50;
+    if(player.GetCollider().CheckCollision(Collider(bullet.getBullet())))
+    {
+        player.health -= 50;
+        return true;
+    }
+    return false;
 }
 
-bool Enemy::isUp(sf::RectangleShape &shape, float &baseHeight)
-{
+bool Enemy::isUp(sf::RectangleShape &shape, float &baseHeight) {
     return shape.getPosition().y <= baseHeight;
 }
 
@@ -222,6 +230,7 @@ sf::Time Enemy::getTimeout()
 {
     return m_timeout;
 }
+
 bool Enemy::isConnected()
 {
     return m_connected;

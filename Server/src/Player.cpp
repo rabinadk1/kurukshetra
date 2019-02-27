@@ -5,8 +5,7 @@
 #include <iostream>
 #include <cmath>
 #include <GameServer.h>
-#include <Player.h>
-
+#include "Enemy.h"
 
 #include "Player.h"
 
@@ -37,7 +36,7 @@ void Player::SetData(sf::Texture *playerTexture, sf::Vector2u imageCount, float 
 ////    bullet.setOrigin(bulletSize);
 //	bullet.setOrigin(bulletSize.x/2, bulletSize.y/2);
 
-	velocity = sf::Vector2f(2*speed, 1.5f*speed);
+	velocity = sf::Vector2f(2.4f*speed, 7*speed);
 }
 void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, std::vector<Platform>& walls, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape &sky)
 {
@@ -283,7 +282,7 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 		movement = sf::Vector2f(0.f,0.f);
 }
 
-void Player::Draw(sf::RenderWindow &window) {
+void Player::Draw(sf::RenderWindow &window, Enemy& enemy) {
 //	if (isDead())
 //	{
 //		std::cout<<"Player died successfully!"<<std::endl;
@@ -291,15 +290,16 @@ void Player::Draw(sf::RenderWindow &window) {
 //	}
 	window.draw(body);
 //	std::cout << body.getPosition().x << std::endl;
-	for (int i = 0; i < int(bullets.size()); i++)
+	for (auto &bullet : bullets)
 	{
-		bullets[i].draw(window);
-		bullets[i].fire();
+		bullet.draw(window);
+		bullet.fire();
 	}
+
 	for (int i = 0; i < int(bullets.size()); i++)
 	{
-		if (HitCheck(bullets[i]))
-			bullets.erase(bullets.begin() + i);
+		if (HitCheck(enemy, bullets[i]))
+			bullets.erase(bullets.begin() + i--);
 	}
 }
 
@@ -307,11 +307,11 @@ void Player::SetPosition(sf::Vector2f position) {
 	body.setPosition(position);
 }
 
-bool Player::HitCheck(Bullet& bullet)
+bool Player::HitCheck(Enemy& enemy, Bullet& bullet)
 {
-	if(GetCollider().CheckCollision(Collider(bullet.getBullet())))
+	if(enemy.GetCollider().CheckCollision(Collider(bullet.getBullet())))
 	{
-		health -= 50;
+		enemy.health -= 50;
 		return true;
 	}
 	return false;
