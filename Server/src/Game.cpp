@@ -7,7 +7,8 @@ Game::Game(unsigned viewWidth, unsigned viewHeight)
 	:window(sf::VideoMode(viewHeight, viewHeight), "Kurukshetra Server"),
 	 textures(Textures::textureNumber),
 	 fonts(GameFonts::fontNumber),
-	 server(sf::Socket::AnyPort+7000),
+	 server(9023),
+	 client("192.168.43.54",11002),
 	 viewWidth(viewWidth),
 	 viewHeight(viewHeight),
 	 baseHeight(1900),
@@ -96,17 +97,14 @@ void Game::run() {
 void Game::update() {
     gameView.SetView(window);
     float elapsedTime = clock.restart().asSeconds();
-    if(server.getM_playersConnected()>0)
+    if(server.getM_playersConnected()>0 && client.isConnected())
 	{
-    	static sf::Vector2f data=server.getRecievedData();
-    	player.collisionTest(player, walls, baseHeight, leftExtremePoint, rightExtremePoint);
 		player.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window,sky, server);
-		enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window,data);
+		enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window,sky,client);
 	}
     else
-    	player.Update(&textures.get(Textures::bulletTexture), elapsedTime, gameView, walls, baseHeight, leftExtremePoint, rightExtremePoint, window, sky);
+	    player.Update(&textures.get(Textures::bulletTexture), elapsedTime, gameView, walls, baseHeight, leftExtremePoint, rightExtremePoint, window, sky);
    // enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime,  gameView, baseHeight, window);
-
 	std::ostringstream s;
 	s<<player.health;
 	info[0].setString("Health: " + s.str());
@@ -143,7 +141,7 @@ void Game::render() {
     for(unsigned long i = 0; i < walls.size(); i++)
         walls[i].Draw(window);
 	player.Draw(window, enemy);
-	if(server.getM_playersConnected()>0)
+	if(server.getM_playersConnected()>0 && client.isConnected())
 		enemy.Draw(window, player);
 	for (int i=0; i<2 ; i++)
 		window.draw(info[i]);

@@ -10,41 +10,17 @@
 #include <thread>
 #include <mutex>
 #include <SFML/Network/TcpSocket.hpp>
-#include <Enemy.h>
-
-enum SIGNAL_SEND
-{
-    PING = 0,
-    SERVER_FULL = 51,
-    CLIENT_ID,
-//    PLAYER_LIST,
-//    PLAYER_CONNECTED,
-//    PLAYER_DISCONNECTED,
-//    CLIENT_POSITION,
-//    ENEMY_POSITION,
-//    TEXT_MESSAGE
-};
-
-enum SIGNAL_RECEIVE
-{
-//    PING_REC,
-//    CLIENT_NAME,
-//    CLIENT_VELOCITY,
-//    CLIENT_DISCONNECTED,
-//    PLAYER_LIST_REQUEST,
-//    TEXT_MESSAGE_REC
-};
-
 
 class GameServer {
 public:
+    GameServer(){};
     GameServer(unsigned short port);
     ~GameServer();
 
     void receive();
     //void update(sf::Keyboard::Key key);
-    void update();
-    sf::Vector2f recieveData();
+    void update(sf::Vector2f position2,sf::Vector2f movement,sf::Vector2f bullet,bool isShooting);
+    //sf::Vector2f recieveData();
 //
 //    void updateTick();
 //    void updateWorld(sf::Time dt);
@@ -52,13 +28,13 @@ public:
     //  void setPlayerList(std::vector<Player> *players);
 
     int getM_playersConnected() const;
-
-    const sf::Vector2f &getRecievedData() const;
-
     void setPosition(const sf::Vector2f &position);
 
 private:
     bool m_running;
+    bool m_dataWaiting;
+
+    sf::Packet m_toSend;
 
     sf::TcpListener m_listener;
     sf::SocketSelector m_selector;
@@ -76,11 +52,10 @@ private:
     int32_t m_playersConnected;
     int32_t m_currentPlayerId;
 
-    std::vector<Enemy> m_playerList;
+   // std::vector<Enemy> m_playerList;
     //   std::queue<sf::Packet> m_receivedPackets;
 
     //   char m_tmp[1400];
-
     std::thread t0;
     std::mutex m_mutex;
     std::thread t1;

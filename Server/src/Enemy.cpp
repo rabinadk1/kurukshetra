@@ -6,13 +6,8 @@
 #include <cmath>
 #include <GameServer.h>
 #include "Player.h"
-
+#include "Global.h"
 #include "Enemy.h"
-
-Enemy::Enemy(std::unique_ptr<sf::TcpSocket> *socket, int id) {
-    m_socket = std::move(*socket);
-    m_id=id;
-}
 
 void Enemy::SetData(sf::Texture *EnemyTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position) {
     animation.SetData(EnemyTexture, imageCount, switchTime);
@@ -39,47 +34,37 @@ void Enemy::SetData(sf::Texture *EnemyTexture, sf::Vector2u imageCount, float sw
     velocity = sf::Vector2f(2*speed, 1.5f*speed);
 }
 
-void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window, sf::Vector2f position)
+void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window, sf::RectangleShape& sky, GameClient& client)
 {
     static sf::Vector2f movement2(0.f, 0.f);
-    sf::Vector2f bulletmovement2(0.f, 0.f);
     static float localVelocity = velocity.y;
     const float g = 9.81f;
-//    if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-//        movement2.x -= velocity.x * deltaTime;
-//    if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-//        movement2.x += velocity.x * deltaTime;
-////    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) and isUp)
-////        movement2.y += velocity.x * deltaTime;
-//    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-//    {
-//        isJumping = true;
-//    }
-    movement2=position;
+    SetPosition(client.getRecievedData().bodyPosition);
+//movement2=client.getRecievedData().bodyMovement;
     static sf::Vector2f mousePos;
-    if (not isShooting and sf::Mouse::isButtonPressed(sf::Mouse::Left))
-    {
-        sf::Vector2i pixelMousePos = sf::Mouse::getPosition(window);
-
-        sf::IntRect viewport = gameView.GetViewport(window);
-        if (viewport.contains(pixelMousePos))
-        {
-            mousePos = window.mapPixelToCoords(pixelMousePos);
-//            std::cout<<mousePos.y<<" "<<body.getPosition().y<<std::endl;
-            if (mousePos.y<=baseHeight)
-            {
-                sf::Vector2f localBulletPos = body.getPosition();
-
-                sf::Vector2f displacement = sf::Vector2f(mousePos.x - localBulletPos.x, mousePos.y - localBulletPos.y);
-                double distance = sqrt(double(displacement.x * displacement.x + displacement.y * displacement.y));
-
-                moveDirection = sf::Vector2f(float(displacement.x / distance), float(displacement.y / distance));
-
-                bulletVelocity = sf::Vector2f(4*velocity.x * moveDirection.x, 4*velocity.y * moveDirection.y);
-                isShooting = true;
-            }
-        }
-    }
+//    if (not isShooting and sf::Mouse::isButtonPressed(sf::Mouse::Left))
+//    {
+//        sf::Vector2i pixelMousePos = sf::Mouse::getPosition(window);
+//
+//        sf::IntRect viewport = gameView.GetViewport(window);
+//        if (viewport.contains(pixelMousePos))
+//        {
+//            mousePos = window.mapPixelToCoords(pixelMousePos);
+////            std::cout<<mousePos.y<<" "<<body.getPosition().y<<std::endl;
+//            if (mousePos.y<=baseHeight)
+//            {
+//                sf::Vector2f localBulletPos = body.getPosition();
+//
+//                sf::Vector2f displacement = sf::Vector2f(mousePos.x - localBulletPos.x, mousePos.y - localBulletPos.y);
+//                double distance = sqrt(double(displacement.x * displacement.x + displacement.y * displacement.y));
+//
+//                moveDirection = sf::Vector2f(float(displacement.x / distance), float(displacement.y / distance));
+//
+//                bulletVelocity = sf::Vector2f(4*velocity.x * moveDirection.x, 4*velocity.y * moveDirection.y);
+//                isShooting = true;
+//            }
+//        }
+//    }
 
 //		if (isShooting and not isUp(bullet, baseHeight))
 ////	{
@@ -109,8 +94,10 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 //			bulletVelocity.y += g;
 //		}
 //	}
+    isShooting= client.getRecievedData().isshooting;
     if (isShooting)
     {
+        bulletVelocity=client.getRecievedData().bullet;
         Bullet newBullet(bulletTexture, sf::Vector2f(20.f, 12.4f), body.getPosition(), bulletVelocity);
         bullets.push_back(newBullet);
         isShooting = false;
@@ -124,12 +111,12 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
         localVelocity = velocity.y;
     }
 
-    if(movement2.x == 0)
+    if(client.getRecievedData().bodyMovement.x == 0)
         row = 0;
     else
     {
         row = 1;
-        faceRight = movement2.x > 0;
+        faceRight = client.getRecievedData().bodyMovement.x > 0;
     }
 
 //    std::cout<<movement2.x<<movement2.y;
@@ -137,6 +124,7 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
     animation.Update(row, deltaTime, faceRight);
     body.setTextureRect(animation.uvRect);
     body.move(movement2);
+
     if (isJumping)
     {
         movement2.y = -localVelocity * deltaTime;
@@ -182,56 +170,4 @@ bool Enemy::HitCheck(Player& player, Bullet& bullet)
 
 bool Enemy::isUp(sf::RectangleShape &shape, float &baseHeight) {
     return shape.getPosition().y <= baseHeight;
-}
-
-void Enemy::setName(const std::string& name)
-{
-    m_name = name;
-}
-
-void Enemy::setTimeout(sf::Time time)
-{
-    m_timeout = time;
-}
-
-void Enemy::setConnected(bool status)
-{
-    m_connected = status;
-}
-
-void Enemy::setPing(unsigned short ping)
-{
-    m_ping = ping;
-}
-
-unsigned short Enemy::getPing() {
-    return m_ping;
-}
-sf::Vector2f Enemy::getPosition()
-{
-    return m_position;
-}
-sf::TcpSocket* Enemy::getSocket()
-{
-    return m_socket.get();
-}
-
-std::string Enemy::getName()
-{
-    return m_name;
-}
-
-int Enemy::getId()
-{
-    return m_id;
-}
-
-sf::Time Enemy::getTimeout()
-{
-    return m_timeout;
-}
-
-bool Enemy::isConnected()
-{
-    return m_connected;
 }

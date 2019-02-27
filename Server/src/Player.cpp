@@ -12,6 +12,7 @@
 Player::Player(std::unique_ptr<sf::TcpSocket>* socket,int id){
 	m_socket = std::move(*socket);
 	m_id=id;
+
 }
 
 void Player::SetData(sf::Texture *playerTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position) {
@@ -83,10 +84,8 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	}
 //    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) and isUp)
 //        movement.y += velocity.x * deltaTime;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-	{
-		isJumping = true;
-	}
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        isJumping = true;
 
 //	static sf::Vector2f mousePos;
 	if (not isShooting and sf::Mouse::isButtonPressed(sf::Mouse::Left))
@@ -182,10 +181,10 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 {
 	static sf::Vector2f movement(0.f, 0.f);
 	static float localVelocity = velocity.y;
-
 	const float g = 9.81f;
 	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		movement.x -= velocity.x * deltaTime;
+
 	if (not isJumping and sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		movement.x += velocity.x * deltaTime;
 //    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) and isUp)
@@ -193,8 +192,6 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		isJumping = true;
 
-
-	server.setPosition(movement);
 //	static sf::Vector2f mousePos;
 	if (not isShooting and sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
@@ -211,9 +208,7 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 
 				sf::Vector2f displacement = sf::Vector2f(mousePos.x - localBulletPos.x, mousePos.y - localBulletPos.y);
 				double distance = sqrt(double(displacement.x * displacement.x + displacement.y * displacement.y));
-
 				moveDirection = sf::Vector2f(float(displacement.x / distance), float(displacement.y / distance));
-
 				bulletVelocity = sf::Vector2f(4*velocity.x * moveDirection.x*deltaTime, 4*velocity.y * moveDirection.y* deltaTime);
 				isShooting = true;
 			}
@@ -251,7 +246,6 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	if (isShooting)
 	{
 		bullets.emplace_back(bulletTexture, sf::Vector2f(20.f, 12.4f), body.getPosition(), bulletVelocity);
-		isShooting = false;
 	}
 
 	if (not isUp(body, baseHeight))
@@ -268,7 +262,9 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 		row = 1;
 		faceRight = movement.x > 0;
 	}
-	gameView.Move(movement);
+    server.update(body.getPosition(),movement,bulletVelocity,isShooting);
+	isShooting = false;
+	gameView.Update(body, window, sky);
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
 	body.move(movement);

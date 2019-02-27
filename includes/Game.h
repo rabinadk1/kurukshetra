@@ -43,6 +43,7 @@ private:
 	friend class Player;
 	Player player;
     GameServer server;
+    GameClient client;
     Enemy enemy;
     sf::RectangleShape sky, grass, rock;
     Animation playerAnimation, enemyAnimation;
