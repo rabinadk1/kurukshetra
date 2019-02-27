@@ -39,7 +39,7 @@ void Player::SetData(sf::Texture *playerTexture, sf::Vector2u imageCount, float 
 
 	velocity = sf::Vector2f(2*speed, 1.5f*speed);
 }
-void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, std::vector<Platform>& walls, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape &sky)
+void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, std::vector<Platform>& walls, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape &sky, sf::Text *info)
 {
 	static sf::Vector2f movement(0.f, 0.f);
 	static float localVelocity = velocity.y;
@@ -166,7 +166,7 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
 	body.move(movement);
-
+	gameView.showInfo(info, body);
 
 	if (isJumping)
 	{
@@ -177,7 +177,7 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 		movement = sf::Vector2f(0.f,0.f);
 }
 
-void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, std::vector<Platform>& walls, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape &sky, GameServer& server)
+void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, std::vector<Platform>& walls, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape &sky, sf::Text *info, GameServer& server)
 {
 	static sf::Vector2f movement(0.f, 0.f);
 	static float localVelocity = velocity.y;
@@ -306,6 +306,7 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
 	body.move(movement);
+	gameView.showInfo(info, body);
 
 	if (isJumping)
 	{

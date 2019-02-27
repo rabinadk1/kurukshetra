@@ -99,17 +99,18 @@ void Game::update() {
     float elapsedTime = clock.restart().asSeconds();
     if(server.getM_playersConnected()>0 && client.isConnected())
 	{
-		player.Update( &textures.get(Textures::bulletTexture),  elapsedTime, gameView, walls, baseHeight, leftExtremePoint, rightExtremePoint, window, sky, server);
-		enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window,sky,client);
+		player.Update( &textures.get(Textures::bulletTexture),  elapsedTime, gameView, walls, baseHeight, leftExtremePoint, rightExtremePoint, window, sky, info, server);
+		enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window,sky,info,client);
 	}
     else
-	    player.Update(&textures.get(Textures::bulletTexture), elapsedTime, gameView, walls, baseHeight, leftExtremePoint, rightExtremePoint, window, sky);
+	    player.Update(&textures.get(Textures::bulletTexture), elapsedTime, gameView, walls, baseHeight, leftExtremePoint, rightExtremePoint, window, sky, info);
    // enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime,  gameView, baseHeight, window);
-	std::ostringstream s;
-	s<<player.health;
-	info[0].setString("Health: " + s.str());
+	std::ostringstream playerHealthInfo, enemyHealthInfo, s;
+	playerHealthInfo<<player.health;
+	enemyHealthInfo<<enemy.health;
+	info[0].setString("Health: " + playerHealthInfo.str());
 	s.str("");
-	info[1].setString("Mana: " + s.str());
+	info[1].setString("Health: " + enemyHealthInfo.str());
 }
 
 void Game::processEvents() {
