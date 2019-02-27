@@ -87,6 +87,8 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 	}
 	else
 		movement2 = sf::Vector2f(0.f,0.f);
+	if (isDead())
+		window.close();
 }
 void Enemy::Draw(sf::RenderWindow &window, Player& player) {
 //	if (isDead())
@@ -117,7 +119,7 @@ bool Enemy::HitCheck(Player& player, Bullet& bullet)
 {
 	if(player.GetCollider().CheckCollision(Collider(bullet.getBullet())))
 	{
-		player.health -= 50;
+		player.health -= 20;
 		return true;
 	}
 	return false;

@@ -124,6 +124,8 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	}
 	else
 		movement = sf::Vector2f(0.f,0.f);
+	if (isDead())
+		window.close();
 }
 
 void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape &sky, sf::Text *info, GameServer& server)
@@ -221,6 +223,8 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	}
 	else
 		movement = sf::Vector2f(0.f,0.f);
+	if (isDead())
+		window.close();
 }
 
 void Player::Draw(sf::RenderWindow &window, Enemy& enemy) {
