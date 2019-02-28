@@ -48,13 +48,9 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 	const float g = 9.81f;
 	SetPosition(client.getRecievedData().bodyPosition);
 //movement2=client.getRecievedData().bodyMovement;
-	isShooting= client.getRecievedData().isshooting;
-	if (isShooting)
+	if (client.getRecievedData().shootWithTime)
 	{
 		bulletVelocity=client.getRecievedData().bullet;
-
-		row = 3;
-		faceRight = bulletVelocity.x>0;
 
 		gunSound.play();
 		sf::Vector2f localBulletPos;
@@ -80,7 +76,15 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 	else
 	{
 		row = 1;
-		faceRight = faceRight || client.getRecievedData().bodyMovement.x > 0;
+		faceRight =client.getRecievedData().bodyMovement.x > 0;
+	}
+
+	if(client.getRecievedData().isJumping)
+		row = 2;
+
+	if (client.getRecievedData().isshooting) {
+		row = 3;
+		faceRight = client.getRecievedData().bullet.x> 0;
 	}
 
 //    std::cout<<movement2.x<<movement2.y;
@@ -97,8 +101,6 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 //	}
 //	else
 //		movement2 = sf::Vector2f(0.f,0.f);
-    if(client.getRecievedData().isJumping)
-        row = 2;
 }
 void Enemy::Draw(sf::RenderWindow &window, Player& player) {
 //	if (isDead())
