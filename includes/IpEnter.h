@@ -24,9 +24,11 @@ private:
     sf::RenderWindow mWindow2;
     sf::RectangleShape inputBox;
     sf::String playerInput;
-    sf::Text playerText,enter,IpShow;
+    sf::Text playerText,enter,IpShow,name;
     sf::Texture ipTexture;
     sf::RectangleShape ipImage;
+    sf::String nameInput;
+   // sf::Text ;
     bool isPressedReturn;
     unsigned width, height;
 };

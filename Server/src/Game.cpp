@@ -3,12 +3,12 @@
 //
 #include <sstream>
 #include "Game.h"
-Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip)
+Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip,std::string name)
 	:window(sf::VideoMode(viewHeight, viewHeight), "Kurukshetra Server"),
 	 textures(Textures::textureNumber),
 	 fonts(GameFonts::fontNumber),
-	 server(11005),
-	 client(Ip,9024),
+	 server(9024,name),
+	 client(Ip,11005),
 	 viewWidth(viewWidth),
 	 viewHeight(viewHeight),
 	 baseHeight(1900),
@@ -109,9 +109,9 @@ void Game::update() {
 	std::ostringstream playerHealthInfo, enemyHealthInfo, s;
 	playerHealthInfo<<player.health;
 	enemyHealthInfo<<enemy.health;
-	info[0].setString("Health: " + playerHealthInfo.str());
+	info[0].setString("Your Health: " + playerHealthInfo.str());
 	s.str("");
-	info[1].setString(client.getName());
+	info[1].setString("Enemy Health: " + enemyHealthInfo.str());
 }
 
 void Game::processEvents() {

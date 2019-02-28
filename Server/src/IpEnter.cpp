@@ -5,11 +5,12 @@
 #include "IpEnter.h"
 void IpEnter::render(){
     mWindow2.clear();
-    mWindow2.draw(ipImage);
+//    mWindow2.draw(ipImage);
     mWindow2.draw(inputBox);
     mWindow2.draw(IpShow);
     mWindow2.draw(enter);
     mWindow2.draw(playerText);
+    mWindow2.draw(name);
     mWindow2.display();
 }
 IpEnter::IpEnter(unsigned int width, unsigned int height)
@@ -19,6 +20,9 @@ IpEnter::IpEnter(unsigned int width, unsigned int height)
          width(width),height(height)
 {
     fonts.load(Fonts::menuFont, "../Media/Fonts/DejaVuSans.ttf");
+    name.setFillColor(sf::Color::Red);
+    name.setPosition(300,0);
+    name.setString("Hello");
     IpShow.setString("Your IP is :" +sf::IpAddress::getLocalAddress().toString());
     IpShow.setPosition(0,0);
     IpShow.setFont(fonts.get(Fonts::menuFont));
@@ -54,7 +58,7 @@ void IpEnter::onPressEnter()
     if(!playerInput.isEmpty())
     {
         mWindow2.close();
-        Game game(width, height,playerInput);
+        Game game(width, height,playerInput,nameInput);
         game.run();
     }
     else
@@ -85,7 +89,17 @@ void IpEnter::processEvents() {
                     playerInput.erase(playerInput.getSize()-1,1);
                     playerText.setString(playerInput);
                 }
-            mWindow2.draw(playerText);
+                if((event.text.unicode>=65 && event.text.unicode<=90)||(event.text.unicode>=97 && event.text.unicode<=122))
+                {
+                    nameInput+=event.text.unicode;
+                    name.setString(nameInput);
+                }
+                else if(event.text.unicode==8 && !nameInput.isEmpty())
+                {
+                    nameInput.erase(nameInput.getSize()-1,1);
+                    name.setString(nameInput);
+                }
+//            mWindow2.draw(playerText);
                 break;
             case sf::Event::Closed:
                 mWindow2.close();
