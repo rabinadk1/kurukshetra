@@ -5,6 +5,7 @@
 #include "IpEnter.h"
 void IpEnter::render(){
     mWindow2.clear();
+    mWindow2.draw(IpShow);
     mWindow2.draw(enter);
     mWindow2.draw(playerText);
     mWindow2.display();
@@ -16,10 +17,13 @@ IpEnter::IpEnter(unsigned int width, unsigned int height)
          width(width),height(height)
 {
     fonts.load(Fonts::menuFont, "../Media/Fonts/DejaVuSans.ttf");
-    enter.setString("Please Enter IP:");
-    enter.setPosition(0,0);
+    IpShow.setString("Your IP is :" +sf::IpAddress::getLocalAddress().toString());
+    IpShow.setPosition(0,0);
+    IpShow.setFont(fonts.get(Fonts::menuFont));
+    enter.setString("Please Enter other's IP:");
+    enter.setPosition(0,IpShow.getCharacterSize());
     enter.setFont(fonts.get(Fonts::menuFont));
-    playerText.setPosition(0,enter.getCharacterSize());
+    playerText.setPosition(0,IpShow.getCharacterSize()+enter.getCharacterSize());
     playerText.setFont(fonts.get(Fonts::menuFont));
 }
 void IpEnter::handlePlayerInput(sf::Keyboard::Key &key, bool isPressed) {
