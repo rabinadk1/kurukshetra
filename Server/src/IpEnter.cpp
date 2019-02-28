@@ -5,6 +5,8 @@
 #include "IpEnter.h"
 void IpEnter::render(){
     mWindow2.clear();
+    mWindow2.draw(inputBox);
+    mWindow2.draw(IpShow);
     mWindow2.draw(enter);
     mWindow2.draw(playerText);
     mWindow2.display();
@@ -16,11 +18,22 @@ IpEnter::IpEnter(unsigned int width, unsigned int height)
          width(width),height(height)
 {
     fonts.load(Fonts::menuFont, "../Media/Fonts/DejaVuSans.ttf");
-    enter.setString("Please Enter IP:");
-    enter.setPosition(0,0);
+    IpShow.setString("Your IP is :" +sf::IpAddress::getLocalAddress().toString());
+    IpShow.setPosition(0,0);
+    IpShow.setFont(fonts.get(Fonts::menuFont));
+    enter.setString("Please Enter other's IP:");
+    enter.setPosition(0,IpShow.getCharacterSize());
     enter.setFont(fonts.get(Fonts::menuFont));
     playerText.setPosition(0,enter.getCharacterSize());
     playerText.setFont(fonts.get(Fonts::menuFont));
+    inputBox.setSize(sf::Vector2f(500, 50));
+    inputBox.setOutlineThickness(2.f);
+    inputBox.setFillColor(sf::Color(167, 150, 150));
+    inputBox.setOrigin((mWindow2.getSize().x / 2.f) + (inputBox.getSize().x / 2.f), mWindow2.getSize().y / 2.f);
+    inputBox.setPosition(mWindow2.getSize().x, mWindow2.getSize().y);
+    enter.setPosition(inputBox.getOrigin().x - (inputBox.getSize().x * (4.f / 5.f)), inputBox.getOrigin().y - 100);
+    playerText.setPosition(inputBox.getOrigin().x - (inputBox.getSize().x * (4.f / 5.f)),inputBox.getOrigin().y);
+    playerText.setFillColor(sf::Color::Black);
 }
 void IpEnter::handlePlayerInput(sf::Keyboard::Key &key, bool isPressed) {
         switch (key){
