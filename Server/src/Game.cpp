@@ -38,9 +38,10 @@ Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip)
 	sky.setPosition(sf::Vector2f(0, 0));
 	sky.setSize(sf::Vector2f(7000, 2500));
 	sky.setTexture(&textures.get(Textures::skyTexture));
+	sky.setFillColor(sf::Color(255, 164, 134, 200));
 
-	player.SetData(&textures.get(Textures::playerTexture), sf::Vector2u(4, 4), 0.3f, 150.0f, sf::Vector2f(leftExtremePoint + 500, baseHeight));
-	enemy.SetData(&textures.get(Textures::enemyTexture), sf::Vector2u(4, 4), 0.3f, 150.0f,sf::Vector2f(rightExtremePoint - 500, baseHeight));
+	player.SetData(&textures.get(Textures::playerTexture), sf::Vector2u(4, 4), 0.3f, 150.0f, sf::Vector2f(rightExtremePoint - 500, baseHeight));
+	enemy.SetData(&textures.get(Textures::enemyTexture), sf::Vector2u(4, 4), 0.3f, 150.0f,sf::Vector2f(leftExtremePoint + 500, baseHeight));
 
 
     gameView.SetSize(sf::Vector2f(viewWidth, viewHeight));

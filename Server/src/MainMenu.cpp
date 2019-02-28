@@ -55,7 +55,7 @@ void MainMenu::handlePlayerInput(sf::Keyboard::Key &key, bool isPressed) {
             break;
         case sf::Keyboard::Return:
             isPressedReturn=isPressed;
-            break;
+            break;    
     }
     update();
 }
