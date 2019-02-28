@@ -50,7 +50,11 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 //movement2=client.getRecievedData().bodyMovement;
 	struct clientInfo localClient= client.getRecievedData();
 	bulletVelocity=localClient.bullet;
-	if (localClient.isshooting && clock.getElapsedTime().asSeconds()>=.2f)
+	if (localClient.isshooting){
+	    std::cout << "Enemy is Shooting!!! \n";
+
+	}
+	if (localClient.isshooting)
 	{
 		gunSound.play();
 		sf::Vector2f localBulletPos;
@@ -61,7 +65,8 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 		localBulletPos.y = body.getPosition().y - body.getSize().y/1.45f;
 		bullets.emplace_back(bulletTexture, sf::Vector2f(20.f, 12.4f), localBulletPos, bulletVelocity);
 //		isShooting = false;
-		clock.restart();
+
+		client.setNotShooting();
 	}
 //	}
 

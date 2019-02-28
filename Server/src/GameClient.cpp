@@ -72,3 +72,7 @@ struct clientInfo GameClient::recieveData(){
         }
    // }
 }
+
+void GameClient::setNotShooting(){
+    this->recievedData.isshooting = false;
+};

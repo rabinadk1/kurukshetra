@@ -21,7 +21,7 @@ public:
     bool isConnected() { return m_connected; }
     virtual ~GameClient();
     const struct clientInfo &getRecievedData() const;
-
+    void setNotShooting();
     const std::string &getName() const;
 
 private:
