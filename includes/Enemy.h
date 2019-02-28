@@ -43,6 +43,7 @@ private:
     sf::Time m_timeout;
     std::string m_name;
     std::unique_ptr<sf::TcpSocket> m_socket = nullptr;
+    sf::Clock clock;
     bool m_connected;
     int m_id;
     unsigned short m_ping;

@@ -49,10 +49,9 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 	SetPosition(client.getRecievedData().bodyPosition);
 //movement2=client.getRecievedData().bodyMovement;
 	struct clientInfo localClient= client.getRecievedData();
-	if (localClient.shootWithTime)
+	bulletVelocity=localClient.bullet;
+	if (localClient.isshooting && clock.getElapsedTime().asSeconds()>=.2f)
 	{
-		bulletVelocity=localClient.bullet;
-
 		gunSound.play();
 		sf::Vector2f localBulletPos;
 		if (faceRight)
@@ -62,6 +61,7 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 		localBulletPos.y = body.getPosition().y - body.getSize().y/1.45f;
 		bullets.emplace_back(bulletTexture, sf::Vector2f(20.f, 12.4f), localBulletPos, bulletVelocity);
 //		isShooting = false;
+		clock.restart();
 	}
 //	}
 

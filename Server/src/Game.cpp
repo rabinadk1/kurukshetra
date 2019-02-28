@@ -8,8 +8,8 @@ Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip,std::string na
 	:window(sf::VideoMode(viewHeight, viewHeight), "Kurukshetra Server"),
 	 textures(Textures::textureNumber),
 	 fonts(GameFonts::fontNumber),
-	 server(11007,name),
-	 client(Ip,9029),
+	 server(9033,name),
+	 client(Ip,11011),
 	 viewWidth(viewWidth),
 	 viewHeight(viewHeight),
 	 baseHeight(1900),
@@ -135,19 +135,6 @@ void Game::processEvents() {
 }
 
 void Game::render() {
-	window.clear();
-	window.draw(sky);
-//	window.draw(grass);
-//	window.draw(rock);
-    ground.Draw(window);
-    for(auto& wall : walls)
-        wall.Draw(window);
-	player.Draw(window, enemy);
-	if(server.getM_playersConnected()>0 && client.isConnected())
-		enemy.Draw(window, player);
-	for (const auto &text : info)
-		window.draw(text);
-	window.display();
 	if (player.isDead())
 	{
 //		sf::Clock waitClock;
@@ -162,6 +149,20 @@ void Game::render() {
 //		while(waitClock.getElapsedTime().asSeconds()<3.f);
 		window.close();
 	}
+
+	window.clear();
+	window.draw(sky);
+//	window.draw(grass);
+//	window.draw(rock);
+    ground.Draw(window);
+    for(auto& wall : walls)
+        wall.Draw(window);
+	player.Draw(window, enemy);
+	if(server.getM_playersConnected()>0 && client.isConnected())
+		enemy.Draw(window, player);
+	for (const auto &text : info)
+		window.draw(text);
+	window.display();
 
 }
 

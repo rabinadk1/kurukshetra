@@ -30,7 +30,7 @@ int GameServer::getM_playersConnected() const {
 
 GameServer::~GameServer(){
     m_running = false;
-    socket.disconnect();
+  //  socket.disconnect();
     m_listener.close();
 }
 

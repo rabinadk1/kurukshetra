@@ -179,33 +179,25 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 			if (faceRight)
 				localBulletPos.x = body.getPosition().x - body.getSize().x*0.2f;
 			else
-				localBulletPos.x = body.getPosition().x - body.getSize().y*0.8f;
+				localBulletPos.x = body.getPosition().x - body.getSize().x*0.8f;
 			localBulletPos.y = body.getPosition().y - body.getSize().y/1.45f;
 			line[0] = sf::Vertex(localBulletPos);
 			line[1] = sf::Vertex(mousePos);
 		}
 	}
-	if (not isShooting and sf::Mouse::isButtonPressed(sf::Mouse::Left))
-	{
-		if (checkforMouse)
-		{
-			sf::Vector2f displacement = sf::Vector2f(mousePos.x - localBulletPos.x, mousePos.y - localBulletPos.y);
-			double distance = sqrt(double(displacement.x * displacement.x + displacement.y * displacement.y));
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) and checkforMouse and clock.getElapsedTime().asSeconds()>=0.2f)
+    {
+        sf::Vector2f displacement = sf::Vector2f(mousePos.x - localBulletPos.x, mousePos.y - localBulletPos.y);
+        double distance = sqrt(double(displacement.x * displacement.x + displacement.y * displacement.y));
 
-			moveDirection = sf::Vector2f(float(displacement.x / distance), float(displacement.y / distance));
+        moveDirection = sf::Vector2f(float(displacement.x / distance), float(displacement.y / distance));
 
-			bulletVelocity = sf::Vector2f(4*velocity.x * moveDirection.x*deltaTime, 4*velocity.y * moveDirection.y* deltaTime);
-			isShooting = true;
-			clock.restart();
-		}
-	}
-	bool playerIsShooting = isShooting and clock.getElapsedTime().asSeconds()>=0.2f;
-	if (playerIsShooting)
-	{
+        bulletVelocity = sf::Vector2f(4*velocity.x * moveDirection.x*deltaTime, 4*velocity.y * moveDirection.y* deltaTime);
+        isShooting = true;
+        clock.restart();
+
 		gunSound.play();
 		bullets.emplace_back(Bullet(bulletTexture, sf::Vector2f(20.f, 12.4f), localBulletPos, bulletVelocity));
-		isShooting = false;
-		clock.restart();
 	}
 
 	if (not isUp(body, baseHeight))
@@ -230,7 +222,8 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 		faceRight = bulletVelocity.x>0;
 	}
 
-    server.update(body.getPosition(),movement,bulletVelocity,isShooting,playerIsShooting,isJumping);
+    server.update(body.getPosition(),movement,bulletVelocity,isShooting,true, isJumping);
+	isShooting = false;
 	gameView.Move(movement);
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);

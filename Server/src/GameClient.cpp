@@ -19,7 +19,7 @@ m_running2=true;
 
 GameClient::~GameClient() {
 m_running2=false;
-m_socket.disconnect();
+//m_socket.disconnect();
 }
 
 void GameClient::connection(const sf::IpAddress& ip, const short& port)
@@ -66,7 +66,7 @@ struct clientInfo GameClient::recieveData(){
             return c1;
         } else
         {
-            std::cout << "No data recieved";
+            //std::cout << "No data recieved";
             struct clientInfo c1={sf::Vector2f(0.f,0.f),sf::Vector2f(0.f,0.f),sf::Vector2f(0.f,0.f),false, false};
             return c1;
         }
