@@ -22,6 +22,7 @@ private:
     sf::Text menu[3];
     ResourceHolder <sf::Font, Fonts::ID> fonts;
     sf::RenderWindow mWindow2;
+    sf::RectangleShape inputBox;
     sf::String playerInput;
     sf::Text playerText,enter,IpShow;
     bool isPressedReturn;

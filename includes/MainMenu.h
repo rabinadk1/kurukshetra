@@ -34,4 +34,6 @@ private:
     bool isPressedUp, isPressedDown, isPressedReturn;
     sf::RenderWindow mWindow2;
     unsigned width, height;
+    sf::Texture menuTexture;
+    sf::RectangleShape menuImage;
 };

@@ -7,7 +7,7 @@ Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip)
 	:window(sf::VideoMode(viewHeight, viewHeight), "Kurukshetra Server"),
 	 textures(Textures::textureNumber),
 	 fonts(GameFonts::fontNumber),
-	 server(11006),
+	 server(11005),
 	 client(Ip,9024),
 	 viewWidth(viewWidth),
 	 viewHeight(viewHeight),
@@ -38,9 +38,10 @@ Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip)
 	sky.setPosition(sf::Vector2f(0, 0));
 	sky.setSize(sf::Vector2f(7000, 2500));
 	sky.setTexture(&textures.get(Textures::skyTexture));
+	sky.setFillColor(sf::Color(255, 164, 134, 200));
 
-	player.SetData(&textures.get(Textures::playerTexture), sf::Vector2u(4, 4), 0.3f, 150.0f, sf::Vector2f(leftExtremePoint + 500, baseHeight));
-	enemy.SetData(&textures.get(Textures::enemyTexture), sf::Vector2u(4, 4), 0.3f, 150.0f,sf::Vector2f(rightExtremePoint - 500, baseHeight));
+	player.SetData(&textures.get(Textures::playerTexture), sf::Vector2u(4, 4), 0.3f, 150.0f, sf::Vector2f(rightExtremePoint - 500, baseHeight));
+	enemy.SetData(&textures.get(Textures::enemyTexture), sf::Vector2u(4, 4), 0.3f, 150.0f,sf::Vector2f(leftExtremePoint + 500, baseHeight));
 
 
     gameView.SetSize(sf::Vector2f(viewWidth, viewHeight));
@@ -143,8 +144,8 @@ void Game::render() {
 	player.Draw(window, enemy);
 	if(server.getM_playersConnected()>0 && client.isConnected())
 		enemy.Draw(window, player);
-	for (const auto &i : info)
-		window.draw(i);
+	for (const auto &text : info)
+		window.draw(text);
 	window.display();
 	if (player.isDead())
 	{
