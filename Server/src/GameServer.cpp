@@ -5,6 +5,7 @@
 #include <iostream>
 #include "GameServer.h"
 #include <SFML/Graphics.hpp>
+#include "Global.h"
 #include <Player.h>
 #include <SFML/Network/TcpSocket.hpp>
 
@@ -30,7 +31,7 @@ int GameServer::getM_playersConnected() const {
 
 GameServer::~GameServer(){
     m_running = false;
-  //  socket.disconnect();
+    socket.disconnect();
     m_listener.close();
 }
 
@@ -56,13 +57,21 @@ void GameServer::receive() {
     }
 }
 
+struct clientInfo convertPacketToInfo(sf::Packet packet){
+    struct clientInfo c1;
+    packet>>c1.bodyPosition.x>>c1.bodyPosition.y>>c1.bodyMovement.x>>c1.bodyMovement.y>>c1.bullet.x>>c1.bullet.y>>c1.isshooting>>c1.shootWithTime>>c1.isJumping;
+    return c1;
+}
+
 void GameServer::update(sf::Vector2f position2,sf::Vector2f movement,sf::Vector2f bullet,bool isShooting, bool shootWithTime,bool isJumping) {
     sf::Packet keyPress;
     keyPress<<position2.x<<position2.y<<movement.x<<movement.y<<bullet.x<<bullet.y<<isShooting<<shootWithTime<<isJumping;
     std::cout<<position2.x;
+    if (convertPacketToInfo(keyPress) != convertPacketToInfo(this->m_toSend)) {
         this->m_toSend = keyPress;
         m_mutex.lock();
         this->m_dataWaiting = true;
         m_mutex.unlock();
+    }
 }
 
