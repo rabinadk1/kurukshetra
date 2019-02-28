@@ -44,7 +44,7 @@ void GameServer::receive() {
                 ++m_playersConnected;
             }
         }
-        std::cout<<"Data:"<<m_dataWaiting<<std::endl;
+//        std::cout<<"Data:"<<m_dataWaiting<<std::endl;
         if (this->m_dataWaiting){
             std::cout << "Sending data"<< std::endl;
             if (socket.send(this->m_toSend) != sf::Socket::Done)

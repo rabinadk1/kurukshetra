@@ -2,13 +2,14 @@
 // Created by maverick on 12/2/19.
 //
 #include <sstream>
+#include <iostream>
 #include "Game.h"
 Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip,std::string name)
 	:window(sf::VideoMode(viewHeight, viewHeight), "Kurukshetra Server"),
 	 textures(Textures::textureNumber),
 	 fonts(GameFonts::fontNumber),
-	 server(9026,name),
-	 client(Ip,11005),
+	 server(11005,name),
+	 client(Ip,9029),
 	 viewWidth(viewWidth),
 	 viewHeight(viewHeight),
 	 baseHeight(1900),
@@ -149,16 +150,16 @@ void Game::render() {
 	window.display();
 	if (player.isDead())
 	{
-		sf::Clock waitClock;
-		std::cout<<"You Win!!"<<std::endl;
-		while(waitClock.getElapsedTime().asSeconds()<3.f);
+//		sf::Clock waitClock;
+		std::cout<<"You Lose!!"<<std::endl;
+//		while(waitClock.getElapsedTime().asSeconds()<3.f);
 		window.close();
 	}
-	if (enemy.isDead())
+	else if (enemy.isDead())
 	{
-		sf::Clock waitClock;
-		std::cout<<"Enemy Wins!!"<<std::endl;
-		while(waitClock.getElapsedTime().asSeconds()<3.f);
+//		sf::Clock waitClock;
+		std::cout<<"You Win!!"<<std::endl;
+//		while(waitClock.getElapsedTime().asSeconds()<3.f);
 		window.close();
 	}
 
