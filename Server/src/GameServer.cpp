@@ -67,7 +67,11 @@ void GameServer::update(sf::Vector2f position2,sf::Vector2f movement,sf::Vector2
     sf::Packet keyPress;
     keyPress<<position2.x<<position2.y<<movement.x<<movement.y<<bullet.x<<bullet.y<<isShooting<<shootWithTime<<isJumping;
     std::cout<<position2.x;
-    if (convertPacketToInfo(keyPress) != convertPacketToInfo(this->m_toSend)) {
+
+    clientInfo c1 = convertPacketToInfo(keyPress);
+    clientInfo c2 = convertPacketToInfo(this->m_toSend);
+    if (c1.isshooting || (c1.bullet != c2.bullet || c1.shootWithTime != c2.shootWithTime || c1.isJumping != c2.isJumping
+    || c1.bodyMovement != c2.bodyMovement || c1.bodyPosition != c2.bodyPosition || c1.isshooting != c2.isshooting)) {
         this->m_toSend = keyPress;
         m_mutex.lock();
         this->m_dataWaiting = true;
