@@ -43,9 +43,9 @@ void Enemy::SetData(sf::Texture *EnemyTexture, sf::Vector2u imageCount, float sw
 
 void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window, sf::RectangleShape& sky, sf::Text *info, GameClient& client)
 {
-	static sf::Vector2f movement2(0.f, 0.f);
-	static float localVelocity = velocity.y;
-	const float g = 9.81f;
+//	static sf::Vector2f movement2(0.f, 0.f);
+//	static float localVelocity = velocity.y;
+//	const float g = 9.81f;
 	SetPosition(client.getRecievedData().bodyPosition);
 //movement2=client.getRecievedData().bodyMovement;
 	struct clientInfo localClient= client.getRecievedData();
@@ -61,15 +61,15 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 			localBulletPos.x = body.getPosition().x - body.getSize().y*0.8f;
 		localBulletPos.y = body.getPosition().y - body.getSize().y/1.45f;
 		bullets.emplace_back(bulletTexture, sf::Vector2f(20.f, 12.4f), localBulletPos, bulletVelocity);
-		isShooting = false;
+//		isShooting = false;
 	}
 //	}
 
 	if (not isUp(body, baseHeight))
 	{
 		body.setPosition(body.getPosition().x, baseHeight);
-		isJumping = false;
-		localVelocity = velocity.y;
+//		isJumping = false;
+//		localVelocity = velocity.y;
 	}
 
 	if( localClient.bodyMovement.x == 0.f)
@@ -80,10 +80,10 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 		faceRight = localClient.bodyMovement.x > 0.f;
 	}
 
-	if(isJumping)
+	if(localClient.isJumping)
 		row = 2;
 
-	if (isShooting) {
+	if (localClient.isshooting) {
 		row = 3;
 		faceRight = localClient.bullet.x> 0.f;
 	}
@@ -92,7 +92,7 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 	// gameView.move(movement2);
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
-	body.move(movement2);
+//	body.move(movement2);
 	info[1].setString(client.getName());
 	gameView.showInfo(&info[1], body);
 //	if (isJumping)
