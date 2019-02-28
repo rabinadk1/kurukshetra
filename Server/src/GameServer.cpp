@@ -56,9 +56,9 @@ void GameServer::receive() {
     }
 }
 
-void GameServer::update(sf::Vector2f position2,sf::Vector2f movement,sf::Vector2f bullet, bool isShooting,bool isJumping) {
+void GameServer::update(sf::Vector2f position2,sf::Vector2f movement,sf::Vector2f bullet,bool isShooting, bool shootWithTime,bool isJumping) {
     sf::Packet keyPress;
-    keyPress<<position2.x<<position2.y<<movement.x<<movement.y<<bullet.x<<bullet.y<<isShooting<<isJumping;
+    keyPress<<position2.x<<position2.y<<movement.x<<movement.y<<bullet.x<<bullet.y<<isShooting<<shootWithTime<<isJumping;
     std::cout<<position2.x;
         this->m_toSend = keyPress;
         m_mutex.lock();

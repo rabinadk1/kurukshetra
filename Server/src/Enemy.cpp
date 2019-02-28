@@ -48,8 +48,7 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 	const float g = 9.81f;
 	SetPosition(client.getRecievedData().bodyPosition);
 //movement2=client.getRecievedData().bodyMovement;
-	isShooting= client.getRecievedData().isshooting;
-	if (isShooting)
+	if (client.getRecievedData().shootWithTime)
 	{
 		bulletVelocity=client.getRecievedData().bullet;
 

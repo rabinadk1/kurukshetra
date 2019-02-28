@@ -18,7 +18,7 @@ public:
     ~GameServer();
 
     void receive();
-    void update(sf::Vector2f position2,sf::Vector2f movement,sf::Vector2f bullet,bool isShooting,bool isJumping);
+    void update(sf::Vector2f position2,sf::Vector2f movement,sf::Vector2f bullet,bool isShooting,bool shootWithTime,bool isJumping);
     int getM_playersConnected() const;
 
 private:

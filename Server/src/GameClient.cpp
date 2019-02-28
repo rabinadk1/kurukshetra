@@ -61,7 +61,7 @@ struct clientInfo GameClient::recieveData(){
         sf::Packet Sam;
 
         if (m_socket.receive(Sam) == sf::Socket::Done) {
-            Sam>>c1.bodyPosition.x>>c1.bodyPosition.y>>c1.bodyMovement.x>>c1.bodyMovement.y>>c1.bullet.x>>c1.bullet.y>>c1.isshooting>>c1.isJumping;
+            Sam>>c1.bodyPosition.x>>c1.bodyPosition.y>>c1.bodyMovement.x>>c1.bodyMovement.y>>c1.bullet.x>>c1.bullet.y>>c1.isshooting>>c1.shootWithTime>>c1.isJumping;
             //std::cout << moveX;
             return c1;
         } else
