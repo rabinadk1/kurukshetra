@@ -7,8 +7,8 @@ Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip)
 	:window(sf::VideoMode(viewHeight, viewHeight), "Kurukshetra Server"),
 	 textures(Textures::textureNumber),
 	 fonts(GameFonts::fontNumber),
-	 server(11005),
-	 client(Ip,9024),
+	 server(9024),
+	 client(Ip,11006),
 	 viewWidth(viewWidth),
 	 viewHeight(viewHeight),
 	 baseHeight(1900),
@@ -143,8 +143,8 @@ void Game::render() {
 	player.Draw(window, enemy);
 	if(server.getM_playersConnected()>0 && client.isConnected())
 		enemy.Draw(window, player);
-	for (const auto &i : info)
-		window.draw(i);
+	for (const auto &text : info)
+		window.draw(text);
 	window.display();
 	if (player.isDead())
 	{
