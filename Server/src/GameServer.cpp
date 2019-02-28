@@ -8,7 +8,7 @@
 #include <Player.h>
 #include <SFML/Network/TcpSocket.hpp>
 
-GameServer::GameServer(unsigned short port)
+GameServer::GameServer(unsigned short port,std::string name):player_name(name)
 {
     m_running = true;
     if(m_listener.listen(port) == sf::Socket::Done)
@@ -39,7 +39,7 @@ void GameServer::receive() {
         while (m_playersConnected == 0) {
             if (m_listener.accept(this->socket) == sf::Socket::Done) {
                 sf::Packet Name;
-                Name<<"Samip";
+                Name<<player_name;
                 socket.send(Name);
                 ++m_playersConnected;
             }

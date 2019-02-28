@@ -23,8 +23,8 @@ private:
     ResourceHolder <sf::Font, Fonts::ID> fonts;
     sf::RenderWindow mWindow2;
     sf::RectangleShape inputBox;
-    sf::String playerInput;
-    sf::Text playerText,enter,IpShow;
+    sf::String playerInput,nameInput;
+    sf::Text playerText,enter,IpShow,name;
     bool isPressedReturn;
     unsigned width, height;
 };

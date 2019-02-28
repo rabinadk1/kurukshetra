@@ -8,6 +8,7 @@ void IpEnter::render(){
     mWindow2.draw(inputBox);
     mWindow2.draw(IpShow);
     mWindow2.draw(enter);
+    mWindow2.draw(name);
     mWindow2.draw(playerText);
     mWindow2.display();
 }
@@ -49,7 +50,7 @@ void IpEnter::onPressEnter()
     if(!playerInput.isEmpty())
     {
         mWindow2.close();
-        Game game(width, height,playerInput);
+        Game game(width, height,playerInput,nameInput);
         game.run();
     }
     else
@@ -79,6 +80,16 @@ void IpEnter::processEvents() {
                 {
                     playerInput.erase(playerInput.getSize()-1,1);
                     playerText.setString(playerInput);
+                }
+                else if((event.text.unicode>=65 && event.text.unicode<=90)||(event.text.unicode>=97 && event.text.unicode<=122))
+                {
+                    nameInput+=event.text.unicode;
+                    name.setString(nameInput);
+                }
+                else if(event.text.unicode==8 && !nameInput.isEmpty())
+                {
+                    nameInput.erase(playerInput.getSize()-1,1);
+                    name.setString(playerInput);
                 }
             mWindow2.draw(playerText);
                 break;

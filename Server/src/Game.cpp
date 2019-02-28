@@ -3,12 +3,12 @@
 //
 #include <sstream>
 #include "Game.h"
-Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip)
+Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip,std::string name)
 	:window(sf::VideoMode(viewHeight, viewHeight), "Kurukshetra Server"),
 	 textures(Textures::textureNumber),
 	 fonts(GameFonts::fontNumber),
-	 server(11005),
-	 client(Ip,9024),
+	 server(9024,name),
+	 client(Ip,11005),
 	 viewWidth(viewWidth),
 	 viewHeight(viewHeight),
 	 baseHeight(1900),

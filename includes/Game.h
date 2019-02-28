@@ -24,7 +24,7 @@ namespace GameFonts
 
 class Game {
 public:
-    Game(unsigned viewWidth, unsigned viewHeight,std::string Ip);
+    Game(unsigned viewWidth, unsigned viewHeight,std::string Ip,std::string name);
     void run();
 
 private:
