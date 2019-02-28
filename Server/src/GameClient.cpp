@@ -34,7 +34,9 @@ void GameClient::connection(const sf::IpAddress& ip, const short& port)
             std::cout << "Connected to the server" << std::endl;
             sf::Packet NameP;
             m_socket.receive(NameP);
+            m_mutex.lock();
             NameP>>Name;
+            m_mutex.unlock();
         }
     }
     while (this->m_running2) {
