@@ -65,7 +65,6 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 		localBulletPos.y = body.getPosition().y - body.getSize().y/1.45f;
 		bullets.emplace_back(bulletTexture, sf::Vector2f(20.f, 12.4f), localBulletPos, bulletVelocity);
 		isShooting = false;
-//		faceRight = bulletVelocity.x>0;
 	}
 //	}
 
