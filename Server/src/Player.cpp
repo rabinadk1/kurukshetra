@@ -98,7 +98,7 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	if (isShooting and clock.getElapsedTime().asSeconds()>=0.2f )
 	{
 		gunSound.play();
-		bullets.emplace_back(Bullet(bulletTexture, sf::Vector2f(20.f, 12.4f), body.getPosition(), bulletVelocity));
+		bullets.emplace_back(Bullet(bulletTexture, sf::Vector2f(20.f, 12.4f), localBulletPos, bulletVelocity));
 		isShooting = false;
 		clock.restart();
 	}
@@ -203,7 +203,7 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	if (playerIsShooting)
 	{
 		gunSound.play();
-		bullets.emplace_back(Bullet(bulletTexture, sf::Vector2f(20.f, 12.4f), body.getPosition(), bulletVelocity));
+		bullets.emplace_back(Bullet(bulletTexture, sf::Vector2f(20.f, 12.4f), localBulletPos, bulletVelocity));
 		isShooting = false;
 		clock.restart();
 	}
