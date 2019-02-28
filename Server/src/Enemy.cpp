@@ -76,15 +76,15 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 	else
 	{
 		row = 1;
-		faceRight = faceRight || client.getRecievedData().bodyMovement.x > 0;
+		faceRight =client.getRecievedData().bodyMovement.x > 0;
 	}
 
 	if(client.getRecievedData().isJumping)
 		row = 2;
 
-	if (isShooting) {
+	if (client.getRecievedData().isshooting) {
 		row = 3;
-		faceRight = bulletVelocity.x > 0;
+		faceRight = client.getRecievedData().bullet.x> 0;
 	}
 
 //    std::cout<<movement2.x<<movement2.y;

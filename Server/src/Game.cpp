@@ -7,7 +7,7 @@ Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip,std::string na
 	:window(sf::VideoMode(viewHeight, viewHeight), "Kurukshetra Server"),
 	 textures(Textures::textureNumber),
 	 fonts(GameFonts::fontNumber),
-	 server(9024,name),
+	 server(9026,name),
 	 client(Ip,11005),
 	 viewWidth(viewWidth),
 	 viewHeight(viewHeight),
