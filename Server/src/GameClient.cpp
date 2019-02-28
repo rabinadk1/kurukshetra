@@ -32,14 +32,19 @@ void GameClient::connection(const sf::IpAddress& ip, const short& port)
         else {
             m_connected = true;
             std::cout << "Connected to the server" << std::endl;
-//            t1 = std::thread(&GameClient::receiveData,this);
-//            t1.detach();
+            sf::Packet NameP;
+            m_socket.receive(NameP);
+            NameP>>Name;
         }
     }
     while (this->m_running2) {
         this->recievedData  = recieveData();
     }
 
+}
+
+const std::string &GameClient::getName() const {
+    return Name;
 }
 
 const struct clientInfo &GameClient::getRecievedData() const {

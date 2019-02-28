@@ -38,7 +38,9 @@ void GameServer::receive() {
     while (m_running) {
         while (m_playersConnected == 0) {
             if (m_listener.accept(this->socket) == sf::Socket::Done) {
-                std::cout << "Connected";
+                sf::Packet Name;
+                Name<<"Samip";
+                socket.send(Name);
                 ++m_playersConnected;
             }
         }
