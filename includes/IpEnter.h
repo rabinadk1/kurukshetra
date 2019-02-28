@@ -25,6 +25,8 @@ private:
     sf::RectangleShape inputBox;
     sf::String playerInput;
     sf::Text playerText,enter,IpShow;
+    sf::Texture ipTexture;
+    sf::RectangleShape ipImage;
     bool isPressedReturn;
     unsigned width, height;
 };

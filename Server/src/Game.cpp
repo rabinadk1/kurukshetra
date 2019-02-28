@@ -111,7 +111,7 @@ void Game::update() {
 	enemyHealthInfo<<enemy.health;
 	info[0].setString("Health: " + playerHealthInfo.str());
 	s.str("");
-	info[1].setString("Health: " + enemyHealthInfo.str());
+	info[1].setString(client.getName());
 }
 
 void Game::processEvents() {

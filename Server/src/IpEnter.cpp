@@ -5,6 +5,7 @@
 #include "IpEnter.h"
 void IpEnter::render(){
     mWindow2.clear();
+    mWindow2.draw(ipImage);
     mWindow2.draw(inputBox);
     mWindow2.draw(IpShow);
     mWindow2.draw(enter);
@@ -34,6 +35,10 @@ IpEnter::IpEnter(unsigned int width, unsigned int height)
     enter.setPosition(inputBox.getOrigin().x - (inputBox.getSize().x * (4.f / 5.f)), inputBox.getOrigin().y - 100);
     playerText.setPosition(inputBox.getOrigin().x - (inputBox.getSize().x * (4.f / 5.f)),inputBox.getOrigin().y);
     playerText.setFillColor(sf::Color::Black);
+    ipTexture.loadFromFile("../Media/Textures/menu.png");
+    ipImage.setSize(sf::Vector2f(width, height));
+    ipImage.setPosition(0,0);
+    ipImage.setTexture(&ipTexture);
 }
 void IpEnter::handlePlayerInput(sf::Keyboard::Key &key, bool isPressed) {
         switch (key){
