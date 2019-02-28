@@ -6,7 +6,7 @@
 #include "Bullet.h"
 
 Bullet::Bullet(sf::Texture *bulletTexture, sf::Vector2f bulletSize, sf::Vector2f bulletPos, sf::Vector2f bulletVelocity)
-	:velocity(bulletVelocity)
+	:velocity(bulletVelocity.x*3, bulletVelocity.y*1)
 {
 	bullet.setSize(bulletSize);
 	bullet.setPosition(bulletPos);
