@@ -7,8 +7,8 @@ Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip)
 	:window(sf::VideoMode(viewHeight, viewHeight), "Kurukshetra Server"),
 	 textures(Textures::textureNumber),
 	 fonts(GameFonts::fontNumber),
-	 server(9024),
-	 client(Ip,11004),
+	 server(11003),
+	 client(Ip,9023),
 	 viewWidth(viewWidth),
 	 viewHeight(viewHeight),
 	 baseHeight(1900),
@@ -147,6 +147,20 @@ void Game::render() {
 	for (const auto &i : info)
 		window.draw(i);
 	window.display();
+	if (player.isDead())
+	{
+		sf::Clock waitClock;
+		std::cout<<"You Win!!"<<std::endl;
+		while(waitClock.getElapsedTime().asSeconds()<3.f);
+		window.close();
+	}
+	if (enemy.isDead())
+	{
+		sf::Clock waitClock;
+		std::cout<<"Enemy Wins!!"<<std::endl;
+		while(waitClock.getElapsedTime().asSeconds()<3.f);
+		window.close();
+	}
 
 }
 

@@ -13,5 +13,6 @@ struct clientInfo
     sf::Vector2f bodyMovement;
     sf::Vector2f bullet;
     bool isshooting;
+    bool isJumping;
 };
 #endif //KURUKSHETRA_GLOBAL_H

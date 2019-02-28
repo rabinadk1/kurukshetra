@@ -18,7 +18,7 @@ public:
     ~GameServer();
 
     void receive();
-    void update(sf::Vector2f position2,sf::Vector2f movement,sf::Vector2f bullet,bool isShooting);
+    void update(sf::Vector2f position2,sf::Vector2f movement,sf::Vector2f bullet,bool isShooting,bool isJumping);
     int getM_playersConnected() const;
 
 private:
@@ -29,6 +29,6 @@ private:
     sf::TcpListener m_listener;
     sf::SocketSelector m_selector;
     std::thread t0;
-    sf::Vector2f position;
+    std::mutex m_mutex;
     sf::TcpSocket socket;
 };

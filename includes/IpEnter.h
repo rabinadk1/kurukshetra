@@ -24,7 +24,7 @@ private:
     sf::RenderWindow mWindow2;
     sf::RectangleShape inputBox;
     sf::String playerInput;
-    sf::Text playerText,enter;
+    sf::Text playerText,enter,IpShow;
     bool isPressedReturn;
     unsigned width, height;
 };

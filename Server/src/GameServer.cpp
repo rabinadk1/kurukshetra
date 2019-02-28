@@ -8,7 +8,7 @@
 #include <Player.h>
 #include <SFML/Network/TcpSocket.hpp>
 
-GameServer::GameServer(unsigned short port):position(0.f,0.f)
+GameServer::GameServer(unsigned short port)
 {
     m_running = true;
     if(m_listener.listen(port) == sf::Socket::Done)
@@ -42,21 +42,25 @@ void GameServer::receive() {
                 ++m_playersConnected;
             }
         }
+        std::cout<<"Data:"<<m_dataWaiting<<std::endl;
         if (this->m_dataWaiting){
-            std::cout << "Sending data" << std::endl;
+            std::cout << "Sending data"<< std::endl;
             if (socket.send(this->m_toSend) != sf::Socket::Done)
                 std::cout << "Error sending KeyPress" << std::endl;
+            m_mutex.lock();
             this->m_dataWaiting = false;
+            m_mutex.unlock();
         }
-
     }
 }
 
-void GameServer::update(sf::Vector2f position2,sf::Vector2f movement,sf::Vector2f bullet, bool isShooting) {
+void GameServer::update(sf::Vector2f position2,sf::Vector2f movement,sf::Vector2f bullet, bool isShooting,bool isJumping) {
     sf::Packet keyPress;
-    keyPress<<position2.x<<position2.y<<movement.x<<movement.y<<bullet.x<<bullet.y<<isShooting;
+    keyPress<<position2.x<<position2.y<<movement.x<<movement.y<<bullet.x<<bullet.y<<isShooting<<isJumping;
     std::cout<<position2.x;
         this->m_toSend = keyPress;
+        m_mutex.lock();
         this->m_dataWaiting = true;
+        m_mutex.unlock();
 }
 
