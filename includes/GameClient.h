@@ -21,10 +21,14 @@ public:
     bool isConnected() { return m_connected; }
     virtual ~GameClient();
     const struct clientInfo &getRecievedData() const;
+
+    const std::string &getName() const;
+
 private:
     sf::TcpSocket m_socket;
     bool m_connected;
     bool m_running2;
+    std::string Name;
     struct clientInfo recievedData;
     sf::Vector2f position;
 //        std::vector<InputData> m_input_sequence_list;
