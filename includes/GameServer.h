@@ -20,7 +20,7 @@ public:
     void receive();
     void update(sf::Vector2f position2,sf::Vector2f movement,sf::Vector2f bullet,bool isShooting,bool shootWithTime,bool isJumping);
     int getM_playersConnected() const;
-
+    void listenPort(unsigned short port);
 private:
     std::string player_name;
     bool m_running;

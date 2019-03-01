@@ -12,17 +12,9 @@
 GameServer::GameServer(unsigned short port,std::string name):player_name(name)
 {
     m_running = true;
-    if(m_listener.listen(port) == sf::Socket::Done)
-    {
-        std::cout << "Server is started on port: " << port <<  ". Waiting for clients.\n";
-        m_selector.add(m_listener);
-        m_playersConnected = 0;
-        m_dataWaiting = false;
-        t0 = std::thread(&GameServer::receive, this);
-        t0.detach();
-    }
-    else
-        std::cout << "Error - Failed to bind the port " << port << std::endl;
+    listenPort(port);
+//        std::cout << "Error - Failed to bind the port " << port << std::endl;
+
 }
 
 int GameServer::getM_playersConnected() const {
@@ -33,6 +25,22 @@ GameServer::~GameServer(){
     m_running = false;
     socket.disconnect();
     m_listener.close();
+}
+void GameServer::listenPort(unsigned short port)
+{
+    if(m_listener.listen(port) == sf::Socket::Done)
+    {
+        std::cout << "Server is started on port: " << port <<  ". Waiting for clients.\n";
+        m_selector.add(m_listener);
+        m_playersConnected = 0;
+        m_dataWaiting = false;
+        t0 = std::thread(&GameServer::receive, this);
+        t0.detach();
+    }
+    else
+    {
+        listenPort(++port);
+    }
 }
 
 void GameServer::receive() {

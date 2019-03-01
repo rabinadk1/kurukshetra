@@ -8,7 +8,7 @@
 #include <Global.h>
 
 
-GameClient::GameClient(const sf::IpAddress& ip, const short& port):recievedData({sf::Vector2f(0.f,0.f),sf::Vector2f(0.f,0.f),sf::Vector2f(0.0f, 0.0f), false})
+GameClient::GameClient(const sf::IpAddress& ip,unsigned short port):recievedData({sf::Vector2f(0.f,0.f),sf::Vector2f(0.f,0.f),sf::Vector2f(0.0f, 0.0f), false})
 {
 m_connected=false;
 m_running2=true;
@@ -22,11 +22,16 @@ m_running2=false;
 //m_socket.disconnect();
 }
 
-void GameClient::connection(const sf::IpAddress& ip, const short& port)
+void GameClient::connection(const sf::IpAddress& ip, unsigned short port)
 {
     while (!m_connected){
+        static int checkLoop=0;
         if (m_socket.connect(ip, port, sf::seconds(15)) != sf::Socket::Done)
         {
+            if(checkLoop<2) {
+                port++;
+                checkLoop++;
+            } else
             std::cout << "Error connecting to server" << std::endl;
         }
         else {

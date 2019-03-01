@@ -14,8 +14,8 @@
 class GameClient {
 
 public:
-    GameClient(const sf::IpAddress& ip, const short& port);
-    void connection(const sf::IpAddress& ip, const short& port);
+    GameClient(const sf::IpAddress& ip, unsigned short port);
+    void connection(const sf::IpAddress& ip, unsigned short port);
 
     struct clientInfo recieveData();
     bool isConnected() { return m_connected; }
