@@ -66,6 +66,10 @@ Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip,std::string na
 		info[i].setFillColor(sf::Color::Red);
 	}
 
+	deadInfo.setFont(fonts.get(GameFonts::info));
+//	deadInfo.setPosition(window.getSize().x / 2.f, window.getSize().y / 2.f);
+	deadInfo.setFillColor(sf::Color::Red);
+
 	ground.SetData(&textures.get(Textures::groundTexture), sf::Vector2f(4300, 200), sf::Vector2f(leftExtremePoint - 150, baseHeight));
 	ground.SetTextureRect(sf::IntRect(0, 0, 4000, 200));
     textures.get(Textures::groundTexture).setRepeated(true);
@@ -140,6 +144,8 @@ void Game::render() {
 	{
 		sf::Clock waitClock;
 		std::cout<<"You Lose!!"<<std::endl;
+		deadInfo.setString("You Lose!!");
+		gameOver();
 		while(waitClock.getElapsedTime().asSeconds()<3.f);
 		window.close();
 	}
@@ -147,23 +153,27 @@ void Game::render() {
 	{
 		sf::Clock waitClock;
 		std::cout<<"You Win!!"<<std::endl;
+		deadInfo.setString("You Win!!");
+		gameOver();
 		while(waitClock.getElapsedTime().asSeconds()<3.f);
 		window.close();
 	}
-
-	window.clear();
-	window.draw(sky);
+	else
+	{
+		window.clear();
+		window.draw(sky);
 //	window.draw(grass);
 //	window.draw(rock);
-    ground.Draw(window);
-    for(auto& wall : walls)
-        wall.Draw(window);
-	player.Draw(window, enemy);
-	if(server.getM_playersConnected()>0 && client.isConnected())
-		enemy.Draw(window, player);
-	for (const auto &text : info)
-		window.draw(text);
-	window.display();
+		ground.Draw(window);
+		for(auto& wall : walls)
+			wall.Draw(window);
+		player.Draw(window, enemy);
+		if(server.getM_playersConnected()>0 && client.isConnected())
+			enemy.Draw(window, player);
+		for (const auto &text : info)
+			window.draw(text);
+		window.display();
+	}
 
 }
 
@@ -176,4 +186,16 @@ void Game::ResizedWindow(sf::RenderWindow &window, Camera &view) {
 void Game::setWalls() {
 	walls[0] = Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 250), sf::Vector2f(leftExtremePoint - 150, baseHeight - 250));
 	walls[1] = Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 250), sf::Vector2f(rightExtremePoint, baseHeight - 250));
+}
+
+void Game::gameOver() {
+	window.clear(sf::Color::Red);
+	//TODO: use file stream to read from about.txt file
+//    mWindow2.display();
+	deadInfo.setPosition(gameView.GetCenter());
+	deadInfo.setFillColor(sf::Color::White);
+	deadInfo.setStyle(sf::Text::Bold);
+	deadInfo.setCharacterSize(50);
+	window.draw(deadInfo);
+	window.display();
 }

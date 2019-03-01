@@ -33,12 +33,14 @@ private:
     void render();
     void ResizedWindow(sf::RenderWindow& window, Camera& view);
     void setWalls();
+    void gameOver();
 
 private:
     sf::RenderWindow window;
     ResourceHolder <sf::Texture, Textures::ID> textures;
     ResourceHolder <sf::Font, GameFonts::ID> fonts;
     sf::Text info[2];
+    sf::Text deadInfo;
 	friend class Player;
 	Player player;
     GameServer server;

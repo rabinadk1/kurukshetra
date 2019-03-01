@@ -21,6 +21,7 @@ public:
     sf::IntRect GetViewport(sf::RenderWindow& window);
     void SetCenter(sf::Vector2f center);
     void SetViewPort(sf::FloatRect rect);
+    sf::Vector2f GetCenter() { return view.getCenter(); }
 
     sf::FloatRect getViewBounds(const sf::View &view);
 };
