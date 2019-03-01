@@ -28,20 +28,21 @@ void GameClient::connection(const sf::IpAddress& ip, unsigned short port)
         static int checkLoop=0;
         if (m_socket.connect(ip, port, sf::seconds(15)) != sf::Socket::Done)
         {
-            if(checkLoop<2) {
-                port++;
-                checkLoop++;
-            } else
+//            if(checkLoop<1) {
+//	            std::cout << "Error connecting to port " << port <<std::endl;
+//	            port++;
+//                checkLoop++;
+//            } else
             std::cout << "Error connecting to server" << std::endl;
         }
         else {
             m_connected = true;
             std::cout << "Connected to the server" << std::endl;
-            sf::Packet NameP;
-            m_socket.receive(NameP);
-            m_mutex.lock();
-            NameP>>Name;
-            m_mutex.unlock();
+//            sf::Packet NameP;
+//            m_socket.receive(NameP);
+//            m_mutex.lock();
+//            NameP>>Name;
+//            m_mutex.unlock();
         }
     }
     while (this->m_running2) {

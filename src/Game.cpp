@@ -8,8 +8,8 @@ Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip,std::string na
 	:window(sf::VideoMode(viewHeight, viewHeight), "Kurukshetra Server"),
 	 textures(Textures::textureNumber),
 	 fonts(GameFonts::fontNumber),
-	 server(11013,name),
-	 client(Ip,9035),
+	 server(11017,name),
+	 client(Ip,9037),
 	 viewWidth(viewWidth),
 	 viewHeight(viewHeight),
 	 baseHeight(1900),
@@ -107,12 +107,13 @@ void Game::update() {
     else
 	    player.Update(&textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, leftExtremePoint, rightExtremePoint, window, sky, info);
    // enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime,  gameView, baseHeight, window);
-	std::ostringstream playerHealthInfo, enemyHealthInfo, s;
-	playerHealthInfo<<player.health;
-	enemyHealthInfo<<enemy.health;
-	info[0].setString("Your Health: " + playerHealthInfo.str());
-	s.str("");
-	info[1].setString("Enemy Health: " + enemyHealthInfo.str());
+
+	std::ostringstream stream;
+	stream<<player.health;
+	info[0].setString("Your Health: " + stream.str());
+	stream.str("");
+	stream<<enemy.health;
+	info[1].setString("Enemy Health: " + stream.str());
 }
 
 void Game::processEvents() {

@@ -26,19 +26,6 @@ public:
 	void Draw(sf::RenderWindow& window, Enemy& enemy);
     Collider GetCollider() { return Collider(body); }
     sf::RectangleShape& GetBody() { return body;}
-    void SetPosition(sf::Vector2f position);
-    void collisionTest(Player& player, std::vector<Platform>& walls, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint);
-    void setName(const std::string& name);
-    void setTimeout(sf::Time time);
-    void setConnected(bool status);
-    void setPing(unsigned short ping);
-    sf::Vector2f getPosition();
-    sf::TcpSocket* getSocket();
-    sf::Time getTimeout();
-    std::string getName();
-    bool isConnected();
-    unsigned short getPing();
-    int getId();
     bool isDead(){ return health<=0;}
 
 private:

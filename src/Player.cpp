@@ -233,11 +233,6 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 }
 
 void Player::Draw(sf::RenderWindow &window, Enemy& enemy) {
-//	if (isDead())
-//	{
-//		std::cout<<"Player died successfully!"<<std::endl;
-//		exit(0);
-//	}
 	window.draw(body);
 //	std::cout << body.getPosition().x << std::endl;
 	for (auto &bullet : bullets)
@@ -254,10 +249,6 @@ void Player::Draw(sf::RenderWindow &window, Enemy& enemy) {
 	}
 }
 
-void Player::SetPosition(sf::Vector2f position) {
-	body.setPosition(position);
-}
-
 bool Player::HitCheck(Enemy& enemy, Bullet& bullet)
 {
 	if(enemy.GetCollider().CheckCollision(Collider(bullet.getBullet())))
@@ -272,67 +263,3 @@ bool Player::isUp(sf::RectangleShape &shape, float &baseHeight)
 {
 	return shape.getPosition().y <= baseHeight;
 }
-
-void Player::setName(const std::string& name)
-{
-	m_name = name;
-}
-
-void Player::setTimeout(sf::Time time)
-{
-	m_timeout = time;
-}
-
-void Player::setConnected(bool status)
-{
-	m_connected = status;
-}
-
-void Player::setPing(unsigned short ping)
-{
-	m_ping = ping;
-}
-
-unsigned short Player::getPing() {
-	return m_ping;
-}
-sf::Vector2f Player::getPosition()
-{
-	return m_position;
-}
-sf::TcpSocket* Player::getSocket()
-{
-	return m_socket.get();
-}
-
-std::string Player::getName()
-{
-	return m_name;
-}
-
-int Player::getId()
-{
-	return m_id;
-}
-
-sf::Time Player::getTimeout()
-{
-	return m_timeout;
-}
-bool Player::isConnected()
-{
-	return m_connected;
-}
-
-void Player::collisionTest(Player &player, std::vector<Platform> &walls, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint) {
-	if(player.getPosition().x < leftExtremePoint + 2000)
-	{
-		for(int i = 0; i<8; i++)
-		{
-			if(player.GetCollider().CheckCollision(walls[i].GetCollider()))
-				std::cout << "collided with wall " << i + 1 << std::endl;
-		}
-	}
-}
-
-
