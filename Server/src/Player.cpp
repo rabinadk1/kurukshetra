@@ -218,9 +218,11 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 		row = 2;
 	if(isShooting)
 	{
+		std::cout << "Shooting !! \n";
 		row = 3;
 		faceRight = bulletVelocity.x>0;
 	}
+
 
     server.update(body.getPosition(),movement,bulletVelocity,isShooting,true, isJumping);
 	isShooting = false;
