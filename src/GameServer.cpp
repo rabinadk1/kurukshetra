@@ -47,10 +47,11 @@ void GameServer::receive() {
     while (m_running) {
         while (m_playersConnected == 0) {
             if (m_listener.accept(this->socket) == sf::Socket::Done) {
-                sf::Packet Name;
-                Name<<player_name;
-                socket.send(Name);
+//                sf::Packet Name;
+//                Name<<player_name;
+//                socket.send(Name);
                 ++m_playersConnected;
+                std::cout<<"Client is connected "<<std::endl;
             }
         }
 //        std::cout<<"Data:"<<m_dataWaiting<<std::endl;

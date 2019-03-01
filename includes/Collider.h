@@ -9,7 +9,6 @@
 class Collider {
 public:
     Collider(sf::RectangleShape& body);
-
     bool CheckCollision(Collider other);
     sf::FloatRect GetGlobalBounds() { return body.getGlobalBounds(); }
 

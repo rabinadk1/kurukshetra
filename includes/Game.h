@@ -44,14 +44,13 @@ private:
     GameServer server;
     GameClient client;
     Enemy enemy;
-    sf::RectangleShape sky, grass, rock;
+    sf::RectangleShape sky, rock;
     Animation playerAnimation, enemyAnimation;
     sf::Clock clock;
     Camera gameView;
     sf::View minimapView;
     Platform walls[2];
-    Platform ground, wall;
-    std::vector<sf::Vector2f> wallsPosition;
+    Platform ground;
     float viewWidth;
     float viewHeight, baseHeight;
 

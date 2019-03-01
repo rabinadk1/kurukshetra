@@ -20,9 +20,8 @@ void Enemy::SetData(sf::Texture *EnemyTexture, sf::Vector2u imageCount, float sw
 	animation.SetData(EnemyTexture, imageCount, switchTime);
 	row = 0;
 	faceRight = true;
-	isJumping = isShooting = false;
 	health = 100;
-	bulletVelocity = moveDirection = sf::Vector2f(0.f, 0.f);
+	bulletVelocity = sf::Vector2f(0.f, 0.f);
 
 	const sf::Vector2f EnemySize = sf::Vector2f(250.0f, 250.0f);
 	body.setSize(EnemySize);
@@ -30,26 +29,12 @@ void Enemy::SetData(sf::Texture *EnemyTexture, sf::Vector2u imageCount, float sw
 	body.setTexture(EnemyTexture);
 	body.setOrigin(EnemySize);
 //    body.setOrigin(EnemySize.x/2, EnemySize.y/2);
-
-//	const sf::Vector2f bulletSize = sf::Vector2f(20.f, 12.4f);
-//	bullet.setSize(bulletSize);
-//	bullet.setPosition(position.x+50, position.y-50);
-//	bullet.setTexture(bulletTexture);
-////    bullet.setOrigin(bulletSize);
-//	bullet.setOrigin(bulletSize.x/2, bulletSize.y/2);
-
-	velocity = sf::Vector2f(2*speed, 1.5f*speed);
 }
 
 void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window, sf::RectangleShape& sky, sf::Text *info, GameClient& client)
 {
-//	static sf::Vector2f movement2(0.f, 0.f);
-//	static float localVelocity = velocity.y;
-//	const float g = 9.81f;
-	SetPosition(client.getRecievedData().bodyPosition);
-//movement2=client.getRecievedData().bodyMovement;
 	struct clientInfo localClient= client.getRecievedData();
-	bulletVelocity=localClient.bullet;
+	body.setPosition(localClient.bodyPosition);
 	if (localClient.isshooting){
 	    std::cout << "Enemy is Shooting!!! \n";
 
@@ -63,19 +48,14 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 		else
 			localBulletPos.x = body.getPosition().x - body.getSize().y*0.8f;
 		localBulletPos.y = body.getPosition().y - body.getSize().y/1.45f;
-		bullets.emplace_back(bulletTexture, sf::Vector2f(20.f, 12.4f), localBulletPos, bulletVelocity);
-//		isShooting = false;
-
+		bullets.emplace_back(bulletTexture, sf::Vector2f(20.f, 12.4f), localBulletPos, localClient.bullet);
 		client.setNotShooting();
 	}
+//
+//	if (not isUp(body, baseHeight))
+//	{
+//		body.setPosition(body.getPosition().x, baseHeight);
 //	}
-
-	if (not isUp(body, baseHeight))
-	{
-		body.setPosition(body.getPosition().x, baseHeight);
-//		isJumping = false;
-//		localVelocity = velocity.y;
-	}
 
 	if( localClient.bodyMovement.x == 0.f)
 		row = 0;
@@ -93,29 +73,13 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 		faceRight = localClient.bullet.x> 0.f;
 	}
 
-//    std::cout<<movement2.x<<movement2.y;
-	// gameView.move(movement2);
 	animation.Update(row, deltaTime, faceRight);
 	body.setTextureRect(animation.uvRect);
-//	body.move(movement2);
 	info[1].setString(client.getName());
 	gameView.showInfo(&info[1], body);
-//	if (isJumping)
-//	{
-//		movement2.y = -localVelocity * deltaTime;
-//		localVelocity -= g;
-//	}
-//	else
-//		movement2 = sf::Vector2f(0.f,0.f);
 }
 void Enemy::Draw(sf::RenderWindow &window, Player& player) {
-//	if (isDead())
-//	{
-//		std::cout<<"Enemy died successfully!"<<std::endl;
-//		exit(0);
-//	}
 	window.draw(body);
-//	std::cout << body.getPosition().x << std::endl;
 	for (auto &bullet : bullets)
 	{
 		bullet.draw(window);
@@ -129,20 +93,16 @@ void Enemy::Draw(sf::RenderWindow &window, Player& player) {
 	}
 }
 
-void Enemy::SetPosition(sf::Vector2f position) {
-	body.setPosition(position);
-}
-
 bool Enemy::HitCheck(Player& player, Bullet& bullet)
 {
 	if(player.GetCollider().CheckCollision(Collider(bullet.getBullet())))
 	{
-		player.health -= 20;
+		player.health -= 10;
 		return true;
 	}
 	return false;
 }
-
-bool Enemy::isUp(sf::RectangleShape &shape, float &baseHeight) {
-	return shape.getPosition().y <= baseHeight;
-}
+//
+//bool Enemy::isUp(sf::RectangleShape &shape, float &baseHeight) {
+//	return shape.getPosition().y <= baseHeight;
+//}

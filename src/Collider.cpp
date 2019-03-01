@@ -4,9 +4,7 @@
 
 #include "Collider.h"
 
-Collider::Collider(sf::RectangleShape &body):body(body)
-{
-}
+Collider::Collider(sf::RectangleShape &body):body(body){}
 
 bool Collider::CheckCollision(Collider other) {
     sf::FloatRect otherBounds = other.GetGlobalBounds();

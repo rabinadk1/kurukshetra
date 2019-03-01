@@ -5,11 +5,11 @@
 #include <iostream>
 #include "Game.h"
 Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip,std::string name)
-	:window(sf::VideoMode(viewHeight, viewHeight), "Kurukshetra Server"),
+	:window(sf::VideoMode(viewWidth, viewHeight), "Kurukshetra"),
 	 textures(Textures::textureNumber),
 	 fonts(GameFonts::fontNumber),
-	 server(9037,name),
-	 client(Ip,11017),
+	 server(11000, std::move(name)),
+	 client(Ip,10000),
 	 viewWidth(viewWidth),
 	 viewHeight(viewHeight),
 	 baseHeight(1900),
@@ -26,7 +26,6 @@ Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip,std::string na
 	textures.load(Textures::groundTexture, "../Media/Textures/stoneTile.png");
 	textures.load(Textures::wallTexture, "../Media/Textures/stoneTile.png");
 	textures.load(Textures::rockTexture, "../Media/Textures/rockPlatform.png");
-//	textures.load(Textures::grassTexture, "../Media/Textures/grass.png");
 	textures.load(Textures::playerTexture, "../Media/Textures/player.png");
 	textures.load(Textures::enemyTexture, "../Media/Textures/enemy.png");
 	textures.load(Textures::bulletTexture, "../Media/Textures/bullet.png");
@@ -107,12 +106,13 @@ void Game::update() {
     else
 	    player.Update(&textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, leftExtremePoint, rightExtremePoint, window, sky, info);
    // enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime,  gameView, baseHeight, window);
-	std::ostringstream playerHealthInfo, enemyHealthInfo, s;
-	playerHealthInfo<<player.health;
-	enemyHealthInfo<<enemy.health;
-	info[0].setString("Your Health: " + playerHealthInfo.str());
-	s.str("");
-	info[1].setString("Enemy Health: " + enemyHealthInfo.str());
+
+	std::ostringstream stream;
+	stream<<player.health;
+	info[0].setString("Your Health: " + stream.str());
+	stream.str("");
+	stream<<enemy.health;
+	info[1].setString("Enemy Health: " + stream.str());
 }
 
 void Game::processEvents() {
@@ -152,8 +152,6 @@ void Game::render() {
 
 	window.clear();
 	window.draw(sky);
-//	window.draw(grass);
-//	window.draw(rock);
     ground.Draw(window);
     for(auto& wall : walls)
         wall.Draw(window);
