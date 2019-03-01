@@ -7,10 +7,10 @@
 #include <iostream>
 #include "Game.h"
 Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip,std::string name)
-	:window(sf::VideoMode(viewHeight, viewHeight), "Kurukshetra Server"),
+	:window(sf::VideoMode(viewWidth, viewHeight), "Kurukshetra"),
 	 textures(Textures::textureNumber),
 	 fonts(GameFonts::fontNumber),
-	 server(10000, std::move(name)),
+	 server(11000, std::move(name)),
 	 client(Ip,10000),
 	 viewWidth(viewWidth),
 	 viewHeight(viewHeight),

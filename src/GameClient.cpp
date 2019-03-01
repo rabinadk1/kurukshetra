@@ -20,6 +20,7 @@ GameClient::~GameClient() {
 
 void GameClient::connection(const sf::IpAddress& ip, unsigned short port)
 {
+    unsigned short initPort = port;
     while (!m_connected){
         static int checkLoop=0;
         if (m_socket.connect(ip, port, sf::seconds(15)) != sf::Socket::Done)
@@ -30,7 +31,11 @@ void GameClient::connection(const sf::IpAddress& ip, unsigned short port)
                 checkLoop++;
             }
             else
+            {
+                checkLoop = 0;
+                port = initPort;
                 std::cout << "Error connecting to server" << std::endl;
+            }
         }
         else {
             m_connected = true;
