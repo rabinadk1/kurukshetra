@@ -28,7 +28,8 @@ void GameClient::connection(const sf::IpAddress& ip, unsigned short port)
         static int checkLoop=0;
         if (m_socket.connect(ip, port, sf::seconds(15)) != sf::Socket::Done)
         {
-            if(checkLoop<2) {
+            if(checkLoop<1) {
+                std::cout<<"Could not connect to port"<<port<<std::endl;
                 port++;
                 checkLoop++;
             } else
@@ -37,14 +38,14 @@ void GameClient::connection(const sf::IpAddress& ip, unsigned short port)
         else {
             m_connected = true;
             std::cout << "Connected to the server" << std::endl;
-            sf::Packet NameP;
-            m_socket.receive(NameP);
-            m_mutex.lock();
-            NameP>>Name;
-            m_mutex.unlock();
+//            sf::Packet NameP;
+//            m_socket.receive(NameP);
+//            m_mutex.lock();
+//            NameP>>Name;
+//            m_mutex.unlock();
         }
     }
-    while (this->m_running2) {
+    while (this->m_running2 && m_connected) {
         this->recievedData  = recieveData();
     }
 
