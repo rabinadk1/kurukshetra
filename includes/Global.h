@@ -2,9 +2,7 @@
 // Created by samip on 27/2/19.
 //
 
-#ifndef KURUKSHETRA_GLOBAL_H
-#define KURUKSHETRA_GLOBAL_H
-
+#pragma once
 #include <SFML/System/Vector2.hpp>
 
 struct clientInfo
@@ -16,4 +14,3 @@ struct clientInfo
     bool shootWithTime;
     bool isJumping;
 };
-#endif //KURUKSHETRA_GLOBAL_H

@@ -38,14 +38,7 @@ private:
 	ResourceHolder <sf::SoundBuffer, Sounds::ID> sounds;
 	sf::Sound gunSound;
     unsigned row;
-    bool faceRight, isJumping, isShooting, isPlayer, checkforMouse;
-    sf::Vector2f m_position;
-    sf::Time m_timeout;
-    std::string m_name;
-    std::unique_ptr<sf::TcpSocket> m_socket = nullptr;
-    bool m_connected;
-    int m_id;
-    unsigned short m_ping;
+    bool faceRight, isJumping, isShooting, checkforMouse;
     sf::Vector2f velocity, bulletVelocity, moveDirection;
     std::vector <Bullet> bullets;
     sf::Clock clock;

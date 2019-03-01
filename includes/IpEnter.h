@@ -2,12 +2,11 @@
 // Created by samip on 27/2/19.
 //
 
-#ifndef KURUKSHETRA_IPENTER_H
-#define KURUKSHETRA_IPENTER_H
+#pragma once
 
 
 #include <SFML/Graphics/Text.hpp>
-#include <MainMenu.h>
+#include "MainMenu.h"
 
 class IpEnter {
 public:
@@ -15,7 +14,6 @@ public:
     void render();
     void run();
     void handlePlayerInput(sf::Keyboard::Key &key, bool isPressed);
-    void update();
     void processEvents();
     void onPressEnter();
 private:
@@ -28,10 +26,7 @@ private:
     sf::Texture ipTexture;
     sf::RectangleShape ipImage;
     sf::String nameInput;
-   // sf::Text ;
     bool isPressedReturn;
     unsigned width, height;
 };
 
-
-#endif //KURUKSHETRA_IPENTER_H

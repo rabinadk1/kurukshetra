@@ -9,7 +9,7 @@
 #include "Player.h"
 
 Player::Player()
-	:sounds(Sounds::soundNumber), isPlayer(true)
+	:sounds(Sounds::soundNumber)
 {
 	sounds.load(Sounds::gunShot, "../Media/Audio/gunShot0.wav");
 	gunSound.setBuffer(sounds.get(Sounds::gunShot));
@@ -109,9 +109,13 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 		row = 2;
 	if(isShooting or clock.getElapsedTime().asSeconds()<=0.2f)
 	{
-		std::cout << "Shooting !! \n";
 		row = 3;
-		faceRight = bulletVelocity.x>0;
+		std::cout << "Shooting !! \n";
+		if (isShooting)
+		{
+			faceRight = bulletVelocity.x > 0;
+//			std::cout << "Shooting !! \n";
+		}
 	}
 
 	gameView.Move(movement);
@@ -210,7 +214,10 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	{
 		std::cout << "Shooting !! \n";
 		row = 3;
-		faceRight = bulletVelocity.x>0;
+		if (isShooting)
+		{
+			faceRight = bulletVelocity.x > 0;
+		}
 	}
 
 
@@ -253,7 +260,7 @@ bool Player::HitCheck(Enemy& enemy, Bullet& bullet)
 {
 	if(enemy.GetCollider().CheckCollision(Collider(bullet.getBullet())))
 	{
-		enemy.health -= 20;
+		enemy.health -= 10;
 		return true;
 	}
 	return false;
