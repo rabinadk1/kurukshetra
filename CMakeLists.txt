@@ -5,6 +5,6 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
-add_executable(kurukshetra main.cpp Server/src/GameClient.cpp Server/src/MainMenu.cpp Server/src/Game.cpp Server/src/Player.cpp Server/src/ResourceHolder.cpp Server/src/Platform.cpp Server/src/Camera.cpp Server/src/Animation.cpp Server/src/Collider.cpp Server/src/GameServer.cpp Server/src/Enemy.cpp Server/src/Bullet.cpp Server/src/IpEnter.cpp includes/IpEnter.h)
+add_executable(kurukshetra main.cpp src/GameClient.cpp src/MainMenu.cpp src/Game.cpp src/Player.cpp src/ResourceHolder.cpp src/Platform.cpp src/Camera.cpp src/Animation.cpp src/Collider.cpp src/GameServer.cpp src/Enemy.cpp src/Bullet.cpp src/IpEnter.cpp)
 include_directories(kurukshetra includes)
 target_link_libraries(kurukshetra sfml-graphics sfml-window sfml-network sfml-audio sfml-system)

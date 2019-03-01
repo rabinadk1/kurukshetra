@@ -11,7 +11,7 @@
 #include "Bullet.h"
 #include "Camera.h"
 #include "Platform.h"
-#include "../Server/src/ResourceHolder.cpp"
+#include "../src/ResourceHolder.cpp"
 #include <SFML/Audio.hpp>
 #include <vector>
 
