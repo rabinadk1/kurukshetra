@@ -53,12 +53,9 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 			movement.x = 0;
 		body.setPosition(rightExtremePoint, body.getPosition().y);
 	}
-//    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) and isUp)
-//        movement.y += velocity.x * deltaTime;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        isJumping = true;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+		isJumping = true;
 
-//	static sf::Vector2f mousePos;
 	sf::Vector2i pixelMousePos = sf::Mouse::getPosition(window);
 	sf::IntRect viewport = gameView.GetViewport(window);
 	sf::Vector2f mousePos;
@@ -73,32 +70,25 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 			if (faceRight)
 				localBulletPos.x = body.getPosition().x - body.getSize().x*0.2f;
 			else
-				localBulletPos.x = body.getPosition().x - body.getSize().y*0.8f;
+				localBulletPos.x = body.getPosition().x - body.getSize().x*0.8f;
 			localBulletPos.y = body.getPosition().y - body.getSize().y/1.45f;
 			line[0] = sf::Vertex(localBulletPos);
 			line[1] = sf::Vertex(mousePos);
 		}
 	}
-	if (not isShooting and sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) and checkforMouse and clock.getElapsedTime().asSeconds()>=0.2f)
 	{
-		if (checkforMouse)
-		{
-				sf::Vector2f displacement = sf::Vector2f(mousePos.x - localBulletPos.x, mousePos.y - localBulletPos.y);
-				double distance = sqrt(double(displacement.x * displacement.x + displacement.y * displacement.y));
+		sf::Vector2f displacement = sf::Vector2f(mousePos.x - localBulletPos.x, mousePos.y - localBulletPos.y);
+		double distance = sqrt(double(displacement.x * displacement.x + displacement.y * displacement.y));
 
-				moveDirection = sf::Vector2f(float(displacement.x / distance), float(displacement.y / distance));
+		moveDirection = sf::Vector2f(float(displacement.x / distance), float(displacement.y / distance));
 
-				bulletVelocity = sf::Vector2f(4*velocity.x * moveDirection.x*deltaTime, 4*velocity.y * moveDirection.y* deltaTime);
-				isShooting = true;
-				clock.restart();
-		}
-	}
-	if (isShooting and clock.getElapsedTime().asSeconds()>=0.2f )
-	{
+		bulletVelocity = sf::Vector2f(4*velocity.x * moveDirection.x*deltaTime, 4*velocity.y * moveDirection.y* deltaTime);
+		isShooting = true;
+		clock.restart();
+
 		gunSound.play();
 		bullets.emplace_back(Bullet(bulletTexture, sf::Vector2f(20.f, 12.4f), localBulletPos, bulletVelocity));
-		isShooting = false;
-		clock.restart();
 	}
 
 	if (not isUp(body, baseHeight))
@@ -116,15 +106,17 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 		faceRight = movement.x > 0;
 	}
 	if(isJumping)
-	    row = 2;
-	if(isShooting)
+		row = 2;
+	if(isShooting or clock.getElapsedTime().asSeconds()<=0.2f)
 	{
+		std::cout << "Shooting !! \n";
 		row = 3;
 		faceRight = bulletVelocity.x>0;
 	}
 
 	gameView.Move(movement);
 	animation.Update(row, deltaTime, faceRight);
+	isShooting = false;
 	body.setTextureRect(animation.uvRect);
 	body.move(movement);
 	gameView.showInfo(&info[0], body);
@@ -214,7 +206,7 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	}
 	if(isJumping)
 		row = 2;
-	if(isShooting)
+	if(isShooting or clock.getElapsedTime().asSeconds()<=0.2f)
 	{
 		std::cout << "Shooting !! \n";
 		row = 3;
