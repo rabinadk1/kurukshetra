@@ -130,49 +130,13 @@ void Game::render() {
 	{
 		sf::Clock waitClock;
 		std::cout<<"You Lose!!"<<std::endl;
-		deadInfo.setString("You Lose!!");
-		unsigned int size = deadInfo.getCharacterSize();
-		gameOver();
-		while(waitClock.getElapsedTime().asSeconds()<3.f)
-        {
-		    size += 1;
-		    deadInfo.setCharacterSize(size);
-		    deadInfo.setPosition(deadInfo.getPosition().x - 1, deadInfo.getPosition().y + 1);
-		    window.draw(deadInfo);
-		    window.display();
-        }
-		waitClock.restart();
-		deadInfo.setOutlineThickness(2.f);
-		deadInfo.setOutlineColor(sf::Color::Black);
-        while(waitClock.getElapsedTime().asSeconds()<1.5f){
-            window.draw(deadInfo);
-            window.display();
-        }
-		window.close();
+		deadAnimate("You Lose!!", waitClock);
 	}
 	else if (enemy.isDead())
 	{
 		sf::Clock waitClock;
 		std::cout<<"You Win!!"<<std::endl;
-		deadInfo.setString("You Win!!");
-        unsigned int size = deadInfo.getCharacterSize();
-        gameOver();
-        while(waitClock.getElapsedTime().asSeconds()<3.f)
-        {
-            size += 1;
-            deadInfo.setCharacterSize(size);
-            deadInfo.setPosition(deadInfo.getPosition().x - 1, deadInfo.getPosition().y + 1);
-            window.draw(deadInfo);
-            window.display();
-        }
-        waitClock.restart();
-        deadInfo.setOutlineThickness(2.f);
-        deadInfo.setOutlineColor(sf::Color::Black);
-        while(waitClock.getElapsedTime().asSeconds()<1.5f){
-            window.draw(deadInfo);
-            window.display();
-        }
-		window.close();
+		deadAnimate("You Win!!", waitClock);
 	}
 	else
 	{
@@ -207,4 +171,26 @@ void Game::gameOver() {
 	deadInfo.setStyle(sf::Text::Italic);
 	window.draw(deadInfo);
 	window.display();
+}
+void Game::deadAnimate(std::string info, sf::Clock& waitClock)
+{
+	deadInfo.setString(info);
+    unsigned int size = deadInfo.getCharacterSize();
+    gameOver();
+    while(waitClock.getElapsedTime().asSeconds()<3.f)
+    {
+        size += 1;
+        deadInfo.setCharacterSize(size);
+        deadInfo.setPosition(deadInfo.getPosition().x - 1, deadInfo.getPosition().y + 1);
+        window.draw(deadInfo);
+        window.display();
+    }
+    waitClock.restart();
+    deadInfo.setOutlineThickness(2.f);
+    deadInfo.setOutlineColor(sf::Color::Black);
+    while(waitClock.getElapsedTime().asSeconds()<1.5f){
+        window.draw(deadInfo);
+        window.display();
+    }
+    window.close();
 }

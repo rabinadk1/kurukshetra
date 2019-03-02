@@ -29,7 +29,7 @@ void Player::SetData(sf::Texture *playerTexture, sf::Vector2u imageCount, float 
 	body.setTexture(playerTexture);
 	body.setOrigin(playerSize);
 
-	velocity = sf::Vector2f(2*speed, 1.5f*speed);
+	velocity = sf::Vector2f(2*speed, 3*speed);
 }
 void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape &sky, sf::Text *info)
 {

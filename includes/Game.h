@@ -34,6 +34,7 @@ private:
     void ResizedWindow(sf::RenderWindow& window, Camera& view);
     void setWalls();
     void gameOver();
+    void deadAnimate(std::string info, sf::Clock& waitClock);
 
 private:
     sf::RenderWindow window;

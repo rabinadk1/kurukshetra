@@ -25,7 +25,7 @@ void GameClient::connection(const sf::IpAddress& ip, unsigned short port)
         static int checkLoop=0;
         if (m_socket.connect(ip, port, sf::seconds(15)) != sf::Socket::Done)
         {
-            if(checkLoop<1) {
+            if(checkLoop<2) {
 	            std::cout << "Error connecting to port " << port <<std::endl;
 	            port++;
                 checkLoop++;

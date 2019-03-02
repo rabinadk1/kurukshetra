@@ -46,3 +46,4 @@ private:
 public:
 	int health;
 };
+
