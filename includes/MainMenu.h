@@ -30,6 +30,8 @@ private:
     void onPressEnter();
 private:
     sf::Text menu[3];
+    sf::Text aboutText;
+    std::string aboutTextString;
     ResourceHolder <sf::Font, Fonts::ID> fonts;
     int selectedItem;
     bool isPressedUp, isPressedDown, isPressedReturn, enterAbout;
