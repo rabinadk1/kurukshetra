@@ -242,7 +242,7 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 
 }
 
-void Player::Draw(sf::RenderWindow &window, Enemy& enemy) {
+void Player::Draw(sf::RenderWindow &window, Camera& gameView,  Enemy& enemy) {
 	window.draw(body);
 	for (auto &bullet : bullets)
 	{
@@ -251,7 +251,7 @@ void Player::Draw(sf::RenderWindow &window, Enemy& enemy) {
 	}
 	for (int i = 0; i < int(bullets.size()); i++)
 	{
-		if (HitCheck(enemy, bullets[i]))
+		if (not gameView.GetViewport(window).contains(bullets[i].getBullet().getOrigin().x, bullets[i].getBullet().getOrigin().y) or HitCheck(enemy, bullets[i]))
 			bullets.erase(bullets.begin() + i--);
 	}
 }

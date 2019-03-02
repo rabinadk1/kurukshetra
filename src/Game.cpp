@@ -145,9 +145,9 @@ void Game::render() {
 		ground.Draw(window);
 		for(auto& wall : walls)
 			wall.Draw(window);
-		player.Draw(window, enemy);
+		player.Draw(window, gameView, enemy);
 		if(server.getM_playersConnected()>0 && client.isConnected())
-			enemy.Draw(window, player);
+			enemy.Draw(window, gameView, player);
 		for (const auto &text : info)
 			window.draw(text);
 		window.display();
