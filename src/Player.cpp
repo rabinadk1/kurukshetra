@@ -9,7 +9,8 @@
 #include "Player.h"
 
 Player::Player()
-	:sounds(Sounds::soundNumber)
+	:sounds(Sounds::soundNumber),
+	baseHeight(1900)
 {
 	sounds.load(Sounds::gunShot, "../Media/Audio/gunShot0.wav");
 	gunSound.setBuffer(sounds.get(Sounds::gunShot));
@@ -31,7 +32,7 @@ void Player::SetData(sf::Texture *playerTexture, sf::Vector2u imageCount, float 
 
 	velocity = sf::Vector2f(2*speed, 3*speed);
 }
-void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape &sky, sf::Text *info)
+void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape &sky, sf::Text *info)
 {
 	static sf::Vector2f movement(0.f, 0.f);
 	static float localVelocity = velocity.y;
@@ -90,7 +91,7 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 		}
 	}
 
-	if (not isUp(body, baseHeight))
+	if (body.getPosition().y <= baseHeight)
 	{
 		body.setPosition(body.getPosition().x, baseHeight);
 		isJumping = false;
@@ -132,7 +133,7 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	}
 }
 
-void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape &sky, sf::Text *info, GameServer& server, Enemy& enemy)
+void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape &sky, sf::Text *info, GameServer& server, Enemy& enemy)
 {
 	static sf::Vector2f movement(0.f, 0.f);
 	static float localVelocity = velocity.y;
@@ -198,7 +199,7 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 		}
 	}
 
-	if (not isUp(body, baseHeight))
+	if (body.getPosition().y <= baseHeight)
 	{
 		body.setPosition(body.getPosition().x, baseHeight);
 		isJumping = false;
@@ -242,7 +243,7 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 
 }
 
-void Player::Draw(sf::RenderWindow &window, Camera& gameView,  Enemy& enemy) {
+void Player::Draw(sf::RenderWindow &window, Enemy& enemy) {
 	window.draw(body);
 	for (auto &bullet : bullets)
 	{
@@ -251,7 +252,7 @@ void Player::Draw(sf::RenderWindow &window, Camera& gameView,  Enemy& enemy) {
 	}
 	for (int i = 0; i < int(bullets.size()); i++)
 	{
-		if (not gameView.GetViewport(window).contains(bullets[i].getBullet().getOrigin().x, bullets[i].getBullet().getOrigin().y) or HitCheck(enemy, bullets[i]))
+		if (HitCheck(enemy, bullets[i]) or bullets[i].getBullet().getPosition().y>baseHeight)
 			bullets.erase(bullets.begin() + i--);
 	}
 }
@@ -264,9 +265,4 @@ bool Player::HitCheck(Enemy& enemy, Bullet& bullet)
 		return true;
 	}
 	return false;
-}
-
-bool Player::isUp(sf::RectangleShape &shape, float &baseHeight)
-{
-	return shape.getPosition().y <= baseHeight;
 }

@@ -21,8 +21,8 @@ class Enemy {
 public:
     Enemy();
     void SetData(sf::Texture *EnemyTexture, sf::Vector2u imageCount, float switchTime);
-    void Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window, sf::RectangleShape& sky, sf::Text* info, GameClient& client);
-    void Draw(sf::RenderWindow& window, Camera& gameView , Player& player);
+    void Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, sf::RenderWindow& window, sf::RectangleShape& sky, sf::Text* info, GameClient& client);
+    void Draw(sf::RenderWindow& window, Player& player);
     Collider GetCollider() { return Collider(body); }
     sf::Vector2f GetPosition(){ return body.getPosition(); }
 	bool isDead(){ return health<=0;}
@@ -39,6 +39,7 @@ private:
     sf::Vector2f bulletVelocity;
     std::vector <Bullet> bullets;
     friend class Player;
+    float baseHeight;
 public:
     int health;
 };

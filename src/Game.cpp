@@ -91,11 +91,11 @@ void Game::update() {
     float elapsedTime = clock.restart().asSeconds();
     if(server.getM_playersConnected()>0 && client.isConnected())
 	{
-		player.Update( &textures.get(Textures::bulletTexture),  elapsedTime, gameView, baseHeight, leftExtremePoint, rightExtremePoint, window, sky, info, server, enemy);
-		enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window,sky,info,client);
+		player.Update( &textures.get(Textures::bulletTexture),  elapsedTime, gameView, leftExtremePoint, rightExtremePoint, window, sky, info, server, enemy);
+		enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, window,sky,info,client);
 	}
     else
-	    player.Update(&textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, leftExtremePoint, rightExtremePoint, window, sky, info);
+	    player.Update(&textures.get(Textures::bulletTexture), elapsedTime, gameView, leftExtremePoint, rightExtremePoint, window, sky, info);
    // enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime,  gameView, baseHeight, window);
 
 	std::ostringstream stream;
@@ -145,9 +145,9 @@ void Game::render() {
 		ground.Draw(window);
 		for(auto& wall : walls)
 			wall.Draw(window);
-		player.Draw(window, gameView, enemy);
+		player.Draw(window, enemy);
 		if(server.getM_playersConnected()>0 && client.isConnected())
-			enemy.Draw(window, gameView, player);
+			enemy.Draw(window, player);
 		for (const auto &text : info)
 			window.draw(text);
 		window.display();

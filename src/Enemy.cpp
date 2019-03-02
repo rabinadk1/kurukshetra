@@ -10,7 +10,8 @@
 #include "Enemy.h"
 
 Enemy::Enemy()
-	:sounds(Sounds::soundNumber)
+	:sounds(Sounds::soundNumber),
+	 baseHeight(1900)
 {
 	sounds.load(Sounds::gunShot, "../Media/Audio/gunShot0.wav");
 	gunSound.setBuffer(sounds.get(Sounds::gunShot));
@@ -31,7 +32,7 @@ void Enemy::SetData(sf::Texture *EnemyTexture, sf::Vector2u imageCount, float sw
 //    body.setOrigin(EnemySize.x/2, EnemySize.y/2);
 }
 
-void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window, sf::RectangleShape& sky, sf::Text *info, GameClient& client)
+void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, sf::RenderWindow& window, sf::RectangleShape& sky, sf::Text *info, GameClient& client)
 {
 	struct clientInfo localClient= client.getRecievedData();
 	body.setPosition(localClient.bodyPosition);
@@ -78,7 +79,7 @@ void Enemy::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView
 	info[1].setString(client.getName());
 	gameView.showInfo(&info[1], body);
 }
-void Enemy::Draw(sf::RenderWindow &window, Camera& gameView, Player& player) {
+void Enemy::Draw(sf::RenderWindow &window, Player& player) {
 	window.draw(body);
 	for (auto &bullet : bullets)
 	{
@@ -88,7 +89,7 @@ void Enemy::Draw(sf::RenderWindow &window, Camera& gameView, Player& player) {
 
 	for (int i = 0; i < int(bullets.size()); i++)
 	{
-		if (not gameView.GetViewport(window).contains(bullets[i].getBullet().getOrigin().x, bullets[i].getBullet().getOrigin().y) or HitCheck(player, bullets[i]))
+		if (HitCheck(player, bullets[i]) or bullets[i].getBullet().getPosition().y>baseHeight)
 			bullets.erase(bullets.begin() + i--);
 	}
 }
