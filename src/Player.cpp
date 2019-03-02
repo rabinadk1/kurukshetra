@@ -123,16 +123,16 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 	body.move(movement);
 	gameView.showInfo(&info[0], body);
 
-    if (isJumping)
+	if (not isJumping)
+		movement = sf::Vector2f(0.f, 0.f);
+	else
 	{
 		movement.y = -localVelocity * deltaTime;
 		localVelocity -= g;
 	}
-	else
-		movement = sf::Vector2f(0.f,0.f);
 }
 
-void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape &sky, sf::Text *info, GameServer& server)
+void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape &sky, sf::Text *info, GameServer& server, Enemy& enemy)
 {
 	static sf::Vector2f movement(0.f, 0.f);
 	static float localVelocity = velocity.y;
@@ -154,6 +154,13 @@ void Player::Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameVie
 		if(movement.x>0)
 			movement.x = 0;
 		body.setPosition(rightExtremePoint, body.getPosition().y);
+	}
+
+	if(((body.getPosition().x <= enemy.GetPosition().x - body.getSize().x and body.getPosition().x + movement.x >= enemy.GetPosition().x - body.getSize().x)
+			or (body.getPosition().x >= enemy.GetPosition().x + body.getSize().x and body.getPosition().x + movement.x <= enemy.GetPosition().x + body.getSize().x))
+			and body.getPosition().y + body.getSize().y >= enemy.GetPosition().y)
+	{
+		movement.x = 0;
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))

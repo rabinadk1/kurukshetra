@@ -24,6 +24,7 @@ public:
     void Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window, sf::RectangleShape& sky, sf::Text* info, GameClient& client);
     void Draw(sf::RenderWindow& window, Player& player);
     Collider GetCollider() { return Collider(body); }
+    sf::Vector2f GetPosition(){ return body.getPosition(); }
 	bool isDead(){ return health<=0;}
 private:
 	bool HitCheck(Player& player, Bullet& bullet);

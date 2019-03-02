@@ -102,7 +102,7 @@ void Game::update() {
     float elapsedTime = clock.restart().asSeconds();
     if(server.getM_playersConnected()>0 && client.isConnected())
 	{
-		player.Update( &textures.get(Textures::bulletTexture),  elapsedTime, gameView, baseHeight, leftExtremePoint, rightExtremePoint, window, sky, info, server);
+		player.Update( &textures.get(Textures::bulletTexture),  elapsedTime, gameView, baseHeight, leftExtremePoint, rightExtremePoint, window, sky, info, server, enemy);
 		enemy.Update( &textures.get(Textures::bulletTexture), elapsedTime, gameView, baseHeight, window,sky,info,client);
 	}
     else
