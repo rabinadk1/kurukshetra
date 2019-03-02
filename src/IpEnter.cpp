@@ -10,19 +10,26 @@ void IpEnter::render(){
     mWindow2.draw(IpShow);
     mWindow2.draw(enter);
     mWindow2.draw(playerText);
-    mWindow2.draw(name);
+    for(int i=0;i<2;i++) {
+        menu[i].setFillColor(i==selectedItem? sf::Color::Red : sf::Color::White);
+        mWindow2.draw(menu[i]);
+    }
+   // mWindow2.draw(name);
     mWindow2.display();
 }
 IpEnter::IpEnter(unsigned int width, unsigned int height)
         :fonts(Fonts::fontNumber),
          isPressedReturn(false),
          mWindow2(sf::VideoMode(width, height), "Kurukshetra"),
-         width(width),height(height)
+         width(width),height(height),selectedItem(0)
 {
     fonts.load(Fonts::menuFont, "../Media/Fonts/DejaVuSans.ttf");
-    name.setFillColor(sf::Color::Red);
-    name.setPosition(300,0);
-    name.setString("Hello");
+    for (int i=0; i<2; i++)
+        menu[i].setFont(fonts.get(Fonts::menuFont));
+    menu[0].setString("Player 1");
+    menu[1].setString("Player 2");
+    for (int i=0; i<2; i++)
+        menu[i].setPosition(width - (width/4.f),(height / 2.f) + (height/6.f*i));
     IpShow.setString("Your IP is :" +sf::IpAddress::getLocalAddress().toString());
     IpShow.setPosition(0,0);
     IpShow.setFont(fonts.get(Fonts::menuFont));
@@ -44,10 +51,23 @@ IpEnter::IpEnter(unsigned int width, unsigned int height)
     ipImage.setPosition(0,0);
     ipImage.setTexture(&ipTexture);
 }
+void IpEnter::moveUp(const bool goUp = true) {
+    if (goUp and selectedItem != 0)
+        selectedItem--;
+    else if(not goUp and selectedItem!=1)
+        selectedItem++;
+}
+
 void IpEnter::handlePlayerInput(sf::Keyboard::Key &key, bool isPressed) {
         switch (key){
             case sf::Keyboard::Return:
                 onPressEnter();
+                break;
+            case sf::Keyboard::Up:
+                moveUp();
+                break;
+            case sf::Keyboard::Down:
+                moveUp(false);
                 break;
             default:
                 break;
@@ -58,7 +78,7 @@ void IpEnter::onPressEnter()
     if(!playerInput.isEmpty())
     {
         mWindow2.close();
-        Game game(width, height,playerInput,nameInput);
+        Game game(width, height,playerInput,selectedItem==0);
         game.run();
     }
     else
@@ -89,17 +109,6 @@ void IpEnter::processEvents() {
                     playerInput.erase(playerInput.getSize()-1,1);
                     playerText.setString(playerInput);
                 }
-                if((event.text.unicode>=65 && event.text.unicode<=90)||(event.text.unicode>=97 && event.text.unicode<=122))
-                {
-                    nameInput+=event.text.unicode;
-                    name.setString(nameInput);
-                }
-                else if(event.text.unicode==8 && !nameInput.isEmpty())
-                {
-                    nameInput.erase(nameInput.getSize()-1,1);
-                    name.setString(nameInput);
-                }
-//            mWindow2.draw(playerText);
                 break;
             case sf::Event::Closed:
                 mWindow2.close();

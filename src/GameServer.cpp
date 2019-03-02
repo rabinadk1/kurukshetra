@@ -9,7 +9,7 @@
 #include <Player.h>
 #include <SFML/Network/TcpSocket.hpp>
 
-GameServer::GameServer(unsigned short port,std::string name):player_name(name)
+GameServer::GameServer(unsigned short port)
 {
     m_running = true;
     listenPort(port);

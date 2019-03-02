@@ -14,7 +14,7 @@
 class GameServer {
 public:
     GameServer(){};
-    GameServer(unsigned short port,std::string name);
+    explicit GameServer(unsigned short port);
     ~GameServer();
 
     void receive();
@@ -22,7 +22,6 @@ public:
     int getM_playersConnected() const;
     void listenPort(unsigned short port);
 private:
-    std::string player_name;
     bool m_running;
     bool m_dataWaiting;
     sf::Packet m_toSend;
