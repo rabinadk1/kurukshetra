@@ -126,9 +126,6 @@ void Game::processEvents() {
 }
 
 void Game::render() {
-	sf::Clock newClock;
-	while(newClock.getElapsedTime().asSeconds()<0.2f);
-	newClock.restart();
 	if (player.isDead())
 	{
 		sf::Clock waitClock;
@@ -176,6 +173,8 @@ void Game::gameOver() {
 }
 void Game::deadAnimate(std::string info, sf::Clock& waitClock)
 {
+	while(waitClock.getElapsedTime().asSeconds()<0.2f);
+	waitClock.restart();
 	deadInfo.setString(info);
     unsigned int size = deadInfo.getCharacterSize();
     gameOver();

@@ -36,8 +36,8 @@ MainMenu::MainMenu(unsigned int width, unsigned int height)
     height(height)
 {
     fonts.load(Fonts::menuFont, "../Media/Fonts/DejaVuSans.ttf");
-    for (int i=0; i<3; i++)
-        menu[i].setFont(fonts.get(Fonts::menuFont));
+    for (auto &font : menu)
+        font.setFont(fonts.get(Fonts::menuFont));
     menu[0].setString("Play");
     menu[1].setString("About");
     menu[2].setString("Exit");
