@@ -126,6 +126,9 @@ void Game::processEvents() {
 }
 
 void Game::render() {
+	sf::Clock newClock;
+	while(newClock.getElapsedTime().asSeconds()<0.2f);
+	newClock.restart();
 	if (player.isDead())
 	{
 		sf::Clock waitClock;
@@ -152,7 +155,6 @@ void Game::render() {
 			window.draw(text);
 		window.display();
 	}
-
 }
 
 void Game::ResizedWindow(sf::RenderWindow &window, Camera &view) {

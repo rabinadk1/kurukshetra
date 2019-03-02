@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <fstream>
 #include "MainMenu.h"
 #include "Game.h"
 #include "IpEnter.h"
@@ -16,12 +17,12 @@ void MainMenu::render(){
             menu[i].setFillColor(i==selectedItem? sf::Color::Red : sf::Color::Black);
             mWindow2.draw(menu[i]);
         }
+        mWindow2.display();
     }
     else
     {
         about();
     }
-    mWindow2.display();
 }
 MainMenu::MainMenu(unsigned int width, unsigned int height)
 	:fonts(Fonts::fontNumber),
@@ -46,6 +47,18 @@ MainMenu::MainMenu(unsigned int width, unsigned int height)
     menuImage.setSize(sf::Vector2f(width, height));
     menuImage.setPosition(0,0);
     menuImage.setTexture(&menuTexture);
+    aboutText.setFont(fonts.get(Fonts::menuFont));
+
+    std::string detail;
+    std::fstream aboutFile;
+    aboutFile.open(("../about.txt"));
+    if(aboutFile)
+    {
+        while(getline(aboutFile, detail))
+        {
+            aboutTextString.append(detail + "\n");
+        }
+    }
 }
 void MainMenu::moveUp(const bool goUp = true) {
     if (goUp and selectedItem != 0)
@@ -99,8 +112,12 @@ void MainMenu::onPressEnter(){
 
 void MainMenu::about() {
     mWindow2.clear(sf::Color(255, 255, 255, 150));
-    //TODO: use file stream to read from about.txt file
-//    mWindow2.display();
+    aboutText.setString(aboutTextString);
+    aboutText.setFillColor(sf::Color::Black);
+    aboutText.setCharacterSize(18);
+    aboutText.setPosition(10, 50);
+    mWindow2.draw(aboutText);
+    mWindow2.display();
 }
 
 void MainMenu::run() {
