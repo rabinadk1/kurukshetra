@@ -1,17 +1,15 @@
-#include <utility>
-
 //
 // Created by maverick on 12/2/19.
 //
 #include <sstream>
 #include <iostream>
 #include "Game.h"
-Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip,std::string name)
+Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip,bool isPlayer1)
 	:window(sf::VideoMode(viewWidth, viewHeight), "Kurukshetra"),
 	 textures(Textures::textureNumber),
 	 fonts(GameFonts::fontNumber),
-	 server(11000, std::move(name)),
-	 client(Ip,10000),
+	 server(isPlayer1?11000:10000),
+	 client(Ip,isPlayer1?10000:11000),
 	 viewWidth(viewWidth),
 	 viewHeight(viewHeight),
 	 baseHeight(1900),
@@ -42,8 +40,8 @@ Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip,std::string na
 	sky.setTexture(&textures.get(Textures::skyTexture));
 	sky.setFillColor(sf::Color(255, 164, 134, 200));
 
-	player.SetData(&textures.get(Textures::playerTexture), sf::Vector2u(4, 4), 0.3f, 150.0f, sf::Vector2f(rightExtremePoint - 500, baseHeight));
-	enemy.SetData(&textures.get(Textures::enemyTexture), sf::Vector2u(4, 4), 0.3f, 150.0f,sf::Vector2f(leftExtremePoint + 500, baseHeight));
+	player.SetData(&textures.get(Textures::playerTexture), sf::Vector2u(4, 4), 0.3f, 150.0f, isPlayer1?sf::Vector2f(rightExtremePoint, baseHeight):sf::Vector2f(leftExtremePoint+player.GetSize().x, baseHeight));
+	enemy.SetData(&textures.get(Textures::enemyTexture), sf::Vector2u(4, 4), 0.3f, 150.0f,isPlayer1?sf::Vector2f(leftExtremePoint+player.GetSize().x, baseHeight):sf::Vector2f(rightExtremePoint, baseHeight));
 
 
     gameView.SetSize(sf::Vector2f(viewWidth, viewHeight));

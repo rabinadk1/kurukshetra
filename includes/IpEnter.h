@@ -16,13 +16,15 @@ public:
     void handlePlayerInput(sf::Keyboard::Key &key, bool isPressed);
     void processEvents();
     void onPressEnter();
+    void moveUp(bool goUp);
 private:
-    sf::Text menu[3];
+    sf::Text menu[2];
     ResourceHolder <sf::Font, Fonts::ID> fonts;
     sf::RenderWindow mWindow2;
     sf::RectangleShape inputBox;
     sf::String playerInput;
-    sf::Text playerText,enter,IpShow,name;
+    sf::Text playerText,enter,IpShow;
+    int selectedItem;
     sf::Texture ipTexture;
     sf::RectangleShape ipImage;
     sf::String nameInput;

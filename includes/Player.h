@@ -27,6 +27,7 @@ public:
     Collider GetCollider() { return Collider(body); }
     sf::RectangleShape& GetBody() { return body;}
     bool isDead(){ return health<=0;}
+    sf::Vector2f GetSize(){ return body.getSize(); }
 
 private:
 	bool HitCheck(Enemy& enemy, Bullet& bullet);
