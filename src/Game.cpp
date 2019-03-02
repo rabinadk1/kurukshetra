@@ -26,7 +26,6 @@ Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip,std::string na
 	textures.load(Textures::groundTexture, "../Media/Textures/stoneTile.png");
 	textures.load(Textures::wallTexture, "../Media/Textures/stoneTile.png");
 	textures.load(Textures::rockTexture, "../Media/Textures/rockPlatform.png");
-//	textures.load(Textures::grassTexture, "../Media/Textures/grass.png");
 	textures.load(Textures::playerTexture, "../Media/Textures/player.png");
 	textures.load(Textures::enemyTexture, "../Media/Textures/enemy.png");
 	textures.load(Textures::bulletTexture, "../Media/Textures/bullet.png");
@@ -53,12 +52,6 @@ Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip,std::string na
     fonts.load(GameFonts::info, "../Media/Fonts/DejaVuSans.ttf");
 	for (auto &text : info)
 		text.setFont(fonts.get(GameFonts::info));
-//	std::ostringstream s;
-//	s<<player.health;
-//	info[0].setString("Health: " + s.str());
-//	s.str("");
-//	s<<player.mana;
-//	info[1].setString("Mana: " + s.str());
 
 	for (int i=0; i<2; i++)
 	{
@@ -67,7 +60,7 @@ Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip,std::string na
 	}
 
 	deadInfo.setFont(fonts.get(GameFonts::info));
-//	deadInfo.setPosition(window.getSize().x / 2.f, window.getSize().y / 2.f);
+    deadInfo.setCharacterSize(50);
 	deadInfo.setFillColor(sf::Color::Red);
 
 	ground.SetData(&textures.get(Textures::groundTexture), sf::Vector2f(4300, 200), sf::Vector2f(leftExtremePoint - 150, baseHeight));
@@ -75,13 +68,6 @@ Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip,std::string na
     textures.get(Textures::groundTexture).setRepeated(true);
 
     setWalls();
-
-//
-//	const sf::Vector2f grassSize = sf::Vector2f(100, 100);
-//	grass.setPosition(sf::Vector2f(1200.f, baseHeight));
-//	grass.setSize(grassSize);
-//	grass.setTexture(&textures.get(Textures::grassTexture));
-//	grass.setOrigin(grassSize);
 
 	rock.setPosition(sf::Vector2f(300, baseHeight));
 	rock.setSize(sf::Vector2f(300, 50));
@@ -145,8 +131,23 @@ void Game::render() {
 		sf::Clock waitClock;
 		std::cout<<"You Lose!!"<<std::endl;
 		deadInfo.setString("You Lose!!");
+		unsigned int size = deadInfo.getCharacterSize();
 		gameOver();
-		while(waitClock.getElapsedTime().asSeconds()<3.f);
+		while(waitClock.getElapsedTime().asSeconds()<3.f)
+        {
+		    size += 1;
+		    deadInfo.setCharacterSize(size);
+		    deadInfo.setPosition(deadInfo.getPosition().x - 1, deadInfo.getPosition().y + 1);
+		    window.draw(deadInfo);
+		    window.display();
+        }
+		waitClock.restart();
+		deadInfo.setOutlineThickness(2.f);
+		deadInfo.setOutlineColor(sf::Color::Black);
+        while(waitClock.getElapsedTime().asSeconds()<1.5f){
+            window.draw(deadInfo);
+            window.display();
+        }
 		window.close();
 	}
 	else if (enemy.isDead())
@@ -154,16 +155,29 @@ void Game::render() {
 		sf::Clock waitClock;
 		std::cout<<"You Win!!"<<std::endl;
 		deadInfo.setString("You Win!!");
-		gameOver();
-		while(waitClock.getElapsedTime().asSeconds()<3.f);
+        unsigned int size = deadInfo.getCharacterSize();
+        gameOver();
+        while(waitClock.getElapsedTime().asSeconds()<3.f)
+        {
+            size += 1;
+            deadInfo.setCharacterSize(size);
+            deadInfo.setPosition(deadInfo.getPosition().x - 1, deadInfo.getPosition().y + 1);
+            window.draw(deadInfo);
+            window.display();
+        }
+        waitClock.restart();
+        deadInfo.setOutlineThickness(2.f);
+        deadInfo.setOutlineColor(sf::Color::Black);
+        while(waitClock.getElapsedTime().asSeconds()<1.5f){
+            window.draw(deadInfo);
+            window.display();
+        }
 		window.close();
 	}
 	else
 	{
 		window.clear();
 		window.draw(sky);
-//	window.draw(grass);
-//	window.draw(rock);
 		ground.Draw(window);
 		for(auto& wall : walls)
 			wall.Draw(window);
@@ -189,13 +203,8 @@ void Game::setWalls() {
 }
 
 void Game::gameOver() {
-	window.clear(sf::Color::Red);
-	//TODO: use file stream to read from about.txt file
-//    mWindow2.display();
-	deadInfo.setPosition(gameView.GetCenter());
-	deadInfo.setFillColor(sf::Color::White);
-	deadInfo.setStyle(sf::Text::Bold);
-	deadInfo.setCharacterSize(50);
+	deadInfo.setPosition(gameView.GetCenter().x - window.getSize().x / 2.f, gameView.GetCenter().y - window.getSize().y / 2.f);
+	deadInfo.setStyle(sf::Text::Italic);
 	window.draw(deadInfo);
 	window.display();
 }
