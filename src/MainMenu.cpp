@@ -8,11 +8,18 @@
 #include "IpEnter.h"
 
 void MainMenu::render(){
-    mWindow2.clear();
-    mWindow2.draw(menuImage);
-    for(int i=0;i<3;i++) {
-        menu[i].setFillColor(i==selectedItem? sf::Color::Red : sf::Color::Black);
-        mWindow2.draw(menu[i]);
+    if (enterAbout == false)
+    {
+        mWindow2.clear();
+        mWindow2.draw(menuImage);
+        for(int i=0;i<3;i++) {
+            menu[i].setFillColor(i==selectedItem? sf::Color::Red : sf::Color::Black);
+            mWindow2.draw(menu[i]);
+        }
+    }
+    else
+    {
+        about();
     }
     mWindow2.display();
 }
@@ -22,6 +29,7 @@ MainMenu::MainMenu(unsigned int width, unsigned int height)
 	isPressedUp(false),
 	isPressedDown(false),
 	isPressedReturn(false),
+	enterAbout(false),
 	mWindow2(sf::VideoMode(width, height), "Kurukshetra"),
 	width(width),
     height(height)
@@ -55,7 +63,10 @@ void MainMenu::handlePlayerInput(sf::Keyboard::Key &key, bool isPressed) {
             break;
         case sf::Keyboard::Return:
             isPressedReturn=isPressed;
-            break;    
+            break;
+        case sf::Keyboard::Escape:
+            enterAbout = false;
+            break;
     }
     update();
 }
@@ -72,6 +83,9 @@ void MainMenu::update() {
 void MainMenu::onPressEnter(){
     switch (selectedItem)
     {
+        case 1:
+            enterAbout = true;
+            break;
         case 2:
             std::cout<<"Program exited successfully!"<<std::endl;
             exit(0);
@@ -82,6 +96,13 @@ void MainMenu::onPressEnter(){
             break;
     }
 }
+
+void MainMenu::about() {
+    mWindow2.clear(sf::Color(255, 255, 255, 150));
+    //TODO: use file stream to read from about.txt file
+//    mWindow2.display();
+}
+
 void MainMenu::run() {
     while (mWindow2.isOpen())
     {

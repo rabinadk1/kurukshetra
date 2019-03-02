@@ -16,7 +16,7 @@ Enemy::Enemy()
 	gunSound.setBuffer(sounds.get(Sounds::gunShot));
 }
 
-void Enemy::SetData(sf::Texture *EnemyTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position) {
+void Enemy::SetData(sf::Texture *EnemyTexture, sf::Vector2u imageCount, float switchTime) {
 	animation.SetData(EnemyTexture, imageCount, switchTime);
 	row = 0;
 	faceRight = true;
@@ -25,7 +25,7 @@ void Enemy::SetData(sf::Texture *EnemyTexture, sf::Vector2u imageCount, float sw
 
 	const sf::Vector2f EnemySize = sf::Vector2f(250.0f, 250.0f);
 	body.setSize(EnemySize);
-	body.setPosition(position);
+//	body.setPosition(position);
 	body.setTexture(EnemyTexture);
 	body.setOrigin(EnemySize);
 //    body.setOrigin(EnemySize.x/2, EnemySize.y/2);

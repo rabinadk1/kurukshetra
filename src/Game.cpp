@@ -41,7 +41,7 @@ Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip,bool isPlayer1
 	sky.setFillColor(sf::Color(255, 164, 134, 200));
 
 	player.SetData(&textures.get(Textures::playerTexture), sf::Vector2u(4, 4), 0.3f, 150.0f, isPlayer1?sf::Vector2f(rightExtremePoint, baseHeight):sf::Vector2f(leftExtremePoint+player.GetSize().x, baseHeight));
-	enemy.SetData(&textures.get(Textures::enemyTexture), sf::Vector2u(4, 4), 0.3f, 150.0f,isPlayer1?sf::Vector2f(leftExtremePoint+player.GetSize().x, baseHeight):sf::Vector2f(rightExtremePoint, baseHeight));
+	enemy.SetData(&textures.get(Textures::enemyTexture), sf::Vector2u(4, 4), 0.3f);
 
 
     gameView.SetSize(sf::Vector2f(viewWidth, viewHeight));
@@ -52,12 +52,6 @@ Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip,bool isPlayer1
     fonts.load(GameFonts::info, "../Media/Fonts/DejaVuSans.ttf");
 	for (auto &text : info)
 		text.setFont(fonts.get(GameFonts::info));
-//	std::ostringstream s;
-//	s<<player.health;
-//	info[0].setString("Health: " + s.str());
-//	s.str("");
-//	s<<player.mana;
-//	info[1].setString("Mana: " + s.str());
 
 	for (int i=0; i<2; i++)
 	{
@@ -65,18 +59,15 @@ Game::Game(unsigned viewWidth, unsigned viewHeight,std::string Ip,bool isPlayer1
 		info[i].setFillColor(sf::Color::Red);
 	}
 
+	deadInfo.setFont(fonts.get(GameFonts::info));
+    deadInfo.setCharacterSize(50);
+	deadInfo.setFillColor(sf::Color::Red);
+
 	ground.SetData(&textures.get(Textures::groundTexture), sf::Vector2f(4300, 200), sf::Vector2f(leftExtremePoint - 150, baseHeight));
 	ground.SetTextureRect(sf::IntRect(0, 0, 4000, 200));
     textures.get(Textures::groundTexture).setRepeated(true);
 
     setWalls();
-
-//
-//	const sf::Vector2f grassSize = sf::Vector2f(100, 100);
-//	grass.setPosition(sf::Vector2f(1200.f, baseHeight));
-//	grass.setSize(grassSize);
-//	grass.setTexture(&textures.get(Textures::grassTexture));
-//	grass.setOrigin(grassSize);
 
 	rock.setPosition(sf::Vector2f(300, baseHeight));
 	rock.setSize(sf::Vector2f(300, 50));
@@ -139,28 +130,64 @@ void Game::render() {
 	{
 		sf::Clock waitClock;
 		std::cout<<"You Lose!!"<<std::endl;
-		while(waitClock.getElapsedTime().asSeconds()<3.f);
+		deadInfo.setString("You Lose!!");
+		unsigned int size = deadInfo.getCharacterSize();
+		gameOver();
+		while(waitClock.getElapsedTime().asSeconds()<3.f)
+        {
+		    size += 1;
+		    deadInfo.setCharacterSize(size);
+		    deadInfo.setPosition(deadInfo.getPosition().x - 1, deadInfo.getPosition().y + 1);
+		    window.draw(deadInfo);
+		    window.display();
+        }
+		waitClock.restart();
+		deadInfo.setOutlineThickness(2.f);
+		deadInfo.setOutlineColor(sf::Color::Black);
+        while(waitClock.getElapsedTime().asSeconds()<1.5f){
+            window.draw(deadInfo);
+            window.display();
+        }
 		window.close();
 	}
 	else if (enemy.isDead())
 	{
 		sf::Clock waitClock;
 		std::cout<<"You Win!!"<<std::endl;
-		while(waitClock.getElapsedTime().asSeconds()<3.f);
+		deadInfo.setString("You Win!!");
+        unsigned int size = deadInfo.getCharacterSize();
+        gameOver();
+        while(waitClock.getElapsedTime().asSeconds()<3.f)
+        {
+            size += 1;
+            deadInfo.setCharacterSize(size);
+            deadInfo.setPosition(deadInfo.getPosition().x - 1, deadInfo.getPosition().y + 1);
+            window.draw(deadInfo);
+            window.display();
+        }
+        waitClock.restart();
+        deadInfo.setOutlineThickness(2.f);
+        deadInfo.setOutlineColor(sf::Color::Black);
+        while(waitClock.getElapsedTime().asSeconds()<1.5f){
+            window.draw(deadInfo);
+            window.display();
+        }
 		window.close();
 	}
-
-	window.clear();
-	window.draw(sky);
-    ground.Draw(window);
-    for(auto& wall : walls)
-        wall.Draw(window);
-	player.Draw(window, enemy);
-	if(server.getM_playersConnected()>0 && client.isConnected())
-		enemy.Draw(window, player);
-	for (const auto &text : info)
-		window.draw(text);
-	window.display();
+	else
+	{
+		window.clear();
+		window.draw(sky);
+		ground.Draw(window);
+		for(auto& wall : walls)
+			wall.Draw(window);
+		player.Draw(window, enemy);
+		if(server.getM_playersConnected()>0 && client.isConnected())
+			enemy.Draw(window, player);
+		for (const auto &text : info)
+			window.draw(text);
+		window.display();
+	}
 
 }
 
@@ -173,4 +200,11 @@ void Game::ResizedWindow(sf::RenderWindow &window, Camera &view) {
 void Game::setWalls() {
 	walls[0] = Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 250), sf::Vector2f(leftExtremePoint - 150, baseHeight - 250));
 	walls[1] = Platform(&textures.get(Textures::wallTexture), sf::Vector2f(150, 250), sf::Vector2f(rightExtremePoint, baseHeight - 250));
+}
+
+void Game::gameOver() {
+	deadInfo.setPosition(gameView.GetCenter().x - window.getSize().x / 2.f, gameView.GetCenter().y - window.getSize().y / 2.f);
+	deadInfo.setStyle(sf::Text::Italic);
+	window.draw(deadInfo);
+	window.display();
 }

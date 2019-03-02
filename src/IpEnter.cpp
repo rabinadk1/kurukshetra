@@ -63,13 +63,16 @@ void IpEnter::handlePlayerInput(sf::Keyboard::Key &key, bool isPressed) {
             case sf::Keyboard::Return:
                 onPressEnter();
                 break;
-            case sf::Keyboard::Up:
-                moveUp();
-                break;
-            case sf::Keyboard::Down:
-                moveUp(false);
-                break;
-            default:
+	        case sf::Keyboard::Up:
+		        moveUp();
+		        break;
+	        case sf::Keyboard::Down:
+		        moveUp(false);
+		        break;
+            case sf::Keyboard::Escape:
+                mWindow2.close();
+                MainMenu mainMenu(1377, 720);
+                mainMenu.run();
                 break;
         }
     }

@@ -21,6 +21,7 @@ public:
     void run();
 
 private:
+    void about();
     void moveUp(bool goUp);
     void render();
     void handlePlayerInput(sf::Keyboard::Key &key, bool isPressed);
@@ -31,9 +32,10 @@ private:
     sf::Text menu[3];
     ResourceHolder <sf::Font, Fonts::ID> fonts;
     int selectedItem;
-    bool isPressedUp, isPressedDown, isPressedReturn;
-    sf::RenderWindow mWindow2;
+    bool isPressedUp, isPressedDown, isPressedReturn, enterAbout;
     unsigned width, height;
     sf::Texture menuTexture;
     sf::RectangleShape menuImage;
+protected:
+    sf::RenderWindow mWindow2;
 };
