@@ -23,7 +23,7 @@ public:
     void SetData(sf::Texture *playerTexture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position);
 	void Update(sf::Texture* bulletTexture , float deltaTime, Camera &gameView, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape& sky,  sf::Text *info, GameServer& server, Enemy& enemy);
 	void Update(sf::Texture* bulletTexture , float deltaTime, Camera &gameView, float &baseHeight,float &leftExtremePoint, float &rightExtremePoint, sf::RenderWindow& window, sf::RectangleShape& sky,  sf::Text *info);
-	void Draw(sf::RenderWindow& window, Camera& gameView, Enemy& enemy);
+	void Draw(sf::RenderWindow& window, Camera& gameView, Enemy& enemy, float baseHeight);
     Collider GetCollider() { return Collider(body); }
     sf::RectangleShape& GetBody() { return body;}
     bool isDead(){ return health<=0;}

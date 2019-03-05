@@ -22,7 +22,7 @@ public:
     Enemy();
     void SetData(sf::Texture *EnemyTexture, sf::Vector2u imageCount, float switchTime);
     void Update(sf::Texture* bulletTexture, float deltaTime, Camera &gameView, float &baseHeight, sf::RenderWindow& window, sf::RectangleShape& sky, sf::Text* info, GameClient& client);
-    void Draw(sf::RenderWindow& window, Camera& gameView , Player& player);
+    void Draw(sf::RenderWindow& window, Camera& gameView , Player& player, float baseHeight);
     Collider GetCollider() { return Collider(body); }
     sf::Vector2f GetPosition(){ return body.getPosition(); }
 	bool isDead(){ return health<=0;}
