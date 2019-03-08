@@ -1,15 +1,21 @@
 # KURUKSHETRA
 
-###Usage of Collider Class
+## Building Instructions
 
-Inside `Player` and `Platform` classes, a member function `GetCollider()` is defined, which calls `Collider()` constructor.
- 
- To check for collision of players 
-or player and platforms use the `GetCollider()` member function with `CheckCollision()` member function of the `Collider` class.
+The project was done using Linux filesystem, for the ease of building, use a linux machine.
+__Dependencies__:
+SFML 2.5.1
 
-example:
+### Using Cmake from commandline
 
-`player1.GetCollider().CheckCollision(platform1.GetCollider())`
+From our base project directory, type in the following commands:
+```sh
+$ cmake CMakeLists.txt -B kurukshetra
+$ cd kurukshetra/
+$ make
+$ ./kurukshetra
+```
 
+### Using CLion IDE from _JetBrains_
 
-This return a `true` if `player1` and `platform1` collide and returns `false` if not.  
+Open this folder from CLion IDE and click on play button on the top bar of CLion IDE and the IDE does the work itself.
