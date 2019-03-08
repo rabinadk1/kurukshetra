@@ -3,6 +3,7 @@
 ## Building Instructions
 
 The project was done using Linux filesystem, for the ease of building, use a linux machine.
+
 __Dependencies__:
 SFML 2.5.1
 
